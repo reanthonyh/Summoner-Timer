@@ -1,10 +1,23 @@
-class Account {
-  const Account({required this.puuid, required this.gameName, required this.tagLine});
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String puuid;
-  final String gameName;
-  final String tagLine;
+part 'account.freezed.dart';
 
-  @override
-  String toString() => 'Account(puuid: $puuid, gameName: $gameName, tagLine: $tagLine)';
+enum Region {
+  lan('la1'),
+  las('la2'),
+  na('na1');
+
+  final String code;
+
+  const Region(this.code);
+}
+
+@freezed
+abstract class Account with _$Account {
+  const factory Account({
+    required String puuid,
+    required String gameName,
+    required String tagLine,
+    required Region region,
+  }) = _Account;
 }

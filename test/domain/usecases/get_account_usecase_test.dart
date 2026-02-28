@@ -23,11 +23,12 @@ void main() {
       puuid: 'test-puuid-123',
       gameName: 'TestGameName',
       tagLine: 'TEST',
+      region: Region.lan,
     );
 
     test('returns Account when repository call is successful', () async {
       when(
-        () => mockRepository.retrieveUserByNameTag(name: testName, tag: testTag),
+        () => mockRepository.retrieveSummonerByNameTag(name: testName, tag: testTag),
       ).thenAnswer((_) async => testAccount);
 
       final result = await useCase(name: testName, tag: testTag);

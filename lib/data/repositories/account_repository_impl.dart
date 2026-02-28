@@ -13,20 +13,37 @@ final class AccountRepositoryImpl implements AccountRepository {
   final RiotAmericasApi dataSource;
 
   @override
-  Future<Account> retrieveUserByNameTag({
+  Future<Account> retrieveSummonerByNameTag({
     required String name,
     required String tag,
   }) async {
-    final request = AccountModelRequest(name: name, tag: tag);
+    try {
+      final request = AccountModelRequest(name: name, tag: tag);
 
-    final response = await dataSource.getAccount(request);
+      final accountResponse = await dataSource.getAccount(request);
 
-    print('Repository Impl: $response');
+      final puuid = accountResponse.puuid;
+      if (puuid == null) {
+        throw Exception('Account not found for $name#$tag');
+      }
 
-    return Account(
-      puuid: response.puuid ?? '',
-      gameName: response.gameName ?? '',
-      tagLine: response.tagLine ?? '',
-    );
+      final regionResponse = await dataSource.getSummonerRegion(puuid);
+
+      print('Repository Impl: $accountResponse');
+      print('Repository Impl: $regionResponse');
+
+      return Account(
+        puuid: accountResponse.puuid ?? '',
+        gameName: accountResponse.gameName ?? '',
+        tagLine: accountResponse.tagLine ?? '',
+        region: Region.values.firstWhere(
+          (element) => element.code == regionResponse.region,
+          orElse: () => Region.lan,
+        ),
+      );
+    } catch (e) {
+      print('Repository Impl: Error retrieving account: $e');
+      rethrow;
+    }
   }
 }
