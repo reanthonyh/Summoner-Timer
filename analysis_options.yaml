@@ -1,0 +1,22 @@
+include: package:flutter_lints/flutter.yaml
+
+formatter:
+  page_width: 90
+  trailing_commas: automate
+
+analyzer:
+  errors:
+    depend_on_referenced_packages: ignore
+    unused_element: ignore
+    library_private_types_in_public_api: ignore
+    invalid_annotation_target: ignore
+
+  # plugins:
+  #   - custom_lint
+
+linter:
+  rules:
+    avoid_print: false
+    prefer_const_constructors: true
+    prefer_single_quotes: true
+    use_key_in_widget_constructors: true
