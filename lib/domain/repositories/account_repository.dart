@@ -1,8 +1,7 @@
 import 'dart:async';
 
+import 'package:summoner_timer/domain/entities/entities.dart';
+
 abstract interface class AccountRepository {
-  FutureOr<void> retrieveUserByNameTag({
-    required String name,
-    required String tag,
-  });
+  Future<Account> retrieveUserByNameTag({required String name, required String tag});
 }

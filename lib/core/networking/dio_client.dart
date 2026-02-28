@@ -6,9 +6,17 @@ final class RiotDioClient {
     : _dioInstance = Dio(
         BaseOptions(
           baseUrl: 'https://americas.api.riotgames.com',
-          headers: {'X-Riot-Open': dotenv.env['RIOT_API_KEY']},
+          headers: {'X-Riot-Token': dotenv.env['RIOT_API_KEY']},
         ),
-      );
+      ) {
+    _dioInstance.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        logPrint: (obj) => print('DIO: $obj'),
+      ),
+    );
+  }
 
   factory RiotDioClient() => _instance;
 
