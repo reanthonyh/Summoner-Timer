@@ -33,7 +33,8 @@ class _MainAppState extends State<MainApp> {
     try {
       final account = await _getAccountUseCase(name: 'ZacanMeten', tag: 'ZACan');
       setState(() {
-        _result = '${account.gameName}#${account.tagLine}';
+        _result =
+            '${account.gameName}#${account.tagLine} - ${account.region.toString().toUpperCase()}';
       });
     } catch (e) {
       setState(() {
