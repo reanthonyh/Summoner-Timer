@@ -10,6 +10,8 @@ enum Region {
   final String code;
 
   const Region(this.code);
+
+  String get platformHost => 'https://$code.api.riotgames.com';
 }
 
 @freezed

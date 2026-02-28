@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:summoner_timer/data/repositories/account_repository_impl.dart';
+import 'package:summoner_timer/data/repositories/session_repository_impl.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
 
 void main() async {
@@ -25,7 +26,10 @@ class _MainAppState extends State<MainApp> {
   @override
   void initState() {
     super.initState();
-    _getAccountUseCase = GetAccountUseCase(repository: AccountRepositoryImpl());
+    final sessionRepository = SessionRepositoryImpl();
+    _getAccountUseCase = GetAccountUseCase(
+      repository: AccountRepositoryImpl(sessionRepository: sessionRepository),
+    );
     _loadAccount();
   }
 
