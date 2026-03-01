@@ -28,7 +28,7 @@ class SummonerSpellMapper {
 
   static SummonerSpell fromModel(SummonerSpellModel model) {
     return SummonerSpell(
-      id: model.id?.toString() ?? model.key?.toString() ?? '',
+      id: model.key?.toString() ?? '',
       name: model.name ?? '',
       cooldownSeconds: model.cooldown?.isNotEmpty == true ? model.cooldown!.first : 0,
     );
@@ -39,8 +39,9 @@ class SummonerSpellMapper {
     Map<String, SummonerSpellModel> spellsData,
   ) {
     final spellModel = spellsData.values.firstWhere(
-      (spell) => spell.id == spellId || spell.key == spellId,
-      orElse: () => SummonerSpellModel(id: spellId, name: 'Unknown', cooldown: [0]),
+      (spell) => spell.key == spellId,
+      orElse: () =>
+          SummonerSpellModel(id: spellId.toString(), name: 'Unknown', cooldown: [0]),
     );
     return fromModel(spellModel);
   }

@@ -8,7 +8,7 @@ part of 'summoner_spell_model.dart';
 
 _SummonerSpellModel _$SummonerSpellModelFromJson(Map<String, dynamic> json) =>
     _SummonerSpellModel(
-      id: (json['id'] as num?)?.toInt(),
+      id: json['id'] as String?,
       name: json['name'] as String?,
       description: json['description'] as String?,
       cooldown: (json['cooldown'] as List<dynamic>?)

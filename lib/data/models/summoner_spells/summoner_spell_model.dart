@@ -18,7 +18,7 @@ abstract class SummonerSpellModel with _$SummonerSpellModel {
   // 14 - Ignite
   // 21 - Barrier
   const factory SummonerSpellModel({
-    int? id,
+    String? id,
     String? name,
     String? description,
     List<int>? cooldown,
