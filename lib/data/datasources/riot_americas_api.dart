@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:summoner_timer/core/networking/dio_client.dart';
-import 'package:summoner_timer/data/models/game_match/game_match_model_response.dart';
 import 'package:summoner_timer/domain/repositories/session_repository.dart';
 
 import '../models/models.dart';
