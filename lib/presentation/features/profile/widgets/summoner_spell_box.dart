@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../domain/entities/summoner_spell.dart';
+import 'package:summoner_timer/domain/entities/summoner_spell.dart';
 
 class SummonerSpellBox extends StatefulWidget {
   final SummonerSpell spell;
@@ -152,35 +150,22 @@ class _CooldownPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2 - 4;
 
-    final backgroundPaint = Paint()
-      ..color = Colors.black.withValues(alpha: 0.6)
+    // Paint a color layer that fades out as the cooldown progresses
+    final opacity = (1.0 - progress).clamp(0.0, 1.0);
+    final layerPaint = Paint()
+      ..color = Colors.black.withValues(alpha: opacity * 0.7)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(center, radius, backgroundPaint);
 
-    if (progress > 0) {
-      final progressPaint = Paint()
-        ..color = _getProgressColor(progress)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3
-        ..strokeCap = StrokeCap.round;
-
-      final sweepAngle = 2 * math.pi * (1 - progress);
-      canvas.drawArc(
-        Rect.fromCircle(center: center, radius: radius - 2),
-        -math.pi / 2,
-        sweepAngle,
-        false,
-        progressPaint,
-      );
-    }
+    // Drawing a rounded rectangle that covers the spell box area (matching image size)
+    final rect = Rect.fromCenter(center: center, width: 48, height: 48);
+    canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(8)), layerPaint);
 
     final textPainter = TextPainter(
       text: TextSpan(
         text: remainingSeconds.toString(),
         style: TextStyle(
-          color: progress > 0.5 ? Colors.white : Colors.white.withValues(alpha: 0.9),
+          color: Colors.white,
           fontSize: remainingSeconds >= 100 ? 14 : 18,
           fontWeight: FontWeight.bold,
           shadows: const [
@@ -195,16 +180,6 @@ class _CooldownPainter extends CustomPainter {
       canvas,
       Offset(center.dx - textPainter.width / 2, center.dy - textPainter.height / 2),
     );
-  }
-
-  Color _getProgressColor(double progress) {
-    if (progress > 0.6) {
-      return Colors.green;
-    } else if (progress > 0.3) {
-      return Colors.orange;
-    } else {
-      return Colors.red;
-    }
   }
 
   @override
