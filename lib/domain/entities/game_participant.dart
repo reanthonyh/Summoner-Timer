@@ -12,5 +12,6 @@ abstract class GameParticipant with _$GameParticipant {
     required SummonerSpell spellOne,
     required SummonerSpell spellTwo,
     required String riotId,
+    required int championId,
   }) = _GameParticipant;
 }

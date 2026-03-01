@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/presentation/features/profile/pages/profile_page.dart';
 
+import 'package:summoner_timer/core/constants/enums.dart';
+
 import '../cubit/search_cubit.dart';
 import '../cubit/search_state.dart';
 

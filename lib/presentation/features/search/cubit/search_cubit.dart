@@ -15,13 +15,13 @@ final class SearchCubit extends Cubit<SearchState> {
 
   void onChangeName(String? value) {
     if (value != null && value.isNotEmpty) {
-      emit(state.copyWith(nameField: value));
+      emit(state.copyWith(nameField: value, status: UiStatus.initial));
     }
   }
 
   void onChangeTag(String? value) {
     if (value != null && value.isNotEmpty) {
-      emit(state.copyWith(tagField: value));
+      emit(state.copyWith(tagField: value, status: UiStatus.initial));
     }
   }
 

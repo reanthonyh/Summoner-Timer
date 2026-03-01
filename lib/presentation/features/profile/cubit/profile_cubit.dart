@@ -15,19 +15,14 @@ final class ProfileCubit extends Cubit<ProfileState> {
   final _getCurrentGameUC = getIt<GetCurrentGameUseCase>();
 
   Future<void> _fetchData() async {
-    emit(state.copyWith(status: UiStatus.loading));
+    final account = _sessionRepository.currentAccount;
+
+    // We can emit the account immediately since it's in session
+    emit(state.copyWith(account: account, status: UiStatus.loading));
 
     try {
-      final account = _sessionRepository.currentAccount;
-
       final gameInformation = await _getCurrentGameUC.call();
-      emit(
-        state.copyWith(
-          status: UiStatus.success,
-          account: account,
-          gameInformation: gameInformation,
-        ),
-      );
+      emit(state.copyWith(status: UiStatus.success, gameInformation: gameInformation));
     } catch (err) {
       emit(state.copyWith(status: UiStatus.error));
     }

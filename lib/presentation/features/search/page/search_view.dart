@@ -17,34 +17,33 @@ class _SearchViewState extends State<_SearchView> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return SingleChildScrollView(
-            child: Column(
-              spacing: 12,
-              mainAxisAlignment: .center,
-              crossAxisAlignment: .center,
-              children: [
-                const Text("Search Your Summoner"),
+          return Column(
+            spacing: 16,
+            mainAxisAlignment: .center,
+            crossAxisAlignment: .center,
+            children: [
+              Text("Search Your Summoner", style: TextTheme.of(context).headlineMedium),
 
-                TextField(onChanged: cubit.onChangeName),
-                TextField(onChanged: cubit.onChangeTag),
+              TextField(onChanged: cubit.onChangeName),
+              TextField(onChanged: cubit.onChangeTag),
 
-                ElevatedButton(
-                  onPressed: cubit.isValidToSubmit ? cubit.submit : null,
-                  child: const Text("Search Summoner"),
-                ),
-              ],
-            ),
+              ElevatedButton(
+                onPressed: cubit.isValidToSubmit ? cubit.submit : null,
+                child: const Text("Search Summoner"),
+              ),
+            ],
           );
         },
+        listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
-          if (state.status == .success && state.account != null) {
+          if (state.status == UiStatus.success && state.account != null) {
             Navigator.of(context).pushReplacement(ProfilePage.route());
           }
 
-          if (state.status == .error) {
+          if (state.status == UiStatus.error) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text("Error fetching the Summoner")));
+            ).showSnackBar(const SnackBar(content: Text("Error fetching the Summoner")));
           }
         },
       ),
