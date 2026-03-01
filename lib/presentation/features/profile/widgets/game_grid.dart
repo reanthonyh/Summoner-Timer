@@ -10,13 +10,9 @@ final class GameGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final players = gameInformation.players;
-    // Assuming the first 5 are team and the last 5 are enemies
-    final team = players.length >= 10
-        ? players.sublist(0, 5)
-        : (players.length > 5 ? players.sublist(0, 5) : []);
-    final enemies = players.length >= 10
-        ? players.sublist(5, 10)
-        : (players.length > 5 ? players.sublist(5) : players);
+
+    final team = players.where((p) => p.team == Team.ally).toList();
+    final enemies = players.where((p) => p.team == Team.enemy).toList();
 
     return LayoutBuilder(
       builder: (context, constraints) {

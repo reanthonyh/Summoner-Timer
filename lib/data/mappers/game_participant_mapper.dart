@@ -10,6 +10,7 @@ class GameParticipantMapper {
   static GameParticipant fromModel(
     ParticipantModel model,
     Map<String, SummonerSpellModel> spellsData,
+    int userTeamId,
   ) {
     return GameParticipant(
       puuid: model.puuid,
@@ -18,6 +19,7 @@ class GameParticipantMapper {
       spellTwo: SummonerSpellMapper.fromSpellId(model.spell2Id ?? 0, spellsData),
       riotId: model.riotId ?? 'Unknown',
       championId: model.championId ?? 0,
+      team: model.teamId == userTeamId ? Team.ally : Team.enemy,
     );
   }
 }

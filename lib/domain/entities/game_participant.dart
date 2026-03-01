@@ -4,6 +4,8 @@ import 'summoner_spell.dart';
 
 part 'game_participant.freezed.dart';
 
+enum Team { ally, enemy }
+
 @freezed
 abstract class GameParticipant with _$GameParticipant {
   const factory GameParticipant({
@@ -13,5 +15,6 @@ abstract class GameParticipant with _$GameParticipant {
     required SummonerSpell spellTwo,
     required String riotId,
     required int championId,
+    required Team team,
   }) = _GameParticipant;
 }

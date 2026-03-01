@@ -1,6 +1,7 @@
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
+import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/session_repository.dart';
 import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
@@ -31,9 +32,18 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     final summonerSpellsResponse = await _dataDragonDataSource.getSummonerSpells();
     final spellsData = summonerSpellsResponse.data ?? {};
 
+    // Find the current user's teamId to distinguish between allies and enemies
+    final userParticipant = response.participants?.firstWhere(
+      (p) => p.puuid == puuid,
+      orElse: () => const ParticipantModel(),
+    );
+    final userTeamId = userParticipant?.teamId ?? 0;
+
     final List<GameParticipant> players =
         response.participants
-            ?.map((player) => GameParticipantMapper.fromModel(player, spellsData))
+            ?.map(
+              (player) => GameParticipantMapper.fromModel(player, spellsData, userTeamId),
+            )
             .toList() ??
         [];
 
