@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/repositories/account_repository_impl.dart';
@@ -26,6 +25,7 @@ Future<void> setupDependencies() async {
   );
   getIt.registerLazySingleton<DataDragonApi>(() => DataDragonApi());
 
+  // Repositories
   getIt.registerLazySingleton<AccountRepository>(
     () => AccountRepositoryImpl(
       dataSource: getIt<RiotAmericasApi>(),

@@ -25,12 +25,12 @@ $GameParticipantCopyWith<GameParticipant> get copyWith => _$GameParticipantCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&const DeepCollectionEquality().equals(other.spellOne, spellOne)&&const DeepCollectionEquality().equals(other.spellTwo, spellTwo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,const DeepCollectionEquality().hash(spellOne),const DeepCollectionEquality().hash(spellTwo));
+int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo);
 
 @override
 String toString() {
@@ -49,7 +49,7 @@ $Res call({
 });
 
 
-
+$SummonerSpellCopyWith<$Res> get spellOne;$SummonerSpellCopyWith<$Res> get spellTwo;
 
 }
 /// @nodoc
@@ -62,16 +62,34 @@ class _$GameParticipantCopyWithImpl<$Res>
 
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = freezed,Object? spellTwo = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,}) {
   return _then(_self.copyWith(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
-as bool,spellOne: freezed == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
-as SummonerSpell,spellTwo: freezed == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
+as bool,spellOne: null == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
+as SummonerSpell,spellTwo: null == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
 as SummonerSpell,
   ));
 }
-
+/// Create a copy of GameParticipant
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummonerSpellCopyWith<$Res> get spellOne {
+  
+  return $SummonerSpellCopyWith<$Res>(_self.spellOne, (value) {
+    return _then(_self.copyWith(spellOne: value));
+  });
+}/// Create a copy of GameParticipant
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummonerSpellCopyWith<$Res> get spellTwo {
+  
+  return $SummonerSpellCopyWith<$Res>(_self.spellTwo, (value) {
+    return _then(_self.copyWith(spellTwo: value));
+  });
+}
 }
 
 
@@ -227,12 +245,12 @@ _$GameParticipantCopyWith<_GameParticipant> get copyWith => __$GameParticipantCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&const DeepCollectionEquality().equals(other.spellOne, spellOne)&&const DeepCollectionEquality().equals(other.spellTwo, spellTwo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,const DeepCollectionEquality().hash(spellOne),const DeepCollectionEquality().hash(spellTwo));
+int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo);
 
 @override
 String toString() {
@@ -251,7 +269,7 @@ $Res call({
 });
 
 
-
+@override $SummonerSpellCopyWith<$Res> get spellOne;@override $SummonerSpellCopyWith<$Res> get spellTwo;
 
 }
 /// @nodoc
@@ -264,17 +282,35 @@ class __$GameParticipantCopyWithImpl<$Res>
 
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = freezed,Object? spellTwo = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,}) {
   return _then(_GameParticipant(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
-as bool,spellOne: freezed == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
-as SummonerSpell,spellTwo: freezed == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
+as bool,spellOne: null == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
+as SummonerSpell,spellTwo: null == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
 as SummonerSpell,
   ));
 }
 
-
+/// Create a copy of GameParticipant
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummonerSpellCopyWith<$Res> get spellOne {
+  
+  return $SummonerSpellCopyWith<$Res>(_self.spellOne, (value) {
+    return _then(_self.copyWith(spellOne: value));
+  });
+}/// Create a copy of GameParticipant
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SummonerSpellCopyWith<$Res> get spellTwo {
+  
+  return $SummonerSpellCopyWith<$Res>(_self.spellTwo, (value) {
+    return _then(_self.copyWith(spellTwo: value));
+  });
+}
 }
 
 // dart format on
