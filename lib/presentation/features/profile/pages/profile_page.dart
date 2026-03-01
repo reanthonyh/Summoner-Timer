@@ -1,11 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
-import '../widgets/summoner_spell_box.dart';
+import '../widgets/game_grid.dart';
 
 part 'profile_view.dart';
 
