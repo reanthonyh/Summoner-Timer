@@ -16,6 +16,7 @@ class GameParticipantMapper {
       isBot: false,
       spellOne: SummonerSpellMapper.fromSpellId(model.spell1Id ?? 0, spellsData),
       spellTwo: SummonerSpellMapper.fromSpellId(model.spell2Id ?? 0, spellsData),
+      riotId: model.riotId ?? 'Unknown',
     );
   }
 }

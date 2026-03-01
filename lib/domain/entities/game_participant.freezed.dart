@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GameParticipant {
 
- String? get puuid; bool get isBot; SummonerSpell get spellOne; SummonerSpell get spellTwo;
+ String? get puuid; bool get isBot; SummonerSpell get spellOne; SummonerSpell get spellTwo; String get riotId;
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $GameParticipantCopyWith<GameParticipant> get copyWith => _$GameParticipantCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo)&&(identical(other.riotId, riotId) || other.riotId == riotId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo);
+int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo,riotId);
 
 @override
 String toString() {
-  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo)';
+  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo, riotId: $riotId)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $GameParticipantCopyWith<$Res>  {
   factory $GameParticipantCopyWith(GameParticipant value, $Res Function(GameParticipant) _then) = _$GameParticipantCopyWithImpl;
 @useResult
 $Res call({
- String? puuid, bool isBot, SummonerSpell spellOne, SummonerSpell spellTwo
+ String? puuid, bool isBot, SummonerSpell spellOne, SummonerSpell spellTwo, String riotId
 });
 
 
@@ -62,13 +62,14 @@ class _$GameParticipantCopyWithImpl<$Res>
 
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,Object? riotId = null,}) {
   return _then(_self.copyWith(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,spellOne: null == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
 as SummonerSpell,spellTwo: null == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
-as SummonerSpell,
+as SummonerSpell,riotId: null == riotId ? _self.riotId : riotId // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 /// Create a copy of GameParticipant
@@ -171,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo,  String riotId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GameParticipant() when $default != null:
-return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
+return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo,_that.riotId);case _:
   return orElse();
 
 }
@@ -192,10 +193,10 @@ return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo,  String riotId)  $default,) {final _that = this;
 switch (_that) {
 case _GameParticipant():
-return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
+return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo,_that.riotId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +213,10 @@ return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid,  bool isBot,  SummonerSpell spellOne,  SummonerSpell spellTwo,  String riotId)?  $default,) {final _that = this;
 switch (_that) {
 case _GameParticipant() when $default != null:
-return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
+return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo,_that.riotId);case _:
   return null;
 
 }
@@ -227,13 +228,14 @@ return $default(_that.puuid,_that.isBot,_that.spellOne,_that.spellTwo);case _:
 
 
 class _GameParticipant implements GameParticipant {
-  const _GameParticipant({required this.puuid, this.isBot = false, required this.spellOne, required this.spellTwo});
+  const _GameParticipant({required this.puuid, this.isBot = false, required this.spellOne, required this.spellTwo, required this.riotId});
   
 
 @override final  String? puuid;
 @override@JsonKey() final  bool isBot;
 @override final  SummonerSpell spellOne;
 @override final  SummonerSpell spellTwo;
+@override final  String riotId;
 
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +247,16 @@ _$GameParticipantCopyWith<_GameParticipant> get copyWith => __$GameParticipantCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo)&&(identical(other.riotId, riotId) || other.riotId == riotId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo);
+int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo,riotId);
 
 @override
 String toString() {
-  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo)';
+  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo, riotId: $riotId)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$GameParticipantCopyWith<$Res> implements $GameParticipant
   factory _$GameParticipantCopyWith(_GameParticipant value, $Res Function(_GameParticipant) _then) = __$GameParticipantCopyWithImpl;
 @override @useResult
 $Res call({
- String? puuid, bool isBot, SummonerSpell spellOne, SummonerSpell spellTwo
+ String? puuid, bool isBot, SummonerSpell spellOne, SummonerSpell spellTwo, String riotId
 });
 
 
@@ -282,13 +284,14 @@ class __$GameParticipantCopyWithImpl<$Res>
 
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,Object? riotId = null,}) {
   return _then(_GameParticipant(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,spellOne: null == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
 as SummonerSpell,spellTwo: null == spellTwo ? _self.spellTwo : spellTwo // ignore: cast_nullable_to_non_nullable
-as SummonerSpell,
+as SummonerSpell,riotId: null == riotId ? _self.riotId : riotId // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

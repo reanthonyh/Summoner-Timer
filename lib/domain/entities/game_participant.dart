@@ -11,5 +11,6 @@ abstract class GameParticipant with _$GameParticipant {
     @Default(false) bool isBot,
     required SummonerSpell spellOne,
     required SummonerSpell spellTwo,
+    required String riotId,
   }) = _GameParticipant;
 }
