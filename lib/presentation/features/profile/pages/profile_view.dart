@@ -15,18 +15,16 @@ class _ProfileViewState extends State<_ProfileView> {
 
       body: Column(
         children: [
-          BlocSelector<ProfileCubit, ProfileState, Account?>(
-            selector: (state) => state.account,
-            builder: (context, account) {
-              if (account == null) return const SizedBox.shrink();
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  '${account.gameName}#${account.tagLine}',
-                  style: Theme.of(context).textTheme.headlineLarge,
-                ),
-              );
-            },
+          SummonerSpellBox(
+            spell: SummonerSpell(
+              id: '21',
+              name: 'Ghost',
+              cooldownSeconds: 180,
+              spriteUrl:
+                  'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SummonerHaste.png',
+              imageUrl:
+                  'https://ddragon.leagueoflegends.com/cdn/14.1.1/img/spell/SummonerHaste.png',
+            ),
           ),
           const Divider(),
           Expanded(

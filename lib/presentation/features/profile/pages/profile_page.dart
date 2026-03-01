@@ -5,6 +5,7 @@ import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
+import '../widgets/summoner_spell_box.dart';
 
 part 'profile_view.dart';
 
