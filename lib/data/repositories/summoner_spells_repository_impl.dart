@@ -1,4 +1,5 @@
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
+import 'package:summoner_timer/data/datasources/local_summoner_spells_datasource.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
@@ -25,8 +26,16 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
       _cachedSpells = summonerSpells;
       return summonerSpells;
     } catch (e) {
-      print('SummonerSpellsRepositoryImpl - Error: $e');
-      rethrow;
+      print('SummonerSpellsRepositoryImpl - Error: $e, using offline data');
+      return _getOfflineSpells();
     }
+  }
+
+  List<SummonerSpell> _getOfflineSpells() {
+    final offlineData = LocalSummonerSpellsDataSource.getSummonerSpells();
+    final spells =
+        offlineData.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
+    _cachedSpells = spells;
+    return spells;
   }
 }

@@ -17,7 +17,7 @@ final class _SearchView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Search Your Summoner", style: TextTheme.of(context).headlineMedium),
+              Text('Search Your Summoner', style: TextTheme.of(context).headlineMedium),
 
               TextField(onChanged: cubit.onChangeName),
               TextField(onChanged: cubit.onChangeTag),
@@ -35,7 +35,7 @@ final class _SearchView extends StatelessWidget {
                       child: Column(
                         children: [
                           ListTile(
-                            title: const Text("Previous searches"),
+                            title: const Text('Previous searches'),
                             trailing: IconButton(
                               icon: const Icon(Icons.clear),
                               onPressed: () {

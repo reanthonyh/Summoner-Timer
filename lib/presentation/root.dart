@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './features/search/page/search_page.dart';
+import './features/home/page/home_page.dart';
 
 final class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -14,7 +14,7 @@ final class MainApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
       ),
-      home: const SearchPage(),
+      home: const HomePage(),
     );
   }
 }

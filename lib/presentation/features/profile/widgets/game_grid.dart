@@ -24,7 +24,7 @@ final class GameGrid extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  "Enemy Team",
+                  'Enemy Team',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
