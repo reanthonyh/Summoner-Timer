@@ -1,21 +1,21 @@
 import 'package:dio/dio.dart';
+import 'package:summoner_timer/data/models/game_match/game_match_model_response.dart';
 
 import '../models/models.dart';
 
-class RiotAmericasApi {
+final class RiotAmericasApi {
   RiotAmericasApi({required this.client});
 
   final Dio client;
 
   Future<AccountModelResponse> getAccount(AccountModelRequest request) async {
     final AccountModelRequest(:name, :tag) = request;
+    final url = '/riot/account/v1/accounts/by-riot-id/$name/$tag';
 
-    print(
-      'RiotAmericasApi - Request: GET /riot/account/v1/accounts/by-riot-id/$name/$tag',
-    );
+    print('RiotAmericasApi - Request: GET $url');
     print('RiotAmericasApi - Request headers: ${client.options.headers}');
 
-    final response = await client.get('/riot/account/v1/accounts/by-riot-id/$name/$tag');
+    final response = await client.get(url);
 
     try {
       print('RiotAmericasApi - Response status: ${response.statusCode}');
@@ -44,6 +44,22 @@ class RiotAmericasApi {
     } catch (err) {
       print('RiotAmericasApi - Parse error: $err');
       throw Exception('Error parsing json response from Riot Account-V1');
+    }
+  }
+
+  Future<GameMatchModelResponse> getMatchInformation(String puuid) async {
+    final url = '/lol/spectator/v5/active-games/by-summoner/$puuid';
+
+    final response = await client.get(url);
+
+    try {
+      print('RiotAmericasApi - Response status: ${response.statusCode}');
+      print('RiotAmericasApi - Response data: ${response.data}');
+
+      return GameMatchModelResponse.fromJson(response.data);
+    } catch (err) {
+      print('RiotAmericasApi - Parse error: $err');
+      throw Exception('Error parsing json response from Riot Spectator-V5');
     }
   }
 }

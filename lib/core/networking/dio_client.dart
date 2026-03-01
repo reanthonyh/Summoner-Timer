@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-/// Represents the different Riot API regional and platform endpoints.
 enum RiotHost {
-  // Regional Hosts
   americas('https://americas.api.riotgames.com'),
   europe('https://europe.api.riotgames.com'),
   asia('https://asia.api.riotgames.com'),
@@ -18,18 +16,17 @@ enum RiotHost {
   final String url;
 }
 
-/// A factory that manages and caches Dio instances for different Riot API hosts.
 final class RiotDioClient {
   RiotDioClient._();
 
   static final Map<RiotHost, Dio> _clients = {};
 
-  /// Returns a cached Dio instance for the specified [host].
   static Dio getClient(RiotHost host) {
     if (_clients.containsKey(host)) {
       return _clients[host]!;
     }
 
+    //
     final dio = Dio(
       BaseOptions(
         baseUrl: host.url,

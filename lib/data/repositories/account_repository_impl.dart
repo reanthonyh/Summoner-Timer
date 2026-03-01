@@ -1,7 +1,6 @@
-import 'dart:async';
-
 import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
+import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/account_repository.dart';
@@ -36,17 +35,9 @@ final class AccountRepositoryImpl implements AccountRepository {
 
       final regionResponse = await dataSource.getSummonerRegion(puuid);
 
-      print('Repository Impl: $accountResponse');
-      print('Repository Impl: $regionResponse');
-
-      final account = Account(
-        puuid: accountResponse.puuid ?? '',
-        gameName: accountResponse.gameName ?? '',
-        tagLine: accountResponse.tagLine ?? '',
-        region: Region.values.firstWhere(
-          (element) => element.code == regionResponse.region,
-          orElse: () => Region.lan,
-        ),
+      final account = AccountMapper.fromModels(
+        accountModel: accountResponse,
+        regionModel: regionResponse,
       );
 
       // Successfully retrieved the account, let's store it in our session
