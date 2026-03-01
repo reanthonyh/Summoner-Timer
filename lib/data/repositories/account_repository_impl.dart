@@ -1,4 +1,3 @@
-import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
@@ -10,9 +9,7 @@ final class AccountRepositoryImpl implements AccountRepository {
   AccountRepositoryImpl({
     RiotAmericasApi? dataSource,
     required SessionRepository sessionRepository,
-  }) : dataSource =
-           dataSource ??
-           RiotAmericasApi(sessionRepository: sessionRepository),
+  }) : dataSource = dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
        _sessionRepository = sessionRepository;
 
   final RiotAmericasApi dataSource;

@@ -1,4 +1,3 @@
-import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
@@ -11,8 +10,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     RiotAmericasApi? dataSource,
     DataDragonApi? dataDragonDataSource,
     required SessionRepository sessionRepository,
-  }) : dataSource =
-           dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
+  }) : dataSource = dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
        _dataDragonDataSource = dataDragonDataSource ?? DataDragonApi(),
        _sessionRepository = sessionRepository;
 
