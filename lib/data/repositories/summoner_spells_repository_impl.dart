@@ -8,15 +8,21 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
     : dataSource = dataSource ?? DataDragonApi();
 
   final DataDragonApi dataSource;
+  List<SummonerSpell>? _cachedSpells;
 
   @override
   Future<List<SummonerSpell>> getSummonerSpells() async {
+    if (_cachedSpells != null) {
+      return _cachedSpells!;
+    }
+
     try {
       final response = await dataSource.getSummonerSpells();
 
       final summonerSpells =
           response.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
 
+      _cachedSpells = summonerSpells;
       return summonerSpells;
     } catch (e) {
       print('SummonerSpellsRepositoryImpl - Error: $e');

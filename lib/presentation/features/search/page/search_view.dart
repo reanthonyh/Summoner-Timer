@@ -37,7 +37,7 @@ class _SearchViewState extends State<_SearchView> {
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status == UiStatus.success && state.account != null) {
-            Navigator.of(context).pushReplacement(ProfilePage.route());
+            Navigator.of(context).push(ProfilePage.route());
           }
 
           if (state.status == UiStatus.error) {
