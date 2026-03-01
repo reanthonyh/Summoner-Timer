@@ -17,21 +17,27 @@ import 'package:summoner_timer/domain/usecases/get_summoner_spells_usecase.dart'
 final getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
-  // Data Sources
-  getIt.registerLazySingleton<RiotAmericasApi>(
-    () => RiotAmericasApi(client: RiotDioClient.getClient(RiotHost.americas)),
-  );
-  getIt.registerLazySingleton<DataDragonApi>(() => DataDragonApi());
-
   // Repositories
   getIt.registerLazySingleton<SessionRepository>(() => SessionRepositoryImpl());
 
+  // Data Sources
+  getIt.registerLazySingleton<RiotAmericasApi>(
+    () => RiotAmericasApi(sessionRepository: getIt<SessionRepository>()),
+  );
+  getIt.registerLazySingleton<DataDragonApi>(() => DataDragonApi());
+
   getIt.registerLazySingleton<AccountRepository>(
-    () => AccountRepositoryImpl(sessionRepository: getIt<SessionRepository>()),
+    () => AccountRepositoryImpl(
+      dataSource: getIt<RiotAmericasApi>(),
+      sessionRepository: getIt<SessionRepository>(),
+    ),
   );
 
   getIt.registerLazySingleton<SpectatorRepository>(
-    () => SpectatorRepositoryImpl(sessionRepository: getIt<SessionRepository>()),
+    () => SpectatorRepositoryImpl(
+      dataSource: getIt<RiotAmericasApi>(),
+      sessionRepository: getIt<SessionRepository>(),
+    ),
   );
 
   getIt.registerLazySingleton<SummonerSpellsRepository>(

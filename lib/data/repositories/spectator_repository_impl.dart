@@ -12,7 +12,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     DataDragonApi? dataDragonDataSource,
     required SessionRepository sessionRepository,
   }) : dataSource =
-           dataSource ?? RiotAmericasApi(client: RiotDioClient.getClient(RiotHost.la1)),
+           dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
        _dataDragonDataSource = dataDragonDataSource ?? DataDragonApi(),
        _sessionRepository = sessionRepository;
 

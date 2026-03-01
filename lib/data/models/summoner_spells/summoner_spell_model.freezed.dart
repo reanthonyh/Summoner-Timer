@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SummonerSpellModel {
 
- String? get id; String? get name; String? get description; List<int>? get cooldown; int? get key; SummonerSpellImageModel? get image;
+ String? get id; String? get name; String? get description; List<int>? get cooldown; String? get key; SummonerSpellImageModel? get image;
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $SummonerSpellModelCopyWith<$Res>  {
   factory $SummonerSpellModelCopyWith(SummonerSpellModel value, $Res Function(SummonerSpellModel) _then) = _$SummonerSpellModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? name, String? description, List<int>? cooldown, int? key, SummonerSpellImageModel? image
+ String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image
 });
 
 
@@ -72,7 +72,7 @@ as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,cooldown: freezed == cooldown ? _self.cooldown : cooldown // ignore: cast_nullable_to_non_nullable
 as List<int>?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
-as int?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as SummonerSpellImageModel?,
   ));
 }
@@ -170,7 +170,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  int? key,  SummonerSpellImageModel? image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
@@ -191,7 +191,7 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  int? key,  SummonerSpellImageModel? image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel():
 return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
@@ -211,7 +211,7 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? name,  String? description,  List<int>? cooldown,  int? key,  SummonerSpellImageModel? image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)?  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
@@ -241,7 +241,7 @@ class _SummonerSpellModel implements SummonerSpellModel {
   return EqualUnmodifiableListView(value);
 }
 
-@override final  int? key;
+@override final  String? key;
 @override final  SummonerSpellImageModel? image;
 
 /// Create a copy of SummonerSpellModel
@@ -277,7 +277,7 @@ abstract mixin class _$SummonerSpellModelCopyWith<$Res> implements $SummonerSpel
   factory _$SummonerSpellModelCopyWith(_SummonerSpellModel value, $Res Function(_SummonerSpellModel) _then) = __$SummonerSpellModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? name, String? description, List<int>? cooldown, int? key, SummonerSpellImageModel? image
+ String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image
 });
 
 
@@ -301,7 +301,7 @@ as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,cooldown: freezed == cooldown ? _self._cooldown : cooldown // ignore: cast_nullable_to_non_nullable
 as List<int>?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
-as int?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as SummonerSpellImageModel?,
   ));
 }

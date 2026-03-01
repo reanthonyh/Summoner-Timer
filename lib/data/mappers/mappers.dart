@@ -39,7 +39,7 @@ class SummonerSpellMapper {
     Map<String, SummonerSpellModel> spellsData,
   ) {
     final spellModel = spellsData.values.firstWhere(
-      (spell) => spell.key == spellId,
+      (spell) => int.parse(spell.key ?? '0') == spellId,
       orElse: () =>
           SummonerSpellModel(id: spellId.toString(), name: 'Unknown', cooldown: [0]),
     );

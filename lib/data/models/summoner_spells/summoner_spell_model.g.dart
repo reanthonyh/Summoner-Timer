@@ -14,7 +14,7 @@ _SummonerSpellModel _$SummonerSpellModelFromJson(Map<String, dynamic> json) =>
       cooldown: (json['cooldown'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
-      key: (json['key'] as num?)?.toInt(),
+      key: json['key'] as String?,
       image: json['image'] == null
           ? null
           : SummonerSpellImageModel.fromJson(

@@ -12,7 +12,7 @@ final class AccountRepositoryImpl implements AccountRepository {
     required SessionRepository sessionRepository,
   }) : dataSource =
            dataSource ??
-           RiotAmericasApi(client: RiotDioClient.getClient(RiotHost.americas)),
+           RiotAmericasApi(sessionRepository: sessionRepository),
        _sessionRepository = sessionRepository;
 
   final RiotAmericasApi dataSource;

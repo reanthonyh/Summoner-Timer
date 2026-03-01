@@ -22,7 +22,7 @@ abstract class SummonerSpellModel with _$SummonerSpellModel {
     String? name,
     String? description,
     List<int>? cooldown,
-    int? key,
+    String? key,
     SummonerSpellImageModel? image,
   }) = _SummonerSpellModel;
 

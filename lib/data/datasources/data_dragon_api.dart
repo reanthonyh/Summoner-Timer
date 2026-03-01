@@ -18,6 +18,7 @@ final class DataDragonApi {
 
     try {
       print('DataDragonSummonerSpellsApi - Response status: ${response.statusCode}');
+      print('DataDragonSummonerSpellsApi - Response : ${response.data}');
 
       return SummonerSpellsModelResponse.fromJson(response.data);
     } catch (err) {

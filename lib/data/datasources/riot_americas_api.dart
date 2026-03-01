@@ -1,21 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/data/models/game_match/game_match_model_response.dart';
+import 'package:summoner_timer/domain/repositories/session_repository.dart';
 
 import '../models/models.dart';
 
 final class RiotAmericasApi {
-  RiotAmericasApi({required this.client});
+  RiotAmericasApi({required SessionRepository sessionRepository})
+    : _sessionRepository = sessionRepository;
 
-  final Dio client;
+  final SessionRepository _sessionRepository;
+
+  Dio get _regionalClient => RiotDioClient.getClient(_sessionRepository.regionalHost);
+
+  Dio get _platformClient => RiotDioClient.getClient(_sessionRepository.platformHost);
 
   Future<AccountModelResponse> getAccount(AccountModelRequest request) async {
     final AccountModelRequest(:name, :tag) = request;
     final url = '/riot/account/v1/accounts/by-riot-id/$name/$tag';
 
-    print('RiotAmericasApi - Request: GET $url');
-    print('RiotAmericasApi - Request headers: ${client.options.headers}');
+    print('RiotAmericasApi - Request: GET $url (Regional)');
+    print('RiotAmericasApi - Request headers: ${_regionalClient.options.headers}');
 
-    final response = await client.get(url);
+    final response = await _regionalClient.get(url);
 
     try {
       print('RiotAmericasApi - Response status: ${response.statusCode}');
@@ -31,10 +38,10 @@ final class RiotAmericasApi {
   Future<RegionModelResponse> getSummonerRegion(String puuid) async {
     final url = '/riot/account/v1/region/by-game/lol/by-puuid/$puuid';
 
-    print('RiotAmericasApi - Request GET $url');
-    print('RiotAmericasApi - Request header: ${client.options.headers}');
+    print('RiotAmericasApi - Request GET $url (Regional)');
+    print('RiotAmericasApi - Request header: ${_regionalClient.options.headers}');
 
-    final response = await client.get(url);
+    final response = await _regionalClient.get(url);
 
     try {
       print('RiotAmericasApi - Response status: ${response.statusCode}');
@@ -50,7 +57,10 @@ final class RiotAmericasApi {
   Future<GameMatchModelResponse> getMatchInformation(String puuid) async {
     final url = '/lol/spectator/v5/active-games/by-summoner/$puuid';
 
-    final response = await client.get(url);
+    print('RiotAmericasApi - Request GET $url (Platform)');
+    print('RiotAmericasApi - Request header: ${_platformClient.options.headers}');
+
+    final response = await _platformClient.get(url);
 
     try {
       print('RiotAmericasApi - Response status: ${response.statusCode}');
