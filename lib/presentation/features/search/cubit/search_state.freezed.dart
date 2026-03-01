@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SearchState {
 
- String? get nameField; String? get tagField; Account? get account; UiStatus get status;
+ String? get nameField; String? get tagField; Account? get account; List<Account>? get savedAccounts; UiStatus get status;
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SearchStateCopyWith<SearchState> get copyWith => _$SearchStateCopyWithImpl<Sear
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchState&&(identical(other.nameField, nameField) || other.nameField == nameField)&&(identical(other.tagField, tagField) || other.tagField == tagField)&&(identical(other.account, account) || other.account == account)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchState&&(identical(other.nameField, nameField) || other.nameField == nameField)&&(identical(other.tagField, tagField) || other.tagField == tagField)&&(identical(other.account, account) || other.account == account)&&const DeepCollectionEquality().equals(other.savedAccounts, savedAccounts)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nameField,tagField,account,status);
+int get hashCode => Object.hash(runtimeType,nameField,tagField,account,const DeepCollectionEquality().hash(savedAccounts),status);
 
 @override
 String toString() {
-  return 'SearchState(nameField: $nameField, tagField: $tagField, account: $account, status: $status)';
+  return 'SearchState(nameField: $nameField, tagField: $tagField, account: $account, savedAccounts: $savedAccounts, status: $status)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SearchStateCopyWith<$Res>  {
   factory $SearchStateCopyWith(SearchState value, $Res Function(SearchState) _then) = _$SearchStateCopyWithImpl;
 @useResult
 $Res call({
- String? nameField, String? tagField, Account? account, UiStatus status
+ String? nameField, String? tagField, Account? account, List<Account>? savedAccounts, UiStatus status
 });
 
 
@@ -62,12 +62,13 @@ class _$SearchStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? nameField = freezed,Object? tagField = freezed,Object? account = freezed,Object? status = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? nameField = freezed,Object? tagField = freezed,Object? account = freezed,Object? savedAccounts = freezed,Object? status = null,}) {
   return _then(_self.copyWith(
 nameField: freezed == nameField ? _self.nameField : nameField // ignore: cast_nullable_to_non_nullable
 as String?,tagField: freezed == tagField ? _self.tagField : tagField // ignore: cast_nullable_to_non_nullable
 as String?,account: freezed == account ? _self.account : account // ignore: cast_nullable_to_non_nullable
-as Account?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Account?,savedAccounts: freezed == savedAccounts ? _self.savedAccounts : savedAccounts // ignore: cast_nullable_to_non_nullable
+as List<Account>?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,
   ));
 }
@@ -165,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? nameField,  String? tagField,  Account? account,  UiStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? nameField,  String? tagField,  Account? account,  List<Account>? savedAccounts,  UiStatus status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
-return $default(_that.nameField,_that.tagField,_that.account,_that.status);case _:
+return $default(_that.nameField,_that.tagField,_that.account,_that.savedAccounts,_that.status);case _:
   return orElse();
 
 }
@@ -186,10 +187,10 @@ return $default(_that.nameField,_that.tagField,_that.account,_that.status);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? nameField,  String? tagField,  Account? account,  UiStatus status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? nameField,  String? tagField,  Account? account,  List<Account>? savedAccounts,  UiStatus status)  $default,) {final _that = this;
 switch (_that) {
 case _SearchState():
-return $default(_that.nameField,_that.tagField,_that.account,_that.status);case _:
+return $default(_that.nameField,_that.tagField,_that.account,_that.savedAccounts,_that.status);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -206,10 +207,10 @@ return $default(_that.nameField,_that.tagField,_that.account,_that.status);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? nameField,  String? tagField,  Account? account,  UiStatus status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? nameField,  String? tagField,  Account? account,  List<Account>? savedAccounts,  UiStatus status)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchState() when $default != null:
-return $default(_that.nameField,_that.tagField,_that.account,_that.status);case _:
+return $default(_that.nameField,_that.tagField,_that.account,_that.savedAccounts,_that.status);case _:
   return null;
 
 }
@@ -221,12 +222,21 @@ return $default(_that.nameField,_that.tagField,_that.account,_that.status);case 
 
 
 class _SearchState extends SearchState {
-  const _SearchState({this.nameField, this.tagField, this.account, required this.status}): super._();
+  const _SearchState({this.nameField, this.tagField, this.account, final  List<Account>? savedAccounts, required this.status}): _savedAccounts = savedAccounts,super._();
   
 
 @override final  String? nameField;
 @override final  String? tagField;
 @override final  Account? account;
+ final  List<Account>? _savedAccounts;
+@override List<Account>? get savedAccounts {
+  final value = _savedAccounts;
+  if (value == null) return null;
+  if (_savedAccounts is EqualUnmodifiableListView) return _savedAccounts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 @override final  UiStatus status;
 
 /// Create a copy of SearchState
@@ -239,16 +249,16 @@ _$SearchStateCopyWith<_SearchState> get copyWith => __$SearchStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchState&&(identical(other.nameField, nameField) || other.nameField == nameField)&&(identical(other.tagField, tagField) || other.tagField == tagField)&&(identical(other.account, account) || other.account == account)&&(identical(other.status, status) || other.status == status));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchState&&(identical(other.nameField, nameField) || other.nameField == nameField)&&(identical(other.tagField, tagField) || other.tagField == tagField)&&(identical(other.account, account) || other.account == account)&&const DeepCollectionEquality().equals(other._savedAccounts, _savedAccounts)&&(identical(other.status, status) || other.status == status));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,nameField,tagField,account,status);
+int get hashCode => Object.hash(runtimeType,nameField,tagField,account,const DeepCollectionEquality().hash(_savedAccounts),status);
 
 @override
 String toString() {
-  return 'SearchState(nameField: $nameField, tagField: $tagField, account: $account, status: $status)';
+  return 'SearchState(nameField: $nameField, tagField: $tagField, account: $account, savedAccounts: $savedAccounts, status: $status)';
 }
 
 
@@ -259,7 +269,7 @@ abstract mixin class _$SearchStateCopyWith<$Res> implements $SearchStateCopyWith
   factory _$SearchStateCopyWith(_SearchState value, $Res Function(_SearchState) _then) = __$SearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- String? nameField, String? tagField, Account? account, UiStatus status
+ String? nameField, String? tagField, Account? account, List<Account>? savedAccounts, UiStatus status
 });
 
 
@@ -276,12 +286,13 @@ class __$SearchStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? nameField = freezed,Object? tagField = freezed,Object? account = freezed,Object? status = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? nameField = freezed,Object? tagField = freezed,Object? account = freezed,Object? savedAccounts = freezed,Object? status = null,}) {
   return _then(_SearchState(
 nameField: freezed == nameField ? _self.nameField : nameField // ignore: cast_nullable_to_non_nullable
 as String?,tagField: freezed == tagField ? _self.tagField : tagField // ignore: cast_nullable_to_non_nullable
 as String?,account: freezed == account ? _self.account : account // ignore: cast_nullable_to_non_nullable
-as Account?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as Account?,savedAccounts: freezed == savedAccounts ? _self._savedAccounts : savedAccounts // ignore: cast_nullable_to_non_nullable
+as List<Account>?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,
   ));
 }

@@ -6,7 +6,14 @@ final class GetAccountUseCase {
 
   final AccountRepository repository;
 
-  Future<Account> call({required String name, required String tag}) {
-    return repository.retrieveSummonerByNameTag(name: name, tag: tag);
+  Future<Account> call({({String name, String tag})? riotId, String? puuid}) {
+    if (puuid != null) {
+      return repository.retrieveSummonerByPUUID(puuid);
+    }
+    if (riotId != null) {
+      return repository.retrieveSummonerByNameTag(name: riotId.name, tag: riotId.tag);
+    }
+
+    throw ArgumentError('Either riotId or puuid must be provided');
   }
 }

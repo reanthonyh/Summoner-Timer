@@ -32,7 +32,6 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     final summonerSpellsResponse = await _dataDragonDataSource.getSummonerSpells();
     final spellsData = summonerSpellsResponse.data ?? {};
 
-    // Find the current user's teamId to distinguish between allies and enemies
     final userParticipant = response.participants?.firstWhere(
       (p) => p.puuid == puuid,
       orElse: () => const ParticipantModel(),

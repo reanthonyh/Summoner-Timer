@@ -34,6 +34,25 @@ final class RiotAmericasApi {
     }
   }
 
+  Future<AccountModelResponse> getAccountByPUUID(String puuid) async {
+    final url = '/riot/account/v1/accounts/by-puuid/$puuid';
+
+    print('RiotAmericasApi - Request GET $url (Regional)');
+    print('RiotAmericasApi - Request header: ${_regionalClient.options.headers}');
+
+    final response = await _regionalClient.get(url);
+
+    try {
+      print('RiotAmericasApi - Response status: ${response.statusCode}');
+      print('RiotAmericasApi - Response data: ${response.data}');
+
+      return AccountModelResponse.fromJson(response.data);
+    } catch (err) {
+      print('RiotAmericasApi - Parse error: $err');
+      throw Exception('Error parsing json response from Riot Account-V1');
+    }
+  }
+
   Future<RegionModelResponse> getSummonerRegion(String puuid) async {
     final url = '/riot/account/v1/region/by-game/lol/by-puuid/$puuid';
 

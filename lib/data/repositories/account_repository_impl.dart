@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
@@ -14,6 +15,33 @@ final class AccountRepositoryImpl implements AccountRepository {
 
   final RiotAmericasApi dataSource;
   final SessionRepository _sessionRepository;
+
+  static const _accountsKey = 'saved_account_puuids';
+
+  @override
+  Future<Account> retrieveSummonerByPUUID(String puuid) async {
+    try {
+      final accountResponse = await dataSource.getAccountByPUUID(puuid);
+
+      if (accountResponse.puuid == null) {
+        throw Exception('Account not found for PUUID: $puuid');
+      }
+
+      final regionResponse = await dataSource.getSummonerRegion(puuid);
+
+      final account = AccountMapper.fromModels(
+        accountModel: accountResponse,
+        regionModel: regionResponse,
+      );
+
+      _sessionRepository.setAccount(account);
+
+      return account;
+    } catch (err) {
+      print('Repository Impl: Error retrieving account: $err');
+      rethrow;
+    }
+  }
 
   @override
   Future<Account> retrieveSummonerByNameTag({
@@ -37,13 +65,55 @@ final class AccountRepositoryImpl implements AccountRepository {
         regionModel: regionResponse,
       );
 
-      // Successfully retrieved the account, let's store it in our session
       _sessionRepository.setAccount(account);
 
       return account;
     } catch (e) {
       print('Repository Impl: Error retrieving account: $e');
       rethrow;
+    }
+  }
+
+  @override
+  Future<List<Account>> getSavedAccounts() async {
+    final prefs = await SharedPreferences.getInstance();
+    final accountsJson = prefs.getStringList(_accountsKey) ?? [];
+
+    final accounts = <Account>[];
+
+    for (final json in accountsJson) {
+      try {
+        final accountResponse = await dataSource.getAccountByPUUID(json);
+
+        if (accountResponse.puuid == null) {
+          throw Exception('Account not found for PUUID: $json');
+        }
+
+        final regionResponse = await dataSource.getSummonerRegion(json);
+
+        final account = AccountMapper.fromModels(
+          accountModel: accountResponse,
+          regionModel: regionResponse,
+        );
+
+        accounts.add(account);
+      } catch (err) {
+        print('Repository Impl: Error retrieving saved account: $err');
+      }
+    }
+
+    return accounts;
+  }
+
+  @override
+  Future<void> saveAccountPUUID(Account account) async {
+    final prefs = await SharedPreferences.getInstance();
+    final accountsJson = prefs.getStringList(_accountsKey) ?? [];
+
+    final puuid = account.puuid;
+    if (!accountsJson.contains(puuid)) {
+      accountsJson.insert(0, puuid);
+      await prefs.setStringList(_accountsKey, accountsJson);
     }
   }
 }

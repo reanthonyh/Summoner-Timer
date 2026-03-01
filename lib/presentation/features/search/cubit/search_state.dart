@@ -12,6 +12,7 @@ abstract class SearchState with _$SearchState {
     String? nameField,
     String? tagField,
     Account? account,
+    List<Account>? savedAccounts,
     required UiStatus status,
   }) = _SearchState;
 

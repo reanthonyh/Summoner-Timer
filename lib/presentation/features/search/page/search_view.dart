@@ -1,11 +1,6 @@
 part of 'search_page.dart';
 
-final class _SearchView extends StatefulWidget {
-  @override
-  State<_SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<_SearchView> {
+final class _SearchView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,8 +14,8 @@ class _SearchViewState extends State<_SearchView> {
 
           return Column(
             spacing: 16,
-            mainAxisAlignment: .center,
-            crossAxisAlignment: .center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text("Search Your Summoner", style: TextTheme.of(context).headlineMedium),
 
@@ -29,7 +24,43 @@ class _SearchViewState extends State<_SearchView> {
 
               ElevatedButton(
                 onPressed: cubit.isValidToSubmit ? cubit.submit : null,
-                child: const Text("Search Summoner"),
+                child: const Text('Search Summoner'),
+              ),
+
+              BlocSelector<SearchCubit, SearchState, List<Account>>(
+                selector: (state) => state.savedAccounts ?? [],
+                builder: (context, state) {
+                  if (state.isNotEmpty) {
+                    return Card(
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: const Text("Previous searches"),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                // TODO: Evaluate what could be done here
+                              },
+                            ),
+                          ),
+                          ...state.map(
+                            (account) => ListTile(
+                              title: Text(account.gameName),
+                              subtitle: Text('#${account.tagLine}'),
+                              trailing: Text(account.region.code),
+                              onTap: () {
+                                cubit.selectAccount(account);
+                                Navigator.of(context).push(ProfilePage.route());
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return const Icon(Icons.no_transfer_outlined, size: 50);
+                },
               ),
             ],
           );
@@ -43,7 +74,7 @@ class _SearchViewState extends State<_SearchView> {
           if (state.status == UiStatus.error) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(const SnackBar(content: Text("Error fetching the Summoner")));
+            ).showSnackBar(const SnackBar(content: Text('Error fetching the Summoner')));
           }
         },
       ),

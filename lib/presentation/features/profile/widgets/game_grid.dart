@@ -24,7 +24,7 @@ final class GameGrid extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  'ENEMIES',
+                  "Enemy Team",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
               ),
@@ -132,16 +132,22 @@ final class _ParticipantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const spacer = SizedBox(width: 8);
+
     return Row(
       spacing: 4,
       mainAxisSize: .min,
       mainAxisAlignment: .center,
       crossAxisAlignment: .center,
       children: [
+        spacer,
         SummonerSpellBox(spell: participant.spellOne),
         SummonerSpellBox(spell: participant.spellTwo),
-        const SizedBox(width: 8),
-        Text(participant.riotId),
+        spacer,
+        Flexible(
+          flex: 2,
+          child: Text(participant.riotId, overflow: TextOverflow.ellipsis),
+        ),
       ],
     );
   }

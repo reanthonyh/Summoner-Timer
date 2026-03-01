@@ -11,7 +11,10 @@ import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
 import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
 import 'package:summoner_timer/domain/usecases/get_account_usecase.dart';
 import 'package:summoner_timer/domain/usecases/get_current_game_usecase.dart';
+import 'package:summoner_timer/domain/usecases/get_saved_accounts_usecase.dart';
 import 'package:summoner_timer/domain/usecases/get_summoner_spells_usecase.dart';
+import 'package:summoner_timer/domain/usecases/save_account_usecase.dart';
+import 'package:summoner_timer/domain/usecases/set_account_usecase.dart';
 
 final getIt = GetIt.instance;
 
@@ -55,5 +58,17 @@ Future<void> setupDependencies() async {
 
   getIt.registerFactory<GetSummonerSpellsUseCase>(
     () => GetSummonerSpellsUseCase(repository: getIt<SummonerSpellsRepository>()),
+  );
+
+  getIt.registerFactory<SetAccountUseCase>(
+    () => SetAccountUseCase(repository: getIt<SessionRepository>()),
+  );
+
+  getIt.registerFactory<GetSavedAccountsUseCase>(
+    () => GetSavedAccountsUseCase(repository: getIt<AccountRepository>()),
+  );
+
+  getIt.registerFactory<SaveAccountUseCase>(
+    () => SaveAccountUseCase(repository: getIt<AccountRepository>()),
   );
 }

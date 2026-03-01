@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/presentation/features/profile/pages/profile_page.dart';
 
 import 'package:summoner_timer/core/constants/enums.dart';
