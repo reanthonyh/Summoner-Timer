@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SummonerSpell {
 
- String get id; String get name; int get cooldownSeconds; String get spriteUrl; String get imageUrl;
+ String get id; String get name; int get cooldownSeconds; String get spriteUrl; String get imageUrl; List<String>? get modes;
 /// Create a copy of SummonerSpell
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SummonerSpellCopyWith<SummonerSpell> get copyWith => _$SummonerSpellCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.modes, modes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl,const DeepCollectionEquality().hash(modes));
 
 @override
 String toString() {
-  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl)';
+  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl, modes: $modes)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SummonerSpellCopyWith<$Res>  {
   factory $SummonerSpellCopyWith(SummonerSpell value, $Res Function(SummonerSpell) _then) = _$SummonerSpellCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, int cooldownSeconds, String spriteUrl, String imageUrl
+ String id, String name, int cooldownSeconds, String spriteUrl, String imageUrl, List<String>? modes
 });
 
 
@@ -62,14 +62,15 @@ class _$SummonerSpellCopyWithImpl<$Res>
 
 /// Create a copy of SummonerSpell
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? cooldownSeconds = null,Object? spriteUrl = null,Object? imageUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? cooldownSeconds = null,Object? spriteUrl = null,Object? imageUrl = null,Object? modes = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cooldownSeconds: null == cooldownSeconds ? _self.cooldownSeconds : cooldownSeconds // ignore: cast_nullable_to_non_nullable
 as int,spriteUrl: null == spriteUrl ? _self.spriteUrl : spriteUrl // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,modes: freezed == modes ? _self.modes : modes // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl,  List<String>? modes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SummonerSpell() when $default != null:
-return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl,_that.modes);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl,  List<String>? modes)  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpell():
-return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl,_that.modes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int cooldownSeconds,  String spriteUrl,  String imageUrl,  List<String>? modes)?  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpell() when $default != null:
-return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.imageUrl,_that.modes);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.
 
 
 class _SummonerSpell implements SummonerSpell {
-  const _SummonerSpell({required this.id, required this.name, required this.cooldownSeconds, required this.spriteUrl, required this.imageUrl});
+  const _SummonerSpell({required this.id, required this.name, required this.cooldownSeconds, required this.spriteUrl, required this.imageUrl, final  List<String>? modes}): _modes = modes;
   
 
 @override final  String id;
@@ -218,6 +219,15 @@ class _SummonerSpell implements SummonerSpell {
 @override final  int cooldownSeconds;
 @override final  String spriteUrl;
 @override final  String imageUrl;
+ final  List<String>? _modes;
+@override List<String>? get modes {
+  final value = _modes;
+  if (value == null) return null;
+  if (_modes is EqualUnmodifiableListView) return _modes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of SummonerSpell
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +239,16 @@ _$SummonerSpellCopyWith<_SummonerSpell> get copyWith => __$SummonerSpellCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other._modes, _modes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl,const DeepCollectionEquality().hash(_modes));
 
 @override
 String toString() {
-  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl)';
+  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl, modes: $modes)';
 }
 
 
@@ -249,7 +259,7 @@ abstract mixin class _$SummonerSpellCopyWith<$Res> implements $SummonerSpellCopy
   factory _$SummonerSpellCopyWith(_SummonerSpell value, $Res Function(_SummonerSpell) _then) = __$SummonerSpellCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, int cooldownSeconds, String spriteUrl, String imageUrl
+ String id, String name, int cooldownSeconds, String spriteUrl, String imageUrl, List<String>? modes
 });
 
 
@@ -266,14 +276,15 @@ class __$SummonerSpellCopyWithImpl<$Res>
 
 /// Create a copy of SummonerSpell
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? cooldownSeconds = null,Object? spriteUrl = null,Object? imageUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? cooldownSeconds = null,Object? spriteUrl = null,Object? imageUrl = null,Object? modes = freezed,}) {
   return _then(_SummonerSpell(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cooldownSeconds: null == cooldownSeconds ? _self.cooldownSeconds : cooldownSeconds // ignore: cast_nullable_to_non_nullable
 as int,spriteUrl: null == spriteUrl ? _self.spriteUrl : spriteUrl // ignore: cast_nullable_to_non_nullable
 as String,imageUrl: null == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String,
+as String,modes: freezed == modes ? _self._modes : modes // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

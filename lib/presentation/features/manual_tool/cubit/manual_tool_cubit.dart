@@ -18,13 +18,6 @@ final class ManualToolCubit extends Cubit<ManualToolState> {
     emit(state.copyWith(availableSpells: spells, enemies: enemies));
   }
 
-  void updateEnemyName(int index, String name) {
-    if (index < 0 || index >= state.enemies.length) return;
-    final enemies = List<ManualEnemy>.from(state.enemies);
-    enemies[index] = enemies[index].copyWith(name: name);
-    emit(state.copyWith(enemies: enemies));
-  }
-
   void updateEnemySpellOne(int index, SummonerSpell spell) {
     if (index < 0 || index >= state.enemies.length) return;
     final enemies = List<ManualEnemy>.from(state.enemies);
@@ -39,7 +32,10 @@ final class ManualToolCubit extends Cubit<ManualToolState> {
     emit(state.copyWith(enemies: enemies));
   }
 
+  bool get canStartActionMode => state.enemies.every((e) => e.isValid);
+
   void startActionMode() {
+    if (!canStartActionMode) return;
     emit(state.copyWith(mode: ManualToolMode.action));
   }
 

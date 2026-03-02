@@ -1,5 +1,7 @@
 part of 'manual_tool_page.dart';
 
+const _laneNames = ['TopLane', 'JungleLane', 'MidLane', 'BotLane', 'Support'];
+
 final class _ManualToolView extends StatelessWidget {
   const _ManualToolView();
 
@@ -36,6 +38,9 @@ final class _SetupModeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<ManualToolCubit>();
+    final canStart = cubit.canStartActionMode;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -57,20 +62,25 @@ final class _SetupModeView extends StatelessWidget {
             final index = entry.key;
             final enemy = entry.value;
             return _EnemySetupCard(
-              enemyNumber: index + 1,
+              laneName: _laneNames[index],
               enemy: enemy,
               availableSpells: state.availableSpells,
-              onNameChanged: (name) =>
-                  context.read<ManualToolCubit>().updateEnemyName(index, name),
-              onSpellOneChanged: (spell) =>
-                  context.read<ManualToolCubit>().updateEnemySpellOne(index, spell),
-              onSpellTwoChanged: (spell) =>
-                  context.read<ManualToolCubit>().updateEnemySpellTwo(index, spell),
+              onSpellOneChanged: (spell) => cubit.updateEnemySpellOne(index, spell),
+              onSpellTwoChanged: (spell) => cubit.updateEnemySpellTwo(index, spell),
             );
           }),
           const SizedBox(height: 24),
+          if (!canStart)
+            const Padding(
+              padding: EdgeInsets.only(bottom: 12),
+              child: Text(
+                'Please select both summoner spells for all participants',
+                style: TextStyle(color: Colors.orange),
+                textAlign: TextAlign.center,
+              ),
+            ),
           FilledButton.icon(
-            onPressed: () => context.read<ManualToolCubit>().startActionMode(),
+            onPressed: canStart ? () => cubit.startActionMode() : null,
             icon: const Icon(Icons.play_arrow),
             label: const Text('Start Tracking'),
           ),
@@ -82,18 +92,16 @@ final class _SetupModeView extends StatelessWidget {
 
 final class _EnemySetupCard extends StatelessWidget {
   const _EnemySetupCard({
-    required this.enemyNumber,
+    required this.laneName,
     required this.enemy,
     required this.availableSpells,
-    required this.onNameChanged,
     required this.onSpellOneChanged,
     required this.onSpellTwoChanged,
   });
 
-  final int enemyNumber;
+  final String laneName;
   final ManualEnemy enemy;
   final List<SummonerSpell> availableSpells;
-  final ValueChanged<String> onNameChanged;
   final ValueChanged<SummonerSpell> onSpellOneChanged;
   final ValueChanged<SummonerSpell> onSpellTwoChanged;
 
@@ -106,37 +114,25 @@ final class _EnemySetupCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Enemy $enemyNumber',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Champion Name',
-                border: OutlineInputBorder(),
-                isDense: true,
-              ),
-              onChanged: onNameChanged,
-            ),
+            Text(laneName, style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             Row(
               children: [
                 Expanded(
-                  child: _SpellDropdown(
+                  child: _SpellButton(
                     label: 'Spell 1',
-                    value: enemy.spellOne,
-                    spells: availableSpells,
-                    onChanged: onSpellOneChanged,
+                    spell: enemy.spellOne,
+                    availableSpells: availableSpells,
+                    onSpellSelected: onSpellOneChanged,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _SpellDropdown(
+                  child: _SpellButton(
                     label: 'Spell 2',
-                    value: enemy.spellTwo,
-                    spells: availableSpells,
-                    onChanged: onSpellTwoChanged,
+                    spell: enemy.spellTwo,
+                    availableSpells: availableSpells,
+                    onSpellSelected: onSpellTwoChanged,
                   ),
                 ),
               ],
@@ -148,36 +144,161 @@ final class _EnemySetupCard extends StatelessWidget {
   }
 }
 
-final class _SpellDropdown extends StatelessWidget {
-  const _SpellDropdown({
+final class _SpellButton extends StatelessWidget {
+  const _SpellButton({
     required this.label,
-    required this.value,
-    required this.spells,
-    required this.onChanged,
+    required this.spell,
+    required this.availableSpells,
+    required this.onSpellSelected,
   });
 
   final String label;
-  final SummonerSpell value;
-  final List<SummonerSpell> spells;
-  final ValueChanged<SummonerSpell> onChanged;
+  final SummonerSpell spell;
+  final List<SummonerSpell> availableSpells;
+  final ValueChanged<SummonerSpell> onSpellSelected;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButtonFormField<SummonerSpell>(
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        isDense: true,
+    return OutlinedButton(
+      onPressed: () => _showSpellPicker(context),
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       ),
-      initialValue: value.id.isEmpty ? null : value,
-      items: spells.map((spell) {
-        return DropdownMenuItem(
-          value: spell,
-          child: Text(spell.name, overflow: TextOverflow.ellipsis),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (spell.id.isNotEmpty) ...[
+            CachedNetworkImage(
+              imageUrl: spell.imageUrl,
+              width: 24,
+              height: 24,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const SizedBox(
+                width: 24,
+                height: 24,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            const SizedBox(width: 8),
+          ],
+          Text(spell.id.isEmpty ? label : spell.name),
+        ],
+      ),
+    );
+  }
+
+  void _showSpellPicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => _SpellPickerModal(
+        spells: availableSpells,
+        onSpellSelected: (selectedSpell) {
+          onSpellSelected(selectedSpell);
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
+}
+
+final class _SpellPickerModal extends StatelessWidget {
+  const _SpellPickerModal({required this.spells, required this.onSpellSelected});
+
+  final List<SummonerSpell> spells;
+  final ValueChanged<SummonerSpell> onSpellSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.6,
+      minChildSize: 0.4,
+      maxChildSize: 0.9,
+      expand: false,
+      builder: (context, scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[400],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Select Summoner Spell',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Expanded(
+                child: GridView.builder(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(16),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: spells.length,
+                  itemBuilder: (context, index) {
+                    final spell = spells[index];
+                    return InkWell(
+                      onTap: () => onSpellSelected(spell),
+                      borderRadius: BorderRadius.circular(8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CachedNetworkImage(
+                            imageUrl: spell.imageUrl,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[800],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Colors.red[800],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: const Icon(Icons.error, color: Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            spell.name,
+                            style: const TextStyle(fontSize: 10),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         );
-      }).toList(),
-      onChanged: (spell) {
-        if (spell != null) onChanged(spell);
       },
     );
   }
@@ -204,7 +325,7 @@ final class _ActionModeView extends StatelessWidget {
               final enemy = state.enemies[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: _ManualEnemyActionCard(enemy: enemy),
+                child: _ManualEnemyActionCard(laneName: _laneNames[index], enemy: enemy),
               );
             },
           ),
@@ -223,8 +344,9 @@ final class _ActionModeView extends StatelessWidget {
 }
 
 final class _ManualEnemyActionCard extends StatelessWidget {
-  const _ManualEnemyActionCard({required this.enemy});
+  const _ManualEnemyActionCard({required this.laneName, required this.enemy});
 
+  final String laneName;
   final ManualEnemy enemy;
 
   @override
@@ -236,7 +358,7 @@ final class _ManualEnemyActionCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              enemy.name.isEmpty ? 'Enemy' : enemy.name,
+              laneName,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(width: 16),

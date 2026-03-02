@@ -16,6 +16,7 @@ class SummonerSpellMapper {
       imageUrl: model.image?.full != null
           ? DataDragonApi.getFullImageUrl(model.image!.full!)
           : '',
+      modes: model.modes,
     );
   }
 

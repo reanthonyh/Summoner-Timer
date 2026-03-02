@@ -4,11 +4,10 @@ import 'package:summoner_timer/domain/entities/summoner_spell.dart';
 part 'manual_tool_state.freezed.dart';
 
 class ManualEnemy {
-  ManualEnemy({this.name = '', SummonerSpell? spellOne, SummonerSpell? spellTwo})
+  ManualEnemy({SummonerSpell? spellOne, SummonerSpell? spellTwo})
     : spellOne = spellOne ?? _defaultSpell,
       spellTwo = spellTwo ?? _defaultSpell;
 
-  final String name;
   final SummonerSpell spellOne;
   final SummonerSpell spellTwo;
 
@@ -20,9 +19,10 @@ class ManualEnemy {
     imageUrl: '',
   );
 
-  ManualEnemy copyWith({String? name, SummonerSpell? spellOne, SummonerSpell? spellTwo}) {
+  bool get isValid => spellOne.id.isNotEmpty && spellTwo.id.isNotEmpty;
+
+  ManualEnemy copyWith({SummonerSpell? spellOne, SummonerSpell? spellTwo}) {
     return ManualEnemy(
-      name: name ?? this.name,
       spellOne: spellOne ?? this.spellOne,
       spellTwo: spellTwo ?? this.spellTwo,
     );

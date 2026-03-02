@@ -24,6 +24,8 @@ abstract class SummonerSpellModel with _$SummonerSpellModel {
     List<int>? cooldown,
     String? key,
     SummonerSpellImageModel? image,
+    // ONLY ALLOW CLASSIC, URF, ARAM
+    List<String>? modes,
   }) = _SummonerSpellModel;
 
   factory SummonerSpellModel.fromJson(Map<String, Object?> json) =>

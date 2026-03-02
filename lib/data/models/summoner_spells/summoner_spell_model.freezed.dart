@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SummonerSpellModel {
 
- String? get id; String? get name; String? get description; List<int>? get cooldown; String? get key; SummonerSpellImageModel? get image;
+ String? get id; String? get name; String? get description; List<int>? get cooldown; String? get key; SummonerSpellImageModel? get image;// ONLY ALLOW CLASSIC, URF, ARAM
+ List<String>? get modes;
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $SummonerSpellModelCopyWith<SummonerSpellModel> get copyWith => _$SummonerSpellM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.cooldown, cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.cooldown, cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image)&&const DeepCollectionEquality().equals(other.modes, modes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(cooldown),key,image);
+int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(cooldown),key,image,const DeepCollectionEquality().hash(modes));
 
 @override
 String toString() {
-  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image)';
+  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image, modes: $modes)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $SummonerSpellModelCopyWith<$Res>  {
   factory $SummonerSpellModelCopyWith(SummonerSpellModel value, $Res Function(SummonerSpellModel) _then) = _$SummonerSpellModelCopyWithImpl;
 @useResult
 $Res call({
- String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image
+ String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image, List<String>? modes
 });
 
 
@@ -65,7 +66,7 @@ class _$SummonerSpellModelCopyWithImpl<$Res>
 
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? description = freezed,Object? cooldown = freezed,Object? key = freezed,Object? image = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? description = freezed,Object? cooldown = freezed,Object? key = freezed,Object? image = freezed,Object? modes = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -73,7 +74,8 @@ as String?,description: freezed == description ? _self.description : description
 as String?,cooldown: freezed == cooldown ? _self.cooldown : cooldown // ignore: cast_nullable_to_non_nullable
 as List<int>?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as SummonerSpellImageModel?,
+as SummonerSpellImageModel?,modes: freezed == modes ? _self.modes : modes // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 /// Create a copy of SummonerSpellModel
@@ -170,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image,  List<String>? modes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
+return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image,_that.modes);case _:
   return orElse();
 
 }
@@ -191,10 +193,10 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image,  List<String>? modes)  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel():
-return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
+return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image,_that.modes);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,10 +213,10 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  String? name,  String? description,  List<int>? cooldown,  String? key,  SummonerSpellImageModel? image,  List<String>? modes)?  $default,) {final _that = this;
 switch (_that) {
 case _SummonerSpellModel() when $default != null:
-return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image);case _:
+return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_that.image,_that.modes);case _:
   return null;
 
 }
@@ -226,7 +228,7 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 @JsonSerializable()
 
 class _SummonerSpellModel implements SummonerSpellModel {
-  const _SummonerSpellModel({this.id, this.name, this.description, final  List<int>? cooldown, this.key, this.image}): _cooldown = cooldown;
+  const _SummonerSpellModel({this.id, this.name, this.description, final  List<int>? cooldown, this.key, this.image, final  List<String>? modes}): _cooldown = cooldown,_modes = modes;
   factory _SummonerSpellModel.fromJson(Map<String, dynamic> json) => _$SummonerSpellModelFromJson(json);
 
 @override final  String? id;
@@ -243,6 +245,17 @@ class _SummonerSpellModel implements SummonerSpellModel {
 
 @override final  String? key;
 @override final  SummonerSpellImageModel? image;
+// ONLY ALLOW CLASSIC, URF, ARAM
+ final  List<String>? _modes;
+// ONLY ALLOW CLASSIC, URF, ARAM
+@override List<String>? get modes {
+  final value = _modes;
+  if (value == null) return null;
+  if (_modes is EqualUnmodifiableListView) return _modes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
@@ -257,16 +270,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._cooldown, _cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._cooldown, _cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image)&&const DeepCollectionEquality().equals(other._modes, _modes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(_cooldown),key,image);
+int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(_cooldown),key,image,const DeepCollectionEquality().hash(_modes));
 
 @override
 String toString() {
-  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image)';
+  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image, modes: $modes)';
 }
 
 
@@ -277,7 +290,7 @@ abstract mixin class _$SummonerSpellModelCopyWith<$Res> implements $SummonerSpel
   factory _$SummonerSpellModelCopyWith(_SummonerSpellModel value, $Res Function(_SummonerSpellModel) _then) = __$SummonerSpellModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image
+ String? id, String? name, String? description, List<int>? cooldown, String? key, SummonerSpellImageModel? image, List<String>? modes
 });
 
 
@@ -294,7 +307,7 @@ class __$SummonerSpellModelCopyWithImpl<$Res>
 
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? description = freezed,Object? cooldown = freezed,Object? key = freezed,Object? image = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? description = freezed,Object? cooldown = freezed,Object? key = freezed,Object? image = freezed,Object? modes = freezed,}) {
   return _then(_SummonerSpellModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -302,7 +315,8 @@ as String?,description: freezed == description ? _self.description : description
 as String?,cooldown: freezed == cooldown ? _self._cooldown : cooldown // ignore: cast_nullable_to_non_nullable
 as List<int>?,key: freezed == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
-as SummonerSpellImageModel?,
+as SummonerSpellImageModel?,modes: freezed == modes ? _self._modes : modes // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

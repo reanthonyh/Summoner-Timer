@@ -116,6 +116,7 @@ final class LocalSummonerSpellsDataSource {
     required List<int> cooldown,
     required String key,
     required String image,
+    List<String>? modes,
   }) {
     return SummonerSpellModel(
       id: id,
@@ -123,6 +124,7 @@ final class LocalSummonerSpellsDataSource {
       description: description,
       cooldown: cooldown,
       key: key,
+      modes: modes ?? ['CLASSIC', 'URF', 'ARAM'],
       image: SummonerSpellImageModel(
         full: image,
         sprite: 'spell0.png',

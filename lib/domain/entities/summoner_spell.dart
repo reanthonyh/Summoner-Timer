@@ -10,5 +10,6 @@ abstract class SummonerSpell with _$SummonerSpell {
     required int cooldownSeconds,
     required String spriteUrl,
     required String imageUrl,
+    List<String>? modes,
   }) = _SummonerSpell;
 }

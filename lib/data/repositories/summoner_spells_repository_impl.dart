@@ -11,6 +11,13 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
   final DataDragonApi dataSource;
   List<SummonerSpell>? _cachedSpells;
 
+  static const Set<String> _allowedModes = {'CLASSIC', 'URF', 'ARAM'};
+
+  static bool _isAllowedMode(List<String>? modes) {
+    if (modes == null || modes.isEmpty) return false;
+    return modes.any((mode) => _allowedModes.contains(mode));
+  }
+
   @override
   Future<List<SummonerSpell>> getSummonerSpells() async {
     if (_cachedSpells != null) {
@@ -23,8 +30,12 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
       final summonerSpells =
           response.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
 
-      _cachedSpells = summonerSpells;
-      return summonerSpells;
+      final filteredSpells = summonerSpells.where((spell) {
+        return _isAllowedMode(spell.modes);
+      }).toList();
+
+      _cachedSpells = filteredSpells;
+      return filteredSpells;
     } catch (e) {
       print('SummonerSpellsRepositoryImpl - Error: $e, using offline data');
       return _getOfflineSpells();
@@ -35,6 +46,7 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
     final offlineData = LocalSummonerSpellsDataSource.getSummonerSpells();
     final spells =
         offlineData.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
+
     _cachedSpells = spells;
     return spells;
   }
