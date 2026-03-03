@@ -1,15 +1,14 @@
 part of 'home_page.dart';
 
+const _tabs = [SearchPage(), ManualToolPage()];
+
 final class _HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         return Scaffold(
-          body: IndexedStack(
-            index: state.currentTab.index,
-            children: const [SearchPage(), ManualToolPage()],
-          ),
+          body: _tabs[state.currentTab.index],
           bottomNavigationBar: NavigationBar(
             selectedIndex: state.currentTab.index,
             onDestinationSelected: (index) {
