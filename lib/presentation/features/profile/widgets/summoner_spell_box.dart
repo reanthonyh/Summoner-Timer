@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:summoner_timer/domain/entities/summoner_spell.dart';
 
-/// A spell icon that optionally displays a cooldown overlay.
-///
-/// When [isActive] is true, a semi-transparent dark layer and a countdown
-/// text are painted on top of the spell image.
-///
-/// Provide [onTap] and [onLongPress] to hook up start / reset actions.
-class SummonerSpellBox extends StatefulWidget {
+final class SummonerSpellBox extends StatefulWidget {
   const SummonerSpellBox({
     super.key,
     required this.spell,
@@ -19,21 +13,13 @@ class SummonerSpellBox extends StatefulWidget {
   });
 
   final SummonerSpell spell;
-
-  /// Whether the cooldown is currently counting down.
   final bool isActive;
-
-  /// Seconds remaining; defaults to [spell.cooldownSeconds] when not provided.
   final int? remainingSeconds;
-
-  /// Countdown progress from 0.0 (just started) to 1.0 (ready).
   final double progress;
-
-  /// Called when the user taps the box (usually to start the cooldown).
   final VoidCallback? onTap;
-
-  /// Called when the user long-presses (usually to reset the cooldown).
   final VoidCallback? onLongPress;
+
+  bool get _isInteractive => onTap != null;
 
   @override
   State<SummonerSpellBox> createState() => _SummonerSpellBoxState();
@@ -41,40 +27,57 @@ class SummonerSpellBox extends StatefulWidget {
 
 class _SummonerSpellBoxState extends State<SummonerSpellBox>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _fadeController;
-  late final Animation<double> _fadeAnimation;
+  AnimationController? _fadeController;
+  Animation<double>? _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _fadeController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
-    _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(parent: _fadeController, curve: Curves.easeOut));
+    if (widget._isInteractive) {
+      _initAnimation();
+    }
   }
 
   @override
   void didUpdateWidget(SummonerSpellBox oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.isActive != oldWidget.isActive) {
-      widget.isActive ? _fadeController.forward() : _fadeController.reverse();
+
+    if (widget._isInteractive && _fadeController == null) {
+      _initAnimation();
     }
+
+    if (_fadeController != null && widget.isActive != oldWidget.isActive) {
+      if (widget.isActive) {
+        // Only forward if not already doing so.
+        if (!_fadeController!.isAnimating ||
+            _fadeController!.status == AnimationStatus.reverse) {
+          _fadeController!.forward();
+        }
+      } else {
+        if (!_fadeController!.isAnimating ||
+            _fadeController!.status == AnimationStatus.forward) {
+          _fadeController!.reverse();
+        }
+      }
+    }
+  }
+
+  void _initAnimation() {
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _fadeAnimation = _fadeController!.drive(CurveTween(curve: Curves.easeOut));
   }
 
   @override
   void dispose() {
-    _fadeController.dispose();
+    _fadeController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final remaining = widget.remainingSeconds ?? widget.spell.cooldownSeconds;
-
     return GestureDetector(
       onTap: widget.onTap,
       onLongPress: widget.onLongPress,
@@ -85,14 +88,15 @@ class _SummonerSpellBoxState extends State<SummonerSpellBox>
           alignment: Alignment.center,
           children: [
             _SpellImage(imageUrl: widget.spell.imageUrl),
-            if (widget.onTap != null) // only show overlay in interactive mode
+            if (widget._isInteractive && _fadeAnimation != null)
               FadeTransition(
-                opacity: _fadeAnimation,
+                opacity: _fadeAnimation!,
                 child: CustomPaint(
                   size: const Size(56, 56),
                   painter: _CooldownPainter(
                     progress: widget.progress,
-                    remainingSeconds: remaining,
+                    remainingSeconds:
+                        widget.remainingSeconds ?? widget.spell.cooldownSeconds,
                   ),
                 ),
               ),
@@ -102,10 +106,6 @@ class _SummonerSpellBoxState extends State<SummonerSpellBox>
     );
   }
 }
-
-// =============================================================================
-// Private helpers
-// =============================================================================
 
 class _SpellImage extends StatelessWidget {
   const _SpellImage({required this.imageUrl});
@@ -121,23 +121,24 @@ class _SpellImage extends StatelessWidget {
         width: 48,
         height: 48,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stack) => Container(
-          width: 48,
-          height: 48,
-          color: Colors.red[900],
-          child: const Icon(Icons.error, color: Colors.white, size: 20),
+        errorBuilder: (context, error, stack) => ColoredBox(
+          color: Colors.red.shade900,
+          child: const SizedBox.square(
+            dimension: 48,
+            child: Icon(Icons.error, color: Colors.white, size: 20),
+          ),
         ),
         loadingBuilder: (_, child, loadingProgress) {
           if (loadingProgress == null) return child;
-          return Container(
-            width: 48,
-            height: 48,
-            color: Colors.grey[800],
-            child: const Center(
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
+          return ColoredBox(
+            color: Colors.grey.shade800,
+            child: const SizedBox.square(
+              dimension: 48,
+              child: Center(
+                child: SizedBox.square(
+                  dimension: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
               ),
             ),
           );
@@ -153,37 +154,47 @@ class _CooldownPainter extends CustomPainter {
   final double progress;
   final int remainingSeconds;
 
+  final _overlayPaint = Paint()..style = PaintingStyle.fill;
+
+  static const _imageSize = 48.0;
+  static const _imageRadius = Radius.circular(8);
+  static const _shadowOffset = Offset(1, 1);
+  static const _textStyleLarge = TextStyle(
+    color: Colors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    shadows: [Shadow(blurRadius: 4, color: Colors.black, offset: _shadowOffset)],
+  );
+  static const _textStyleSmall = TextStyle(
+    color: Colors.white,
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    shadows: [Shadow(blurRadius: 4, color: Colors.black, offset: _shadowOffset)],
+  );
+
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
+    final center = size.center(Offset.zero);
 
-    // Dark overlay fades out as progress approaches 1.0 (ready).
     final opacity = (1.0 - progress).clamp(0.0, 1.0);
+    _overlayPaint.color = Colors.black.withValues(alpha: opacity * 0.7);
+
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromCenter(center: center, width: 48, height: 48),
-        const Radius.circular(8),
+        Rect.fromCenter(center: center, width: _imageSize, height: _imageSize),
+        _imageRadius,
       ),
-      Paint()
-        ..color = Colors.black.withValues(alpha: opacity * 0.7)
-        ..style = PaintingStyle.fill,
+      _overlayPaint,
     );
 
     final textPainter = TextPainter(
       text: TextSpan(
         text: remainingSeconds.toString(),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: remainingSeconds >= 100 ? 14 : 18,
-          fontWeight: FontWeight.bold,
-          shadows: const [
-            Shadow(blurRadius: 4, color: Colors.black, offset: Offset(1, 1)),
-          ],
-        ),
+        style: remainingSeconds >= 100 ? _textStyleSmall : _textStyleLarge,
       ),
       textDirection: TextDirection.ltr,
-    );
-    textPainter.layout();
+    )..layout();
+
     textPainter.paint(
       canvas,
       Offset(center.dx - textPainter.width / 2, center.dy - textPainter.height / 2),
@@ -191,8 +202,7 @@ class _CooldownPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _CooldownPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.remainingSeconds != remainingSeconds;
-  }
+  bool shouldRepaint(covariant _CooldownPainter oldDelegate) =>
+      oldDelegate.progress != progress ||
+      oldDelegate.remainingSeconds != remainingSeconds;
 }
