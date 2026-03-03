@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ManualToolState {
 
- ManualToolMode get mode; int get enemyCount; List<ManualEnemy> get enemies; List<SummonerSpell> get availableSpells;
+ ManualToolMode get mode; List<ManualEnemy> get enemies; List<SummonerSpell> get availableSpells; Map<String, SpellTimerData> get spellTimers;
 /// Create a copy of ManualToolState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ManualToolStateCopyWith<ManualToolState> get copyWith => _$ManualToolStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ManualToolState&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.enemyCount, enemyCount) || other.enemyCount == enemyCount)&&const DeepCollectionEquality().equals(other.enemies, enemies)&&const DeepCollectionEquality().equals(other.availableSpells, availableSpells));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ManualToolState&&(identical(other.mode, mode) || other.mode == mode)&&const DeepCollectionEquality().equals(other.enemies, enemies)&&const DeepCollectionEquality().equals(other.availableSpells, availableSpells)&&const DeepCollectionEquality().equals(other.spellTimers, spellTimers));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,mode,enemyCount,const DeepCollectionEquality().hash(enemies),const DeepCollectionEquality().hash(availableSpells));
+int get hashCode => Object.hash(runtimeType,mode,const DeepCollectionEquality().hash(enemies),const DeepCollectionEquality().hash(availableSpells),const DeepCollectionEquality().hash(spellTimers));
 
 @override
 String toString() {
-  return 'ManualToolState(mode: $mode, enemyCount: $enemyCount, enemies: $enemies, availableSpells: $availableSpells)';
+  return 'ManualToolState(mode: $mode, enemies: $enemies, availableSpells: $availableSpells, spellTimers: $spellTimers)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ManualToolStateCopyWith<$Res>  {
   factory $ManualToolStateCopyWith(ManualToolState value, $Res Function(ManualToolState) _then) = _$ManualToolStateCopyWithImpl;
 @useResult
 $Res call({
- ManualToolMode mode, int enemyCount, List<ManualEnemy> enemies, List<SummonerSpell> availableSpells
+ ManualToolMode mode, List<ManualEnemy> enemies, List<SummonerSpell> availableSpells, Map<String, SpellTimerData> spellTimers
 });
 
 
@@ -62,13 +62,13 @@ class _$ManualToolStateCopyWithImpl<$Res>
 
 /// Create a copy of ManualToolState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? mode = null,Object? enemyCount = null,Object? enemies = null,Object? availableSpells = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? mode = null,Object? enemies = null,Object? availableSpells = null,Object? spellTimers = null,}) {
   return _then(_self.copyWith(
 mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
-as ManualToolMode,enemyCount: null == enemyCount ? _self.enemyCount : enemyCount // ignore: cast_nullable_to_non_nullable
-as int,enemies: null == enemies ? _self.enemies : enemies // ignore: cast_nullable_to_non_nullable
+as ManualToolMode,enemies: null == enemies ? _self.enemies : enemies // ignore: cast_nullable_to_non_nullable
 as List<ManualEnemy>,availableSpells: null == availableSpells ? _self.availableSpells : availableSpells // ignore: cast_nullable_to_non_nullable
-as List<SummonerSpell>,
+as List<SummonerSpell>,spellTimers: null == spellTimers ? _self.spellTimers : spellTimers // ignore: cast_nullable_to_non_nullable
+as Map<String, SpellTimerData>,
   ));
 }
 
@@ -153,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ManualToolMode mode,  int enemyCount,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ManualToolMode mode,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells,  Map<String, SpellTimerData> spellTimers)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ManualToolState() when $default != null:
-return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells);case _:
+return $default(_that.mode,_that.enemies,_that.availableSpells,_that.spellTimers);case _:
   return orElse();
 
 }
@@ -174,10 +174,10 @@ return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ManualToolMode mode,  int enemyCount,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ManualToolMode mode,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells,  Map<String, SpellTimerData> spellTimers)  $default,) {final _that = this;
 switch (_that) {
 case _ManualToolState():
-return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells);case _:
+return $default(_that.mode,_that.enemies,_that.availableSpells,_that.spellTimers);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +194,10 @@ return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ManualToolMode mode,  int enemyCount,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ManualToolMode mode,  List<ManualEnemy> enemies,  List<SummonerSpell> availableSpells,  Map<String, SpellTimerData> spellTimers)?  $default,) {final _that = this;
 switch (_that) {
 case _ManualToolState() when $default != null:
-return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells);case _:
+return $default(_that.mode,_that.enemies,_that.availableSpells,_that.spellTimers);case _:
   return null;
 
 }
@@ -209,11 +209,10 @@ return $default(_that.mode,_that.enemyCount,_that.enemies,_that.availableSpells)
 
 
 class _ManualToolState implements ManualToolState {
-  const _ManualToolState({this.mode = ManualToolMode.setup, this.enemyCount = 5, final  List<ManualEnemy> enemies = const [], final  List<SummonerSpell> availableSpells = const []}): _enemies = enemies,_availableSpells = availableSpells;
+  const _ManualToolState({this.mode = ManualToolMode.setup, final  List<ManualEnemy> enemies = const [], final  List<SummonerSpell> availableSpells = const [], final  Map<String, SpellTimerData> spellTimers = const {}}): _enemies = enemies,_availableSpells = availableSpells,_spellTimers = spellTimers;
   
 
 @override@JsonKey() final  ManualToolMode mode;
-@override@JsonKey() final  int enemyCount;
  final  List<ManualEnemy> _enemies;
 @override@JsonKey() List<ManualEnemy> get enemies {
   if (_enemies is EqualUnmodifiableListView) return _enemies;
@@ -228,6 +227,13 @@ class _ManualToolState implements ManualToolState {
   return EqualUnmodifiableListView(_availableSpells);
 }
 
+ final  Map<String, SpellTimerData> _spellTimers;
+@override@JsonKey() Map<String, SpellTimerData> get spellTimers {
+  if (_spellTimers is EqualUnmodifiableMapView) return _spellTimers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_spellTimers);
+}
+
 
 /// Create a copy of ManualToolState
 /// with the given fields replaced by the non-null parameter values.
@@ -239,16 +245,16 @@ _$ManualToolStateCopyWith<_ManualToolState> get copyWith => __$ManualToolStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ManualToolState&&(identical(other.mode, mode) || other.mode == mode)&&(identical(other.enemyCount, enemyCount) || other.enemyCount == enemyCount)&&const DeepCollectionEquality().equals(other._enemies, _enemies)&&const DeepCollectionEquality().equals(other._availableSpells, _availableSpells));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ManualToolState&&(identical(other.mode, mode) || other.mode == mode)&&const DeepCollectionEquality().equals(other._enemies, _enemies)&&const DeepCollectionEquality().equals(other._availableSpells, _availableSpells)&&const DeepCollectionEquality().equals(other._spellTimers, _spellTimers));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,mode,enemyCount,const DeepCollectionEquality().hash(_enemies),const DeepCollectionEquality().hash(_availableSpells));
+int get hashCode => Object.hash(runtimeType,mode,const DeepCollectionEquality().hash(_enemies),const DeepCollectionEquality().hash(_availableSpells),const DeepCollectionEquality().hash(_spellTimers));
 
 @override
 String toString() {
-  return 'ManualToolState(mode: $mode, enemyCount: $enemyCount, enemies: $enemies, availableSpells: $availableSpells)';
+  return 'ManualToolState(mode: $mode, enemies: $enemies, availableSpells: $availableSpells, spellTimers: $spellTimers)';
 }
 
 
@@ -259,7 +265,7 @@ abstract mixin class _$ManualToolStateCopyWith<$Res> implements $ManualToolState
   factory _$ManualToolStateCopyWith(_ManualToolState value, $Res Function(_ManualToolState) _then) = __$ManualToolStateCopyWithImpl;
 @override @useResult
 $Res call({
- ManualToolMode mode, int enemyCount, List<ManualEnemy> enemies, List<SummonerSpell> availableSpells
+ ManualToolMode mode, List<ManualEnemy> enemies, List<SummonerSpell> availableSpells, Map<String, SpellTimerData> spellTimers
 });
 
 
@@ -276,13 +282,13 @@ class __$ManualToolStateCopyWithImpl<$Res>
 
 /// Create a copy of ManualToolState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? mode = null,Object? enemyCount = null,Object? enemies = null,Object? availableSpells = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? mode = null,Object? enemies = null,Object? availableSpells = null,Object? spellTimers = null,}) {
   return _then(_ManualToolState(
 mode: null == mode ? _self.mode : mode // ignore: cast_nullable_to_non_nullable
-as ManualToolMode,enemyCount: null == enemyCount ? _self.enemyCount : enemyCount // ignore: cast_nullable_to_non_nullable
-as int,enemies: null == enemies ? _self._enemies : enemies // ignore: cast_nullable_to_non_nullable
+as ManualToolMode,enemies: null == enemies ? _self._enemies : enemies // ignore: cast_nullable_to_non_nullable
 as List<ManualEnemy>,availableSpells: null == availableSpells ? _self._availableSpells : availableSpells // ignore: cast_nullable_to_non_nullable
-as List<SummonerSpell>,
+as List<SummonerSpell>,spellTimers: null == spellTimers ? _self._spellTimers : spellTimers // ignore: cast_nullable_to_non_nullable
+as Map<String, SpellTimerData>,
   ));
 }
 

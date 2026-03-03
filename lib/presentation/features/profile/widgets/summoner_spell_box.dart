@@ -1,35 +1,52 @@
-import 'dart:async';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:summoner_timer/domain/entities/summoner_spell.dart';
 
+/// A spell icon that optionally displays a cooldown overlay.
+///
+/// When [isActive] is true, a semi-transparent dark layer and a countdown
+/// text are painted on top of the spell image.
+///
+/// Provide [onTap] and [onLongPress] to hook up start / reset actions.
 class SummonerSpellBox extends StatefulWidget {
+  const SummonerSpellBox({
+    super.key,
+    required this.spell,
+    this.isActive = false,
+    this.remainingSeconds,
+    this.progress = 1.0,
+    this.onTap,
+    this.onLongPress,
+  });
+
   final SummonerSpell spell;
 
-  const SummonerSpellBox({super.key, required this.spell});
+  /// Whether the cooldown is currently counting down.
+  final bool isActive;
+
+  /// Seconds remaining; defaults to [spell.cooldownSeconds] when not provided.
+  final int? remainingSeconds;
+
+  /// Countdown progress from 0.0 (just started) to 1.0 (ready).
+  final double progress;
+
+  /// Called when the user taps the box (usually to start the cooldown).
+  final VoidCallback? onTap;
+
+  /// Called when the user long-presses (usually to reset the cooldown).
+  final VoidCallback? onLongPress;
 
   @override
   State<SummonerSpellBox> createState() => _SummonerSpellBoxState();
 }
 
 class _SummonerSpellBoxState extends State<SummonerSpellBox>
-    with TickerProviderStateMixin {
-  Timer? _timer;
-  late AnimationController _progressController;
-  late AnimationController _fadeController;
-  late Animation<double> _fadeAnimation;
-  int _remainingSeconds = 0;
-  bool _isActive = false;
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _remainingSeconds = widget.spell.cooldownSeconds;
-    _progressController = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: widget.spell.cooldownSeconds),
-    );
     _fadeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -41,101 +58,90 @@ class _SummonerSpellBoxState extends State<SummonerSpellBox>
   }
 
   @override
+  void didUpdateWidget(SummonerSpellBox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isActive != oldWidget.isActive) {
+      widget.isActive ? _fadeController.forward() : _fadeController.reverse();
+    }
+  }
+
+  @override
   void dispose() {
-    _timer?.cancel();
-    _progressController.dispose();
     _fadeController.dispose();
     super.dispose();
   }
 
-  void _initiateTimer() {
-    if (_remainingSeconds <= 0) return;
-
-    _timer?.cancel();
-    _progressController.reset();
-    _progressController.duration = Duration(seconds: widget.spell.cooldownSeconds);
-    _progressController.forward();
-
-    if (!_isActive) {
-      _isActive = true;
-      _fadeController.forward();
-    }
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        if (_remainingSeconds > 0) {
-          _remainingSeconds--;
-        } else {
-          timer.cancel();
-          _progressController.reset();
-          _isActive = false;
-          _fadeController.reverse();
-        }
-      });
-    });
-  }
-
-  void _resetTimer() {
-    _timer?.cancel();
-    _progressController.reset();
-    setState(() {
-      _remainingSeconds = widget.spell.cooldownSeconds;
-      _isActive = false;
-    });
-    _fadeController.reverse();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final remaining = widget.remainingSeconds ?? widget.spell.cooldownSeconds;
+
     return GestureDetector(
-      onTap: _initiateTimer,
-      onLongPress: _resetTimer,
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
       child: SizedBox(
         width: 56,
         height: 56,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            CachedNetworkImage(
-              imageUrl: widget.spell.imageUrl,
-              width: 48,
-              height: 48,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.grey[800],
-                  borderRadius: BorderRadius.circular(8),
+            _SpellImage(imageUrl: widget.spell.imageUrl),
+            if (widget.onTap != null) // only show overlay in interactive mode
+              FadeTransition(
+                opacity: _fadeAnimation,
+                child: CustomPaint(
+                  size: const Size(56, 56),
+                  painter: _CooldownPainter(
+                    progress: widget.progress,
+                    remainingSeconds: remaining,
+                  ),
                 ),
               ),
-              errorWidget: (context, url, error) => Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: Colors.red[800],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.error, color: Colors.white),
-              ),
-            ),
-            FadeTransition(
-              opacity: _fadeAnimation,
-              child: AnimatedBuilder(
-                animation: _progressController,
-                builder: (context, child) {
-                  return CustomPaint(
-                    size: const Size(56, 56),
-                    painter: _CooldownPainter(
-                      progress: _progressController.value,
-                      remainingSeconds: _remainingSeconds,
-                    ),
-                  );
-                },
-              ),
-            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// =============================================================================
+// Private helpers
+// =============================================================================
+
+class _SpellImage extends StatelessWidget {
+  const _SpellImage({required this.imageUrl});
+
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Image.network(
+        imageUrl,
+        width: 48,
+        height: 48,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stack) => Container(
+          width: 48,
+          height: 48,
+          color: Colors.red[900],
+          child: const Icon(Icons.error, color: Colors.white, size: 20),
+        ),
+        loadingBuilder: (_, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return Container(
+            width: 48,
+            height: 48,
+            color: Colors.grey[800],
+            child: const Center(
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -151,15 +157,17 @@ class _CooldownPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
 
-    // Paint a color layer that fades out as the cooldown progresses
+    // Dark overlay fades out as progress approaches 1.0 (ready).
     final opacity = (1.0 - progress).clamp(0.0, 1.0);
-    final layerPaint = Paint()
-      ..color = Colors.black.withValues(alpha: opacity * 0.7)
-      ..style = PaintingStyle.fill;
-
-    // Drawing a rounded rectangle that covers the spell box area (matching image size)
-    final rect = Rect.fromCenter(center: center, width: 48, height: 48);
-    canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(8)), layerPaint);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(center: center, width: 48, height: 48),
+        const Radius.circular(8),
+      ),
+      Paint()
+        ..color = Colors.black.withValues(alpha: opacity * 0.7)
+        ..style = PaintingStyle.fill,
+    );
 
     final textPainter = TextPainter(
       text: TextSpan(

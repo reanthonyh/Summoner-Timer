@@ -1,6 +1,10 @@
 part of 'manual_tool_page.dart';
 
-const _laneNames = ['TopLane', 'JungleLane', 'MidLane', 'BotLane', 'Support'];
+const _laneNames = ['Top', 'Jungle', 'Mid', 'Bot', 'Support'];
+
+// =============================================================================
+// Root view — switches between setup and action mode
+// =============================================================================
 
 final class _ManualToolView extends StatelessWidget {
   const _ManualToolView();
@@ -30,6 +34,10 @@ final class _ManualToolView extends StatelessWidget {
     );
   }
 }
+
+// =============================================================================
+// Setup mode
+// =============================================================================
 
 final class _SetupModeView extends StatelessWidget {
   const _SetupModeView({required this.state});
@@ -90,6 +98,10 @@ final class _SetupModeView extends StatelessWidget {
   }
 }
 
+// =============================================================================
+// Setup — enemy card
+// =============================================================================
+
 final class _EnemySetupCard extends StatelessWidget {
   const _EnemySetupCard({
     required this.laneName,
@@ -119,7 +131,7 @@ final class _EnemySetupCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _SpellButton(
+                  child: _SpellPickerButton(
                     label: 'Spell 1',
                     spell: enemy.spellOne,
                     availableSpells: availableSpells,
@@ -128,7 +140,7 @@ final class _EnemySetupCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _SpellButton(
+                  child: _SpellPickerButton(
                     label: 'Spell 2',
                     spell: enemy.spellTwo,
                     availableSpells: availableSpells,
@@ -144,8 +156,12 @@ final class _EnemySetupCard extends StatelessWidget {
   }
 }
 
-final class _SpellButton extends StatelessWidget {
-  const _SpellButton({
+// =============================================================================
+// Setup — spell picker button
+// =============================================================================
+
+final class _SpellPickerButton extends StatelessWidget {
+  const _SpellPickerButton({
     required this.label,
     required this.spell,
     required this.availableSpells,
@@ -189,10 +205,10 @@ final class _SpellButton extends StatelessWidget {
   }
 
   void _showSpellPicker(BuildContext context) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (context) => _SpellPickerModal(
+      builder: (_) => _SpellPickerModal(
         spells: availableSpells,
         onSpellSelected: (selectedSpell) {
           onSpellSelected(selectedSpell);
@@ -202,6 +218,10 @@ final class _SpellButton extends StatelessWidget {
     );
   }
 }
+
+// =============================================================================
+// Setup — spell picker modal
+// =============================================================================
 
 final class _SpellPickerModal extends StatelessWidget {
   const _SpellPickerModal({required this.spells, required this.onSpellSelected});
@@ -304,6 +324,10 @@ final class _SpellPickerModal extends StatelessWidget {
   }
 }
 
+// =============================================================================
+// Action mode
+// =============================================================================
+
 final class _ActionModeView extends StatelessWidget {
   const _ActionModeView({required this.state});
 
@@ -315,17 +339,19 @@ final class _ActionModeView extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.all(16),
-          child: Text('Tap on spell to start cooldown', style: TextStyle(fontSize: 16)),
+          child: Text(
+            'Tap a spell to start cooldown · Hold to reset',
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ),
         ),
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: state.enemies.length,
             itemBuilder: (context, index) {
-              final enemy = state.enemies[index];
               return Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: _ManualEnemyActionCard(laneName: _laneNames[index], enemy: enemy),
+                child: _EnemyActionCard(index: index),
               );
             },
           ),
@@ -343,31 +369,59 @@ final class _ActionModeView extends StatelessWidget {
   }
 }
 
-final class _ManualEnemyActionCard extends StatelessWidget {
-  const _ManualEnemyActionCard({required this.laneName, required this.enemy});
+// =============================================================================
+// Action mode — enemy card with live spell boxes
+// =============================================================================
 
-  final String laneName;
-  final ManualEnemy enemy;
+final class _EnemyActionCard extends StatelessWidget {
+  const _EnemyActionCard({required this.index});
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              laneName,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    return BlocBuilder<ManualToolCubit, ManualToolState>(
+      builder: (context, state) {
+        final cubit = context.read<ManualToolCubit>();
+        final enemy = state.enemies[index];
+        final keyOne = '${index}_spellOne';
+        final keyTwo = '${index}_spellTwo';
+        final dataOne = state.spellTimers[keyOne];
+        final dataTwo = state.spellTimers[keyTwo];
+
+        return Card(
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _laneNames[index],
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                const SizedBox(width: 16),
+                SummonerSpellBox(
+                  spell: enemy.spellOne,
+                  isActive: dataOne?.isActive ?? false,
+                  remainingSeconds: dataOne?.remainingSeconds,
+                  progress: dataOne?.progress ?? 1.0,
+                  onTap: () => cubit.startSpellTimer(keyOne),
+                  onLongPress: () => cubit.resetSpellTimer(keyOne),
+                ),
+                const SizedBox(width: 8),
+                SummonerSpellBox(
+                  spell: enemy.spellTwo,
+                  isActive: dataTwo?.isActive ?? false,
+                  remainingSeconds: dataTwo?.remainingSeconds,
+                  progress: dataTwo?.progress ?? 1.0,
+                  onTap: () => cubit.startSpellTimer(keyTwo),
+                  onLongPress: () => cubit.resetSpellTimer(keyTwo),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
-            SummonerSpellBox(spell: enemy.spellOne),
-            const SizedBox(width: 8),
-            SummonerSpellBox(spell: enemy.spellTwo),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

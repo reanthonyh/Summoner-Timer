@@ -1,26 +1,20 @@
 part of 'profile_page.dart';
 
-final class _ProfileView extends StatefulWidget {
+final class _ProfileView extends StatelessWidget {
   const _ProfileView();
 
-  @override
-  State<_ProfileView> createState() => _ProfileViewState();
-}
-
-class _ProfileViewState extends State<_ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
-
       body: Column(
         children: [
           const Divider(),
           Expanded(
             child: BlocSelector<ProfileCubit, ProfileState, (UiStatus, GameInformation?)>(
               selector: (state) => (state.status, state.gameInformation),
-              builder: (context, state) {
-                final (status, gameInformation) = state;
+              builder: (context, record) {
+                final (status, gameInformation) = record;
 
                 if (status == UiStatus.loading) {
                   return const Center(child: CircularProgressIndicator());

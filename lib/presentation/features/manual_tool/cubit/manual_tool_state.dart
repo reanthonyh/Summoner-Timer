@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:summoner_timer/domain/entities/summoner_spell.dart';
+import 'package:summoner_timer/presentation/features/spell_timer/enemy_team_spell_timers_state.dart';
 
 part 'manual_tool_state.freezed.dart';
 
@@ -11,7 +12,7 @@ class ManualEnemy {
   final SummonerSpell spellOne;
   final SummonerSpell spellTwo;
 
-  static final _defaultSpell = const SummonerSpell(
+  static const _defaultSpell = SummonerSpell(
     id: '',
     name: 'Select',
     cooldownSeconds: 0,
@@ -35,8 +36,8 @@ enum ManualToolMode { setup, action }
 abstract class ManualToolState with _$ManualToolState {
   const factory ManualToolState({
     @Default(ManualToolMode.setup) ManualToolMode mode,
-    @Default(5) int enemyCount,
     @Default([]) List<ManualEnemy> enemies,
     @Default([]) List<SummonerSpell> availableSpells,
+    @Default({}) Map<String, SpellTimerData> spellTimers,
   }) = _ManualToolState;
 }
