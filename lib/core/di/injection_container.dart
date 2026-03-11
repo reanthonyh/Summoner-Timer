@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
+import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/repositories/account_repository_impl.dart';
 import 'package:summoner_timer/data/repositories/session_repository_impl.dart';
@@ -19,8 +20,9 @@ import 'package:summoner_timer/domain/usecases/set_account_usecase.dart';
 final getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
-  // Repositories
+  // Persistence
   getIt.registerLazySingleton<SessionRepository>(() => SessionRepositoryImpl());
+  getIt.registerLazySingleton<LocalAccountDataSource>(() => LocalAccountDataSourceImpl());
 
   // Data Sources
   getIt.registerLazySingleton<RiotAmericasApi>(
@@ -32,6 +34,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<AccountRepository>(
     () => AccountRepositoryImpl(
       dataSource: getIt<RiotAmericasApi>(),
+      localDataSource: getIt<LocalAccountDataSource>(),
       sessionRepository: getIt<SessionRepository>(),
     ),
   );
@@ -39,6 +42,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<SpectatorRepository>(
     () => SpectatorRepositoryImpl(
       dataSource: getIt<RiotAmericasApi>(),
+      dataDragonDataSource: getIt<DataDragonApi>(),
       sessionRepository: getIt<SessionRepository>(),
     ),
   );

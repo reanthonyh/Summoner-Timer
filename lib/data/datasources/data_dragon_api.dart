@@ -1,19 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:summoner_timer/core/constants/api_constants.dart';
 
 import '../models/models.dart';
 
 final class DataDragonApi {
-  DataDragonApi() : _client = Dio(BaseOptions(baseUrl: _baseUrl));
+  DataDragonApi() : _client = Dio(BaseOptions(baseUrl: ApiConstants.dataDragonBaseUrl));
 
   final Dio _client;
 
-  static const String _baseUrl = 'https://ddragon.leagueoflegends.com/cdn/16.4.1';
-
-  static String getFullImageUrl(String fullName) => '$_baseUrl/img/spell/$fullName';
-  static String getSpriteUrl(String spriteName) => '$_baseUrl/img/sprite/$spriteName';
+  String getFullImageUrl(String fullName) => '${ApiConstants.dataDragonBaseUrl}/img/spell/$fullName';
+  String getSpriteUrl(String spriteName) => '${ApiConstants.dataDragonBaseUrl}/img/sprite/$spriteName';
 
   Future<SummonerSpellsModelResponse> getSummonerSpells() async {
-    final url = '$_baseUrl/data/en_US/summoner.json';
+    final url = '${ApiConstants.dataDragonBaseUrl}/data/en_US/summoner.json';
 
     print('DataDragonSummonerSpellsApi - Request: GET $url');
 

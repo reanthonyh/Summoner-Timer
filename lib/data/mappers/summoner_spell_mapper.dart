@@ -5,16 +5,16 @@ import 'package:summoner_timer/domain/entities/entities.dart';
 class SummonerSpellMapper {
   SummonerSpellMapper._();
 
-  static SummonerSpell fromModel(SummonerSpellModel model) {
+  static SummonerSpell fromModel(SummonerSpellModel model, DataDragonApi api) {
     return SummonerSpell(
       id: model.key?.toString() ?? '',
       name: model.name ?? '',
       cooldownSeconds: model.cooldown?.isNotEmpty == true ? model.cooldown!.first : 0,
       spriteUrl: model.image?.sprite != null
-          ? DataDragonApi.getSpriteUrl(model.image!.sprite!)
+          ? api.getSpriteUrl(model.image!.sprite!)
           : '',
       imageUrl: model.image?.full != null
-          ? DataDragonApi.getFullImageUrl(model.image!.full!)
+          ? api.getFullImageUrl(model.image!.full!)
           : '',
       modes: model.modes,
     );
@@ -23,12 +23,13 @@ class SummonerSpellMapper {
   static SummonerSpell fromSpellId(
     int spellId,
     Map<String, SummonerSpellModel> spellsData,
+    DataDragonApi api,
   ) {
     final spellModel = spellsData.values.firstWhere(
       (spell) => int.parse(spell.key ?? '0') == spellId,
       orElse: () =>
           SummonerSpellModel(id: spellId.toString(), name: 'Unknown', cooldown: [0]),
     );
-    return fromModel(spellModel);
+    return fromModel(spellModel, api);
   }
 }

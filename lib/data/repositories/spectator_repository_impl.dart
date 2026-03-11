@@ -8,11 +8,10 @@ import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
 
 final class SpectatorRepositoryImpl implements SpectatorRepository {
   SpectatorRepositoryImpl({
-    RiotAmericasApi? dataSource,
-    DataDragonApi? dataDragonDataSource,
+    required this.dataSource,
+    required DataDragonApi dataDragonDataSource,
     required SessionRepository sessionRepository,
-  }) : dataSource = dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
-       _dataDragonDataSource = dataDragonDataSource ?? DataDragonApi(),
+  }) : _dataDragonDataSource = dataDragonDataSource,
        _sessionRepository = sessionRepository;
 
   final RiotAmericasApi dataSource;
@@ -41,7 +40,12 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     final List<GameParticipant> players =
         response.participants
             ?.map(
-              (player) => GameParticipantMapper.fromModel(player, spellsData, userTeamId),
+              (player) => GameParticipantMapper.fromModel(
+                player,
+                spellsData,
+                userTeamId,
+                _dataDragonDataSource,
+              ),
             )
             .toList() ??
         [];

@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'region.dart';
 
 part 'account.freezed.dart';
+part 'account.g.dart';
 
 @freezed
 abstract class Account with _$Account {
@@ -12,4 +13,6 @@ abstract class Account with _$Account {
     required String tagLine,
     required Region region,
   }) = _Account;
+
+  factory Account.fromJson(Map<String, Object?> json) => _$AccountFromJson(json);
 }

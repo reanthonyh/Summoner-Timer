@@ -11,6 +11,7 @@ part of 'account.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$Account {
 
@@ -21,6 +22,8 @@ mixin _$Account {
 @pragma('vm:prefer-inline')
 $AccountCopyWith<Account> get copyWith => _$AccountCopyWithImpl<Account>(this as Account, _$identity);
 
+  /// Serializes this Account to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,region);
 
@@ -206,11 +209,11 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region);case _:
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _Account implements Account {
   const _Account({required this.puuid, required this.gameName, required this.tagLine, required this.region});
-  
+  factory _Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
 
 @override final  String puuid;
 @override final  String gameName;
@@ -223,14 +226,17 @@ class _Account implements Account {
 @pragma('vm:prefer-inline')
 _$AccountCopyWith<_Account> get copyWith => __$AccountCopyWithImpl<_Account>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$AccountToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,region);
 

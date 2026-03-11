@@ -9,5 +9,5 @@ abstract interface class AccountRepository {
 
   Future<List<Account>> getSavedAccounts();
 
-  Future<void> saveAccountPUUID(Account account);
+  Future<void> saveAccount(Account account);
 }

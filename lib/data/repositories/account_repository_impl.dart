@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
@@ -8,15 +8,14 @@ import 'package:summoner_timer/domain/repositories/session_repository.dart';
 
 final class AccountRepositoryImpl implements AccountRepository {
   AccountRepositoryImpl({
-    RiotAmericasApi? dataSource,
+    required this.dataSource,
+    required this.localDataSource,
     required SessionRepository sessionRepository,
-  }) : dataSource = dataSource ?? RiotAmericasApi(sessionRepository: sessionRepository),
-       _sessionRepository = sessionRepository;
+  }) : _sessionRepository = sessionRepository;
 
   final RiotAmericasApi dataSource;
+  final LocalAccountDataSource localDataSource;
   final SessionRepository _sessionRepository;
-
-  static const _accountsKey = 'saved_account_puuids';
 
   @override
   Future<Account> retrieveSummonerByPUUID(String puuid) async {
@@ -76,44 +75,11 @@ final class AccountRepositoryImpl implements AccountRepository {
 
   @override
   Future<List<Account>> getSavedAccounts() async {
-    final prefs = await SharedPreferences.getInstance();
-    final accountsJson = prefs.getStringList(_accountsKey) ?? [];
-
-    final accounts = <Account>[];
-
-    for (final json in accountsJson) {
-      try {
-        final accountResponse = await dataSource.getAccountByPUUID(json);
-
-        if (accountResponse.puuid == null) {
-          throw Exception('Account not found for PUUID: $json');
-        }
-
-        final regionResponse = await dataSource.getSummonerRegion(json);
-
-        final account = AccountMapper.fromModels(
-          accountModel: accountResponse,
-          regionModel: regionResponse,
-        );
-
-        accounts.add(account);
-      } catch (err) {
-        print('Repository Impl: Error retrieving saved account: $err');
-      }
-    }
-
-    return accounts;
+    return localDataSource.getSavedAccounts();
   }
 
   @override
-  Future<void> saveAccountPUUID(Account account) async {
-    final prefs = await SharedPreferences.getInstance();
-    final accountsJson = prefs.getStringList(_accountsKey) ?? [];
-
-    final puuid = account.puuid;
-    if (!accountsJson.contains(puuid)) {
-      accountsJson.insert(0, puuid);
-      await prefs.setStringList(_accountsKey, accountsJson);
-    }
+  Future<void> saveAccount(Account account) async {
+    await localDataSource.saveAccount(account);
   }
 }

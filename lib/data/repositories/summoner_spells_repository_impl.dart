@@ -5,8 +5,7 @@ import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
 
 final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
-  SummonerSpellsRepositoryImpl({DataDragonApi? dataSource})
-    : dataSource = dataSource ?? DataDragonApi();
+  SummonerSpellsRepositoryImpl({required this.dataSource});
 
   final DataDragonApi dataSource;
   List<SummonerSpell>? _cachedSpells;
@@ -28,11 +27,15 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
       final response = await dataSource.getSummonerSpells();
 
       final summonerSpells =
-          response.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
+          response.data?.values
+              .map((spell) => SummonerSpellMapper.fromModel(spell, dataSource))
+              .toList() ??
+          [];
 
-      final filteredSpells = summonerSpells.where((spell) {
-        return _isAllowedMode(spell.modes);
-      }).toList();
+      final filteredSpells =
+          summonerSpells.where((spell) {
+            return _isAllowedMode(spell.modes);
+          }).toList();
 
       _cachedSpells = filteredSpells;
       return filteredSpells;
@@ -45,7 +48,10 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
   List<SummonerSpell> _getOfflineSpells() {
     final offlineData = LocalSummonerSpellsDataSource.getSummonerSpells();
     final spells =
-        offlineData.data?.values.map(SummonerSpellMapper.fromModel).toList() ?? [];
+        offlineData.data?.values
+            .map((spell) => SummonerSpellMapper.fromModel(spell, dataSource))
+            .toList() ??
+        [];
 
     _cachedSpells = spells;
     return spells;

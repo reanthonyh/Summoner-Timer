@@ -7,6 +7,6 @@ final class SaveAccountUseCase {
   final AccountRepository repository;
 
   Future<void> call(Account account) {
-    return repository.saveAccountPUUID(account);
+    return repository.saveAccount(account);
   }
 }

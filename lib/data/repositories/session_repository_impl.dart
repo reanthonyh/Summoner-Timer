@@ -1,4 +1,3 @@
-import 'package:summoner_timer/core/networking/dio_client.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/session_repository.dart';
 

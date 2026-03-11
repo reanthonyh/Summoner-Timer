@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/data/models/summoner_spells/summoner_spell_model.dart';
 import 'package:summoner_timer/data/models/summoner_spells/summoner_spell_image_model.dart';
 import 'package:summoner_timer/data/models/summoner_spells/summoner_spells_model_response.dart';
@@ -5,7 +6,7 @@ import 'package:summoner_timer/data/models/summoner_spells/summoner_spells_model
 final class LocalSummonerSpellsDataSource {
   LocalSummonerSpellsDataSource._();
 
-  static const String _baseUrl = 'https://ddragon.leagueoflegends.com/cdn/16.4.1';
+  static const String _baseUrl = ApiConstants.dataDragonBaseUrl;
 
   static String getFullImageUrl(String fullName) => '$_baseUrl/img/spell/$fullName';
   static String getSpriteUrl(String spriteName) => '$_baseUrl/img/sprite/$spriteName';
@@ -13,7 +14,7 @@ final class LocalSummonerSpellsDataSource {
   static SummonerSpellsModelResponse getSummonerSpells() {
     return SummonerSpellsModelResponse(
       type: 'summoner',
-      version: '16.4.1',
+      version: ApiConstants.dataDragonVersion,
       data: {
         'SummonerBarrier': _createSpell(
           id: 'SummonerBarrier',
