@@ -34,7 +34,7 @@ final class LocalAccountDataSourceImpl implements LocalAccountDataSource {
     final accounts = await getSavedAccounts();
 
     // Avoid duplicates
-    final filtered = accounts.where((a) => a.puuid != account.puuid).toList();
+    final filtered = accounts.where((acc) => acc.puuid != account.puuid).toList();
     filtered.insert(0, account);
 
     final encoded = filtered.map((a) => jsonEncode(a.toJson())).toList();
