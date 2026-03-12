@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/local_summoner_spells_datasource.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
@@ -18,9 +19,9 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
   }
 
   @override
-  Future<List<SummonerSpell>> getSummonerSpells() async {
+  Future<Result<List<SummonerSpell>, Exception>> getSummonerSpells() async {
     if (_cachedSpells != null) {
-      return _cachedSpells!;
+      return Result.success(_cachedSpells!);
     }
 
     try {
@@ -37,10 +38,15 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
       }).toList();
 
       _cachedSpells = filteredSpells;
-      return filteredSpells;
+      return Result.success(filteredSpells);
     } catch (e) {
       print('SummonerSpellsRepositoryImpl - Error: $e, using offline data');
-      return _getOfflineSpells();
+      try {
+        final offlineSpells = _getOfflineSpells();
+        return Result.success(offlineSpells);
+      } catch (e) {
+        return Result.failure(e as Exception);
+      }
     }
   }
 
@@ -56,3 +62,4 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
     return spells;
   }
 }
+

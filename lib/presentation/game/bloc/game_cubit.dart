@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/usecases/get_current_game_usecase.dart';
 
 import 'game_state.dart';
 
-class GameCubit extends Cubit<GameState> {
+final class GameCubit extends Cubit<GameState> {
   GameCubit({required GetCurrentGameUseCase getCurrentGameUseCase})
     : _getCurrentGameUseCase = getCurrentGameUseCase,
       super(const GameState.initial());
@@ -12,11 +13,16 @@ class GameCubit extends Cubit<GameState> {
 
   Future<void> fetchCurrentGame() async {
     emit(const GameState.loading());
-    try {
-      final gameInfo = await _getCurrentGameUseCase();
-      emit(GameState.loaded(gameInfo));
-    } catch (e) {
-      emit(GameState.error(e.toString()));
-    }
+
+    final result = await _getCurrentGameUseCase();
+
+    result.when(
+      success: (gameInfo) {
+        emit(GameState.loaded(gameInfo));
+      },
+      failure: (error) {
+        emit(GameState.error(error.toString()));
+      },
+    );
   }
 }

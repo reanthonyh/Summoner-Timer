@@ -5,7 +5,7 @@ import 'package:summoner_timer/presentation/game/bloc/game_cubit.dart';
 import 'package:summoner_timer/presentation/game/bloc/game_state.dart';
 import 'package:summoner_timer/presentation/game/widgets/summoner_spell_card.dart';
 
-class GamePage extends StatefulWidget {
+final class GamePage extends StatefulWidget {
   const GamePage({super.key});
 
   @override

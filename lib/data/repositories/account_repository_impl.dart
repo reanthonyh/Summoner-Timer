@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/datasources/riot_summoner_api.dart';
@@ -21,7 +22,7 @@ final class AccountRepositoryImpl implements AccountRepository {
   final SessionRepository _sessionRepository;
 
   @override
-  Future<Account> retrieveSummonerByPUUID(String puuid) async {
+  Future<Result<Account, Exception>> retrieveSummonerByPUUID(String puuid) async {
     try {
       final accountResponseResult = await dataSource.getAccountByPUUID(puuid);
 
@@ -43,15 +44,15 @@ final class AccountRepositoryImpl implements AccountRepository {
 
       _sessionRepository.setAccount(account);
 
-      return account;
+      return Result.success(account);
     } catch (err) {
       print('Repository Impl: Error retrieving account: $err');
-      rethrow;
+      return Result.failure(err as Exception);
     }
   }
 
   @override
-  Future<Account> retrieveSummonerByNameTag({
+  Future<Result<Account, Exception>> retrieveSummonerByNameTag({
     required String name,
     required String tag,
   }) async {
@@ -79,20 +80,31 @@ final class AccountRepositoryImpl implements AccountRepository {
 
       _sessionRepository.setAccount(account);
 
-      return account;
+      return Result.success(account);
     } catch (e) {
       print('Repository Impl: Error retrieving account: $e');
-      rethrow;
+      return Result.failure(e as Exception);
     }
   }
 
   @override
-  Future<List<Account>> getSavedAccounts() async {
-    return localDataSource.getSavedAccounts();
+  Future<Result<List<Account>, Exception>> getSavedAccounts() async {
+    try {
+      final accounts = await localDataSource.getSavedAccounts();
+      return Result.success(accounts);
+    } catch (e) {
+      return Result.failure(e as Exception);
+    }
   }
 
   @override
-  Future<void> saveAccount(Account account) async {
-    await localDataSource.saveAccount(account);
+  Future<Result<void, Exception>> saveAccount(Account account) async {
+    try {
+      await localDataSource.saveAccount(account);
+      return const Result.success(null);
+    } catch (e) {
+      return Result.failure(e as Exception);
+    }
   }
 }
+

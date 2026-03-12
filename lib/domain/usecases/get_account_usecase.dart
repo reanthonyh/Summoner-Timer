@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/account_repository.dart';
 
@@ -6,7 +7,7 @@ final class GetAccountUseCase {
 
   final AccountRepository repository;
 
-  Future<Account> call({({String name, String tag})? riotId, String? puuid}) {
+  Future<Result<Account, Exception>> call({({String name, String tag})? riotId, String? puuid}) {
     if (puuid != null) {
       return repository.retrieveSummonerByPUUID(puuid);
     }
@@ -14,6 +15,6 @@ final class GetAccountUseCase {
       return repository.retrieveSummonerByNameTag(name: riotId.name, tag: riotId.tag);
     }
 
-    throw ArgumentError('Either riotId or puuid must be provided');
+    return Future.value(Result.failure(Exception('Either riotId or puuid must be provided')));
   }
 }

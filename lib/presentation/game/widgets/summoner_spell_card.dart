@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
-class SummonerSpellCard extends StatefulWidget {
+final class SummonerSpellCard extends StatefulWidget {
   const SummonerSpellCard({super.key, required this.spell});
 
   final SummonerSpell spell;
