@@ -16,9 +16,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final PageController _pageController = PageController();
+  late final PageController _pageController;
 
-  final List<Widget> _pages = [const SearchPage(), const ProfilePage()];
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(keepPage: false);
+  }
 
   @override
   void dispose() {
@@ -55,8 +59,8 @@ class _HomePageState extends State<HomePage> {
             backgroundColor: const Color(0xFF151515),
             body: PageView(
               controller: _pageController,
-              physics: const NeverScrollableScrollPhysics(), // Disable swipe
-              children: _pages,
+              physics: const NeverScrollableScrollPhysics(),
+              children: const [SearchPage(), ProfilePage()],
             ),
             bottomNavigationBar: BottomNavigationBar(
               backgroundColor: const Color(0xFF111111),

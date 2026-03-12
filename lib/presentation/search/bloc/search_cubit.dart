@@ -36,6 +36,7 @@ class SearchCubit extends Cubit<SearchState> {
     try {
       final account = await _getAccountUseCase(riotId: (name: name, tag: tag));
       await _saveAccountUseCase(account);
+      await loadSavedAccounts();
       emit(SearchState.success(account));
     } catch (e) {
       emit(SearchState.error(e.toString()));
@@ -46,8 +47,8 @@ class SearchCubit extends Cubit<SearchState> {
   Future<void> selectSavedAccount(Account account) async {
     emit(const SearchState.loading());
     try {
-      // The session implicitly sets it if we look it up or we can just fetch again
       final refreshed = await _getAccountUseCase(puuid: account.puuid);
+      await loadSavedAccounts();
       emit(SearchState.success(refreshed));
     } catch (e) {
       emit(SearchState.error(e.toString()));
