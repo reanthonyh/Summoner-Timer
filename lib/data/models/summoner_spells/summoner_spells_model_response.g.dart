@@ -12,7 +12,8 @@ _SummonerSpellsModelResponse _$SummonerSpellsModelResponseFromJson(
   type: json['type'] as String?,
   version: json['version'] as String?,
   data: (json['data'] as Map<String, dynamic>?)?.map(
-    (k, e) => MapEntry(k, SummonerSpellModel.fromJson(e as Map<String, dynamic>)),
+    (k, e) =>
+        MapEntry(k, SummonerSpellModel.fromJson(e as Map<String, dynamic>)),
   ),
 );
 

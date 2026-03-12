@@ -7,7 +7,11 @@ part of 'account_model_request.dart';
 // **************************************************************************
 
 _AccountModelRequest _$AccountModelRequestFromJson(Map<String, dynamic> json) =>
-    _AccountModelRequest(name: json['name'] as String, tag: json['tag'] as String);
+    _AccountModelRequest(
+      name: json['name'] as String,
+      tag: json['tag'] as String,
+    );
 
-Map<String, dynamic> _$AccountModelRequestToJson(_AccountModelRequest instance) =>
-    <String, dynamic>{'name': instance.name, 'tag': instance.tag};
+Map<String, dynamic> _$AccountModelRequestToJson(
+  _AccountModelRequest instance,
+) => <String, dynamic>{'name': instance.name, 'tag': instance.tag};

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/utils/result.dart';
+import 'package:summoner_timer/data/repositories/spectator_repository_impl.dart';
 import 'package:summoner_timer/domain/usecases/get_current_game_usecase.dart';
 
 import 'game_state.dart';
@@ -21,7 +22,18 @@ final class GameCubit extends Cubit<GameState> {
         emit(GameState.loaded(gameInfo));
       },
       failure: (error) {
-        emit(GameState.error(error.toString()));
+        if (error is ApiException) {
+          emit(
+            GameState.error(
+              message: error.message,
+              statusCode: error.statusCode,
+              responseBody: error.responseBody,
+              errorType: error.errorType,
+            ),
+          );
+        } else {
+          emit(GameState.error(message: error.toString()));
+        }
       },
     );
   }

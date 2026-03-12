@@ -8,5 +8,10 @@ abstract class GameState with _$GameState {
   const factory GameState.initial() = _Initial;
   const factory GameState.loading() = _Loading;
   const factory GameState.loaded(GameInformation gameInformation) = _Loaded;
-  const factory GameState.error(String message) = _Error;
+  const factory GameState.error({
+    required String message,
+    int? statusCode,
+    String? responseBody,
+    String? errorType,
+  }) = _Error;
 }

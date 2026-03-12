@@ -128,13 +128,13 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( GameInformation gameInformation)?  loaded,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( GameInformation gameInformation)?  loaded,TResult Function( String message,  int? statusCode,  String? responseBody,  String? errorType)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.gameInformation);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message,_that.statusCode,_that.responseBody,_that.errorType);case _:
   return orElse();
 
 }
@@ -152,13 +152,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( GameInformation gameInformation)  loaded,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( GameInformation gameInformation)  loaded,required TResult Function( String message,  int? statusCode,  String? responseBody,  String? errorType)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Loaded():
 return loaded(_that.gameInformation);case _Error():
-return error(_that.message);case _:
+return error(_that.message,_that.statusCode,_that.responseBody,_that.errorType);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -175,13 +175,13 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( GameInformation gameInformation)?  loaded,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( GameInformation gameInformation)?  loaded,TResult? Function( String message,  int? statusCode,  String? responseBody,  String? errorType)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Loaded() when loaded != null:
 return loaded(_that.gameInformation);case _Error() when error != null:
-return error(_that.message);case _:
+return error(_that.message,_that.statusCode,_that.responseBody,_that.errorType);case _:
   return null;
 
 }
@@ -332,10 +332,13 @@ $GameInformationCopyWith<$Res> get gameInformation {
 
 
 class _Error implements GameState {
-  const _Error(this.message);
+  const _Error({required this.message, this.statusCode, this.responseBody, this.errorType});
   
 
  final  String message;
+ final  int? statusCode;
+ final  String? responseBody;
+ final  String? errorType;
 
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
@@ -347,16 +350,16 @@ _$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message)&&(identical(other.statusCode, statusCode) || other.statusCode == statusCode)&&(identical(other.responseBody, responseBody) || other.responseBody == responseBody)&&(identical(other.errorType, errorType) || other.errorType == errorType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,message);
+int get hashCode => Object.hash(runtimeType,message,statusCode,responseBody,errorType);
 
 @override
 String toString() {
-  return 'GameState.error(message: $message)';
+  return 'GameState.error(message: $message, statusCode: $statusCode, responseBody: $responseBody, errorType: $errorType)';
 }
 
 
@@ -367,7 +370,7 @@ abstract mixin class _$ErrorCopyWith<$Res> implements $GameStateCopyWith<$Res> {
   factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String message, int? statusCode, String? responseBody, String? errorType
 });
 
 
@@ -384,10 +387,13 @@ class __$ErrorCopyWithImpl<$Res>
 
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = null,Object? statusCode = freezed,Object? responseBody = freezed,Object? errorType = freezed,}) {
   return _then(_Error(
-null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,statusCode: freezed == statusCode ? _self.statusCode : statusCode // ignore: cast_nullable_to_non_nullable
+as int?,responseBody: freezed == responseBody ? _self.responseBody : responseBody // ignore: cast_nullable_to_non_nullable
+as String?,errorType: freezed == errorType ? _self.errorType : errorType // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
