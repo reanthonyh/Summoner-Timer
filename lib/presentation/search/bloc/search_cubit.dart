@@ -42,12 +42,11 @@ class SearchCubit extends Cubit<SearchState> {
     await result.when(
       success: (account) async {
         await _saveAccountUseCase(account);
-        await loadSavedAccounts();
         emit(SearchState.success(account));
+        await loadSavedAccounts();
       },
       failure: (error) async {
         emit(SearchState.error(error.toString()));
-        await loadSavedAccounts();
       },
     );
   }
@@ -57,10 +56,10 @@ class SearchCubit extends Cubit<SearchState> {
     final result = await _getAccountUseCase(puuid: account.puuid);
     await result.when(
       success: (refreshed) async {
-        await loadSavedAccounts();
         emit(SearchState.success(refreshed));
+        await loadSavedAccounts();
       },
-      failure: (error) {
+      failure: (error) async {
         emit(SearchState.error(error.toString()));
       },
     );

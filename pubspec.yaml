@@ -28,9 +28,26 @@ dev_dependencies:
   json_serializable: ^6.13.0
   mockito: ^5.4.4
   mocktail: ^1.0.4
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
 
 flutter:
   uses-material-design: true
 
   assets:
     - .env
+    - assets/icon/
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/app_icon.png"
+  adaptive_icon_background: "#0F1722"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+
+flutter_native_splash:
+  color: "#0F1722"
+  image: "assets/icon/splash_logo.png"
+  android_12:
+    image: "assets/icon/splash_logo.png"
+    color: "#0F1722"

@@ -22,33 +22,38 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Game Tracker'),
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => context.read<GameCubit>().fetchCurrentGame(),
-          ),
-        ],
-      ),
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: const Color(0xFF121212),
       body: BlocBuilder<GameCubit, GameState>(
         builder: (context, state) {
           return state.when(
             initial: () => const Center(
               child: Text(
                 'Fetching current game...',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white70),
               ),
             ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            loaded: (gameInfo) => _buildGameView(context, gameInfo),
+            loading: () => const Center(
+              child: CircularProgressIndicator(color: Colors.redAccent),
+            ),
+            loaded: (gameInfo) => _buildSliverView(context, gameInfo),
             error: (message) => Center(
-              child: Text(
-                message,
-                style: const TextStyle(color: Colors.red),
-                textAlign: TextAlign.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 60),
+                  const SizedBox(height: 16),
+                  Text(
+                    message,
+                    style: const TextStyle(color: Colors.redAccent),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: () =>
+                        context.read<GameCubit>().fetchCurrentGame(),
+                    child: const Text('Retry'),
+                  ),
+                ],
               ),
             ),
           );
@@ -57,108 +62,210 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
-  Widget _buildGameView(BuildContext context, GameInformation gameInfo) {
-    final enemyTeam = gameInfo.players.where((p) => p.team == Team.enemy).toList();
-    final allyTeam = gameInfo.players.where((p) => p.team == Team.ally).toList();
+  Widget _buildSliverView(BuildContext context, GameInformation gameInfo) {
+    final enemyTeam =
+        gameInfo.players.where((p) => p.team == Team.enemy).toList();
+    final allyTeam =
+        gameInfo.players.where((p) => p.team == Team.ally).toList();
 
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'ENEMY TEAM',
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        SliverAppBar(
+          expandedHeight: 120.0,
+          floating: true,
+          pinned: true,
+          backgroundColor: const Color(0xFF1A1A1A),
+          flexibleSpace: FlexibleSpaceBar(
+            title: const Text(
+              'GAME TRACKER',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 1.2,
+              ),
+            ),
+            background: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFF2A2A2A), Color(0xFF121212)],
+                ),
+              ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: ListView.builder(
-            itemCount: enemyTeam.length,
-            itemBuilder: (context, index) {
-              final player = enemyTeam[index];
-              return _buildPlayerRow(player);
-            },
-          ),
-        ),
-        const Divider(color: Colors.grey),
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'ALLY TEAM',
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () => context.read<GameCubit>().fetchCurrentGame(),
             ),
-          ),
+          ],
         ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: allyTeam.length,
-            itemBuilder: (context, index) {
-              final player = allyTeam[index];
-              return _buildPlayerRow(player);
+        _buildTeamHeader('ENEMY TEAM', Colors.redAccent),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return _AnimatedPlayerRow(
+                player: enemyTeam[index],
+                index: index,
+              );
             },
+            childCount: enemyTeam.length,
           ),
         ),
+        const SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Divider(color: Colors.white10, thickness: 2),
+          ),
+        ),
+        _buildTeamHeader('ALLY TEAM', Colors.blueAccent),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return _AnimatedPlayerRow(
+                player: allyTeam[index],
+                index: index + enemyTeam.length,
+              );
+            },
+            childCount: allyTeam.length,
+          ),
+        ),
+        const SliverPadding(padding: EdgeInsets.only(bottom: 40)),
       ],
     );
   }
 
-  Widget _buildPlayerRow(GameParticipant player) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2A),
-        borderRadius: BorderRadius.circular(12),
+  Widget _buildTeamHeader(String title, Color color) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+        child: Row(
+          children: [
+            Container(
+              width: 4,
+              height: 24,
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyle(
+                color: color,
+                fontSize: 14,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2,
+              ),
+            ),
+          ],
+        ),
       ),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: player.team == Team.enemy
-                ? Colors.red.withOpacity(0.2)
-                : Colors.blue.withOpacity(0.2),
-            child: Icon(
-              Icons.person,
-              color: player.team == Team.enemy ? Colors.red : Colors.blue,
-            ),
+    );
+  }
+}
+
+class _AnimatedPlayerRow extends StatelessWidget {
+  const _AnimatedPlayerRow({required this.player, required this.index});
+
+  final GameParticipant player;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      duration: Duration(milliseconds: 400 + (index * 100)),
+      tween: Tween(begin: 0.0, end: 1.0),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        return Transform.translate(
+          offset: Offset(0, 20 * (1 - value)),
+          child: Opacity(
+            opacity: value,
+            child: child,
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  player.riotId,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E1E1E),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: player.team == Team.enemy
+                      ? Colors.redAccent.withValues(alpha: 0.3)
+                      : Colors.blueAccent.withValues(alpha: 0.3),
+                  width: 2,
+                ),
+              ),
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: const Color(0xFF2A2A2A),
+                child: Icon(
+                  Icons.person,
+                  color: player.team == Team.enemy
+                      ? Colors.redAccent
+                      : Colors.blueAccent,
+                  size: 20,
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    player.riotId,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
                   ),
-                ),
-                Text(
-                  'Champ: ${player.championId}',
-                  style: const TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    'Champion ID: ${player.championId}',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.5),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            width: 60,
-            height: 60,
-            child: SummonerSpellCard(spell: player.spellOne),
-          ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 60,
-            height: 60,
-            child: SummonerSpellCard(spell: player.spellTwo),
-          ),
-        ],
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 54,
+              height: 54,
+              child: SummonerSpellCard(spell: player.spellOne),
+            ),
+            const SizedBox(width: 4),
+            SizedBox(
+              width: 54,
+              height: 54,
+              child: SummonerSpellCard(spell: player.spellTwo),
+            ),
+          ],
+        ),
       ),
     );
   }

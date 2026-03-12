@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
@@ -11,94 +10,142 @@ final class SummonerSpellCard extends StatefulWidget {
   State<SummonerSpellCard> createState() => _SummonerSpellCardState();
 }
 
-class _SummonerSpellCardState extends State<SummonerSpellCard> {
-  int _remainingSeconds = 0;
-  Timer? _timer;
+class _SummonerSpellCardState extends State<SummonerSpellCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool _isCooldownActive = false;
 
-  bool get _isActive => _remainingSeconds > 0;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: widget.spell.cooldownSeconds),
+    );
 
-  void _startTimer() {
-    if (_isActive) return;
-    setState(() {
-      _remainingSeconds = widget.spell.cooldownSeconds;
-    });
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 0) {
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
         setState(() {
-          _remainingSeconds--;
+          _isCooldownActive = false;
         });
-      } else {
-        _stopTimer();
+        _controller.reset();
       }
     });
   }
 
-  void _stopTimer() {
-    _timer?.cancel();
-    _timer = null;
-    setState(() {
-      _remainingSeconds = 0;
-    });
+  void _toggleTimer() {
+    if (_isCooldownActive) {
+      _controller.reset();
+      setState(() {
+        _isCooldownActive = false;
+      });
+    } else {
+      setState(() {
+        _isCooldownActive = true;
+      });
+      _controller.forward();
+    }
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _startTimer,
-      onLongPress: _stopTimer,
-      child: Container(
+      onTap: _toggleTimer,
+      onLongPress: () {
+        if (_isCooldownActive) {
+          _controller.reset();
+          setState(() {
+            _isCooldownActive = false;
+          });
+        }
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: _isActive ? Colors.red.withOpacity(0.3) : Colors.grey[850],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: _isActive ? Colors.red : Colors.grey[700]!, width: 2),
-        ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (widget
-                    .spell
-                    .imageUrl
-                    .isNotEmpty) // Use spriteUrl or imageUrl depending on API
-                  Image.network(
-                    widget.spell.imageUrl,
-                    width: 40,
-                    height: 40,
-                    errorBuilder: (_, _, _) =>
-                        const Icon(Icons.flash_on, color: Colors.amber),
-                  )
-                else
-                  const Icon(Icons.flash_on, color: Colors.amber),
-              ],
-            ),
-            if (_isActive)
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Center(
-                  child: Text(
-                    '$_remainingSeconds',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+          color: _isCooldownActive ? Colors.black87 : Colors.grey[850],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: _isCooldownActive ? Colors.redAccent : Colors.grey[700]!,
+            width: 2,
+          ),
+          boxShadow: _isCooldownActive
+              ? [
+                  BoxShadow(
+                    color: Colors.redAccent.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    spreadRadius: 1,
                   ),
-                ),
+                ]
+              : null,
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Spell Image with Desaturation when on cooldown
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _isCooldownActive ? 0.4 : 1.0,
+                child: widget.spell.imageUrl.isNotEmpty
+                    ? Image.network(
+                        widget.spell.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, _, _) =>
+                            const Icon(Icons.flash_on, color: Colors.amber),
+                      )
+                    : const Icon(Icons.flash_on, color: Colors.amber),
               ),
-          ],
+
+              // Cooldown Progress Overlay
+              if (_isCooldownActive)
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    final remainingSeconds =
+                        (widget.spell.cooldownSeconds * (1 - _controller.value))
+                            .ceil();
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SizedBox.expand(
+                          child: CircularProgressIndicator(
+                            value: 1 - _controller.value,
+                            strokeWidth: 4,
+                            backgroundColor: Colors.white10,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.redAccent,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '$remainingSeconds',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            shadows: [
+                              Shadow(
+                                blurRadius: 4,
+                                color: Colors.black,
+                                offset: Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+            ],
+          ),
         ),
       ),
     );
