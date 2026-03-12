@@ -39,6 +39,7 @@ Future<void> setupDependencies() async {
     () => AccountRepositoryImpl(
       dataSource: getIt<RiotAmericasApi>(),
       localDataSource: getIt<LocalAccountDataSource>(),
+      summonerDataSource: getIt<RiotSummonerApi>(),
       sessionRepository: getIt<SessionRepository>(),
     ),
   );

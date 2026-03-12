@@ -1,5 +1,6 @@
 import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
+import 'package:summoner_timer/data/datasources/riot_summoner_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
@@ -10,21 +11,28 @@ final class AccountRepositoryImpl implements AccountRepository {
   AccountRepositoryImpl({
     required this.dataSource,
     required this.localDataSource,
+    required this.summonerDataSource,
     required SessionRepository sessionRepository,
   }) : _sessionRepository = sessionRepository;
 
   final RiotAmericasApi dataSource;
+  final RiotSummonerApi summonerDataSource;
   final LocalAccountDataSource localDataSource;
   final SessionRepository _sessionRepository;
 
   @override
   Future<Account> retrieveSummonerByPUUID(String puuid) async {
     try {
-      final accountResponse = await dataSource.getAccountByPUUID(puuid);
+      final accountResponseResult = await dataSource.getAccountByPUUID(puuid);
 
-      if (accountResponse.puuid == null) {
+      if (accountResponseResult.puuid == null) {
         throw Exception('Account not found for PUUID: $puuid');
       }
+
+      final summonerResponse = await summonerDataSource.getSummonerByPUUID(puuid);
+      final accountResponse = accountResponseResult.copyWith(
+        profileIconId: summonerResponse.profileIconId,
+      );
 
       final regionResponse = await dataSource.getSummonerRegion(puuid);
 
@@ -50,12 +58,17 @@ final class AccountRepositoryImpl implements AccountRepository {
     try {
       final request = AccountModelRequest(name: name, tag: tag);
 
-      final accountResponse = await dataSource.getAccount(request);
+      final accountResponseResult = await dataSource.getAccount(request);
 
-      final puuid = accountResponse.puuid;
+      final puuid = accountResponseResult.puuid;
       if (puuid == null) {
         throw Exception('Account not found for $name#$tag');
       }
+
+      final summonerResponse = await summonerDataSource.getSummonerByPUUID(puuid);
+      final accountResponse = accountResponseResult.copyWith(
+        profileIconId: summonerResponse.profileIconId,
+      );
 
       final regionResponse = await dataSource.getSummonerRegion(puuid);
 

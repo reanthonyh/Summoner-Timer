@@ -17,6 +17,7 @@ class AccountMapper {
         (element) => element.code == regionModel.region,
         orElse: () => Region.lan,
       ),
+      profileIconId: accountModel.profileIconId,
     );
   }
 }
