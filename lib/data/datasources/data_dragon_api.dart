@@ -8,8 +8,12 @@ final class DataDragonApi {
 
   final Dio _client;
 
-  String getFullImageUrl(String fullName) => '${ApiConstants.dataDragonBaseUrl}/img/spell/$fullName';
-  String getSpriteUrl(String spriteName) => '${ApiConstants.dataDragonBaseUrl}/img/sprite/$spriteName';
+  String getFullImageUrl(String fullName) =>
+      '${ApiConstants.dataDragonBaseUrl}/img/spell/$fullName';
+  String getSpriteUrl(String spriteName) =>
+      '${ApiConstants.dataDragonBaseUrl}/img/sprite/$spriteName';
+  String getProfileIconUrl(int profileIconId) =>
+      '${ApiConstants.dataDragonBaseUrl}/img/profileicon/$profileIconId.png';
 
   Future<SummonerSpellsModelResponse> getSummonerSpells() async {
     final url = '${ApiConstants.dataDragonBaseUrl}/data/en_US/summoner.json';

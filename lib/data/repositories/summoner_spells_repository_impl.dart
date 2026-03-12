@@ -32,10 +32,9 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
               .toList() ??
           [];
 
-      final filteredSpells =
-          summonerSpells.where((spell) {
-            return _isAllowedMode(spell.modes);
-          }).toList();
+      final filteredSpells = summonerSpells.where((spell) {
+        return _isAllowedMode(spell.modes);
+      }).toList();
 
       _cachedSpells = filteredSpells;
       return filteredSpells;

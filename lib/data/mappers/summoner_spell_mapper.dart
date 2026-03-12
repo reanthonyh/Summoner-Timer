@@ -13,9 +13,7 @@ class SummonerSpellMapper {
       spriteUrl: model.image?.sprite != null
           ? api.getSpriteUrl(model.image!.sprite!)
           : '',
-      imageUrl: model.image?.full != null
-          ? api.getFullImageUrl(model.image!.full!)
-          : '',
+      imageUrl: model.image?.full != null ? api.getFullImageUrl(model.image!.full!) : '',
       modes: model.modes,
     );
   }

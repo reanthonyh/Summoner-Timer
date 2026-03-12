@@ -15,14 +15,17 @@ final class LocalAccountDataSourceImpl implements LocalAccountDataSource {
     final prefs = await SharedPreferences.getInstance();
     final accountsJson = prefs.getStringList(_accountsKey) ?? [];
 
-    return accountsJson.map((json) {
-      try {
-        return Account.fromJson(jsonDecode(json));
-      } catch (e) {
-        print('LocalAccountDataSource: Error parsing account: $e');
-        return null;
-      }
-    }).whereType<Account>().toList();
+    return accountsJson
+        .map((json) {
+          try {
+            return Account.fromJson(jsonDecode(json));
+          } catch (e) {
+            print('LocalAccountDataSource: Error parsing account: $e');
+            return null;
+          }
+        })
+        .whereType<Account>()
+        .toList();
   }
 
   @override

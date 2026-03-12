@@ -19,9 +19,6 @@ enum Region {
   RiotHost get regionalHost => RiotHost.americas;
 
   static Region fromCode(String code) {
-    return Region.values.firstWhere(
-      (r) => r.code == code,
-      orElse: () => Region.lan,
-    );
+    return Region.values.firstWhere((r) => r.code == code, orElse: () => Region.lan);
   }
 }
