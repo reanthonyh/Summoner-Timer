@@ -84,7 +84,7 @@ void main() {
     test('returns empty list when no spells are available', () async {
       when(
         () => mockRepository.getSummonerSpells(),
-      ).thenAnswer((_) async => Result.success([]));
+      ).thenAnswer((_) async => const Result.success([]));
 
       final result = await useCase();
 

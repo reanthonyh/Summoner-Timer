@@ -27,7 +27,7 @@ void main() {
     });
 
     test('success with complex type works correctly', () {
-      final result = Result.success({'key': 'value', 'count': 5});
+      final result = const Result.success({'key': 'value', 'count': 5});
 
       Map<String, dynamic>? captured;
       result.when(

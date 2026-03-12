@@ -22,7 +22,7 @@ void main() {
     const testTag = 'NA1';
     const testRegion = Region.na;
 
-    final testAccount = Account(
+    final testAccount = const Account(
       puuid: testPuuid,
       gameName: testName,
       tagLine: testTag,

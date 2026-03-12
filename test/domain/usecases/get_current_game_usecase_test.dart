@@ -17,7 +17,7 @@ void main() {
   });
 
   group('GetCurrentGameUseCase', () {
-    final testGameInfo = GameInformation(
+    final testGameInfo = const GameInformation(
       matchId: 'game-123',
       players: [
         GameParticipant(
@@ -25,14 +25,14 @@ void main() {
           riotId: 'Player1#NA1',
           team: Team.ally,
           championId: 1,
-          spellOne: const SummonerSpell(
+          spellOne: SummonerSpell(
             id: 'SummonerBarrier',
             name: 'Barrier',
             cooldownSeconds: 180,
             spriteUrl: '',
             imageUrl: '',
           ),
-          spellTwo: const SummonerSpell(
+          spellTwo: SummonerSpell(
             id: 'SummonerFlash',
             name: 'Flash',
             cooldownSeconds: 300,
