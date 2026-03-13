@@ -62,4 +62,3 @@ final class SummonerSpellsRepositoryImpl implements SummonerSpellsRepository {
     return spells;
   }
 }
-

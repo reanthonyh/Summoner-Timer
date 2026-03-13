@@ -34,83 +34,26 @@ class _GamePageState extends State<GamePage> {
             ),
             loading: () =>
                 const Center(child: CircularProgressIndicator(color: Colors.redAccent)),
-            loaded: (gameInfo) => _buildSliverView(context, gameInfo),
-            error: (message, statusCode, responseBody, errorType) => Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+            loaded: (gameInfo) => _GameSliverView(gameInfo: gameInfo),
+            error: (message, statusCode, responseBody, errorType) {
+              final isNotFound = statusCode == 404 || errorType == 'NOT_FOUND';
+              final displayMessage = isNotFound
+                  ? 'No Game Live Right Now'
+                  : 'An error occurred. Please try again.';
+
+              return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.red.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.red.withValues(alpha: 0.3),
-                          width: 2,
-                        ),
-                      ),
-                      child: const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Failed to Load Game',
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.9),
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Icon(
+                      isNotFound ? Icons.videogame_asset_off : Icons.error_outline,
+                      color: Colors.white54,
+                      size: 64,
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E1E1E),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.red.withValues(alpha: 0.2)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildErrorRow(
-                            Icons.message,
-                            'Message',
-                            message,
-                            Colors.redAccent,
-                          ),
-                          if (statusCode != null) ...[
-                            const Divider(color: Colors.white12, height: 24),
-                            _buildErrorRow(
-                              Icons.tag,
-                              'Status Code',
-                              statusCode.toString(),
-                              Colors.orange,
-                            ),
-                          ],
-                          if (errorType != null) ...[
-                            const Divider(color: Colors.white12, height: 24),
-                            _buildErrorRow(
-                              Icons.warning_amber,
-                              'Error Type',
-                              errorType,
-                              Colors.amber,
-                            ),
-                          ],
-                          if (responseBody != null && responseBody.isNotEmpty) ...[
-                            const Divider(color: Colors.white12, height: 24),
-                            _buildErrorRow(
-                              Icons.code,
-                              'Response',
-                              responseBody.length > 500
-                                  ? '${responseBody.substring(0, 500)}...'
-                                  : responseBody,
-                              Colors.blueGrey,
-                            ),
-                          ],
-                        ],
-                      ),
+                    Text(
+                      displayMessage,
+                      style: const TextStyle(color: Colors.white70, fontSize: 18),
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton.icon(
@@ -120,20 +63,26 @@ class _GamePageState extends State<GamePage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
       ),
     );
   }
+}
 
-  Widget _buildSliverView(BuildContext context, GameInformation gameInfo) {
+class _GameSliverView extends StatelessWidget {
+  final GameInformation gameInfo;
+
+  const _GameSliverView({required this.gameInfo});
+
+  @override
+  Widget build(BuildContext context) {
     final enemyTeam = gameInfo.players.where((p) => p.team == Team.enemy).toList();
     final allyTeam = gameInfo.players.where((p) => p.team == Team.ally).toList();
 
@@ -167,7 +116,7 @@ class _GamePageState extends State<GamePage> {
             ),
           ],
         ),
-        _buildTeamHeader('ENEMY TEAM', Colors.redAccent),
+        const _TeamHeader(title: 'ENEMY TEAM', color: Colors.redAccent),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return _AnimatedPlayerRow(player: enemyTeam[index], index: index);
@@ -179,7 +128,7 @@ class _GamePageState extends State<GamePage> {
             child: Divider(color: Colors.white10, thickness: 2),
           ),
         ),
-        _buildTeamHeader('ALLY TEAM', Colors.blueAccent),
+        const _TeamHeader(title: 'ALLY TEAM', color: Colors.blueAccent),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return _AnimatedPlayerRow(
@@ -192,8 +141,16 @@ class _GamePageState extends State<GamePage> {
       ],
     );
   }
+}
 
-  Widget _buildTeamHeader(String title, Color color) {
+class _TeamHeader extends StatelessWidget {
+  final String title;
+  final Color color;
+
+  const _TeamHeader({required this.title, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
@@ -220,36 +177,6 @@ class _GamePageState extends State<GamePage> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildErrorRow(IconData icon, String label, String value, Color color) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: color, size: 18),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.5),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 4),
-              SelectableText(
-                value,
-                style: const TextStyle(color: Colors.white, fontSize: 14),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

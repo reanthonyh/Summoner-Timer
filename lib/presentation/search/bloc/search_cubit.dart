@@ -12,10 +12,10 @@ class SearchCubit extends Cubit<SearchState> {
     required GetAccountUseCase getAccountUseCase,
     required GetSavedAccountsUseCase getSavedAccountsUseCase,
     required SaveAccountUseCase saveAccountUseCase,
-  })  : _getAccountUseCase = getAccountUseCase,
-        _getSavedAccountsUseCase = getSavedAccountsUseCase,
-        _saveAccountUseCase = saveAccountUseCase,
-        super(const SearchState.initial()) {
+  }) : _getAccountUseCase = getAccountUseCase,
+       _getSavedAccountsUseCase = getSavedAccountsUseCase,
+       _saveAccountUseCase = saveAccountUseCase,
+       super(const SearchState.initial()) {
     loadSavedAccounts();
   }
 

@@ -22,8 +22,4 @@ Map<String, dynamic> _$AccountToJson(_Account instance) => <String, dynamic>{
   'profileIconId': instance.profileIconId,
 };
 
-const _$RegionEnumMap = {
-  Region.lan: 'la1',
-  Region.las: 'la2',
-  Region.na: 'na1',
-};
+const _$RegionEnumMap = {Region.lan: 'la1', Region.las: 'la2', Region.na: 'na1'};

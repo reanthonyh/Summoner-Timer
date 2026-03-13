@@ -30,4 +30,18 @@ class SummonerSpellMapper {
     );
     return fromModel(spellModel, api);
   }
+
+  static SummonerSpell fromSpellIdEntity(int spellId, List<SummonerSpell> spells) {
+    return spells.firstWhere(
+      (spell) => int.parse(spell.id) == spellId,
+      orElse: () => SummonerSpell(
+        id: spellId.toString(),
+        name: 'Unknown',
+        cooldownSeconds: 0,
+        spriteUrl: '',
+        imageUrl: '',
+        modes: [],
+      ),
+    );
+  }
 }

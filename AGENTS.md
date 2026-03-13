@@ -120,6 +120,7 @@ final class GetAccountUseCase {
 - **Pages**: Place in `presentation/<feature>/pages/`
 - **Widgets**: Place in `presentation/<feature>/widgets/`
 - **Cubits/Blocs**: Place in `presentation/<feature>/bloc/` or `cubit/`
+- **Widget Composition**: Avoid inline widget functions (e.g., `Widget _buildHeader() {...}`). Instead, create private stateless widget classes (e.g., `_Header extends StatelessWidget`) for better performance, reusability, and code organization.
 
 #### Data Layer
 - **Models**: Use freezed + json_serializable for JSON serialization

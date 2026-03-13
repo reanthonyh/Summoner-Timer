@@ -1,50 +1,25 @@
 import 'package:dio/dio.dart';
+import 'package:summoner_timer/core/exceptions/exceptions.dart';
 import 'package:summoner_timer/core/utils/result.dart';
-import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/session_repository.dart';
 import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
-
-class ApiException implements Exception {
-  ApiException({
-    required this.message,
-    this.statusCode,
-    this.responseBody,
-    this.errorType,
-  });
-
-  final String message;
-  final int? statusCode;
-  final String? responseBody;
-  final String? errorType;
-
-  @override
-  String toString() {
-    final buffer = StringBuffer(message);
-    if (statusCode != null) {
-      buffer.write(' (Status: $statusCode)');
-    }
-    if (errorType != null) {
-      buffer.write(' - $errorType');
-    }
-    return buffer.toString();
-  }
-}
+import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
 
 final class SpectatorRepositoryImpl implements SpectatorRepository {
   SpectatorRepositoryImpl({
-    required this.dataSource,
-    required DataDragonApi dataDragonDataSource,
+    required this.riotApi,
     required SessionRepository sessionRepository,
-  }) : _dataDragonDataSource = dataDragonDataSource,
-       _sessionRepository = sessionRepository;
+    required SummonerSpellsRepository summonerSpellsRepository,
+  }) : _sessionRepository = sessionRepository,
+       _summonerSpellsRepository = summonerSpellsRepository;
 
-  final RiotAmericasApi dataSource;
-  final DataDragonApi _dataDragonDataSource;
+  final RiotAmericasApi riotApi;
   final SessionRepository _sessionRepository;
+  final SummonerSpellsRepository _summonerSpellsRepository;
 
   @override
   Future<Result<GameInformation, Exception>> findOnGameMatch() async {
@@ -55,10 +30,13 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
         throw Exception('Account not setted with puuid');
       }
 
-      final response = await dataSource.getMatchInformation(puuid);
+      final response = await riotApi.getMatchInformation(puuid);
 
-      final summonerSpellsResponse = await _dataDragonDataSource.getSummonerSpells();
-      final spellsData = summonerSpellsResponse.data ?? {};
+      final summonerSpellsResult = await _summonerSpellsRepository.getSummonerSpells();
+      final spellsList = summonerSpellsResult.when(
+        success: (spells) => spells,
+        failure: (_) => <SummonerSpell>[],
+      );
 
       final userParticipant = response.participants?.firstWhere(
         (p) => p.puuid == puuid,
@@ -69,11 +47,10 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
       final List<GameParticipant> players =
           response.participants
               ?.map(
-                (player) => GameParticipantMapper.fromModel(
+                (player) => GameParticipantMapper.fromModelWithEntities(
                   player,
-                  spellsData,
+                  spellsList,
                   userTeamId,
-                  _dataDragonDataSource,
                 ),
               )
               .toList() ??

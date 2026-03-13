@@ -44,16 +44,16 @@ Future<void> setupDependencies() async {
     ),
   );
 
-  getIt.registerLazySingleton<SpectatorRepository>(
-    () => SpectatorRepositoryImpl(
-      dataSource: getIt<RiotAmericasApi>(),
-      dataDragonDataSource: getIt<DataDragonApi>(),
-      sessionRepository: getIt<SessionRepository>(),
-    ),
-  );
-
   getIt.registerLazySingleton<SummonerSpellsRepository>(
     () => SummonerSpellsRepositoryImpl(dataSource: getIt<DataDragonApi>()),
+  );
+
+  getIt.registerLazySingleton<SpectatorRepository>(
+    () => SpectatorRepositoryImpl(
+      riotApi: getIt<RiotAmericasApi>(),
+      summonerSpellsRepository: getIt<SummonerSpellsRepository>(),
+      sessionRepository: getIt<SessionRepository>(),
+    ),
   );
 
   // Use Cases

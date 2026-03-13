@@ -24,4 +24,20 @@ class GameParticipantMapper {
       team: model.teamId == userTeamId ? Team.ally : Team.enemy,
     );
   }
+
+  static GameParticipant fromModelWithEntities(
+    ParticipantModel model,
+    List<SummonerSpell> spells,
+    int userTeamId,
+  ) {
+    return GameParticipant(
+      puuid: model.puuid,
+      isBot: false,
+      spellOne: SummonerSpellMapper.fromSpellIdEntity(model.spell1Id ?? 0, spells),
+      spellTwo: SummonerSpellMapper.fromSpellIdEntity(model.spell2Id ?? 0, spells),
+      riotId: model.riotId ?? 'Unknown',
+      championId: model.championId ?? 0,
+      team: model.teamId == userTeamId ? Team.ally : Team.enemy,
+    );
+  }
 }

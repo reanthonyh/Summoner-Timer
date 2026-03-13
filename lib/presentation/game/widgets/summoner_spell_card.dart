@@ -110,8 +110,7 @@ class _SummonerSpellCardState extends State<SummonerSpellCard>
                   animation: _controller,
                   builder: (context, child) {
                     final remainingSeconds =
-                        (widget.spell.cooldownSeconds * (1 - _controller.value))
-                            .ceil();
+                        (widget.spell.cooldownSeconds * (1 - _controller.value)).ceil();
                     return Stack(
                       alignment: Alignment.center,
                       children: [

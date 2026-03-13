@@ -24,9 +24,8 @@ class ProfilePage extends StatelessWidget {
                 style: TextStyle(color: Colors.white70),
               ),
             ),
-            loading: () => const Center(
-              child: CircularProgressIndicator(color: Colors.redAccent),
-            ),
+            loading: () =>
+                const Center(child: CircularProgressIndicator(color: Colors.redAccent)),
             loaded: (account) => _ProfileContent(account: account),
             error: (message) => Center(
               child: Text(message, style: const TextStyle(color: Colors.red)),
@@ -60,9 +59,10 @@ class _ProfileContentState extends State<_ProfileContent>
       duration: const Duration(seconds: 2),
     )..repeat(reverse: true);
 
-    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
-      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
-    );
+    _pulseAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.05,
+    ).animate(CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut));
   }
 
   @override
@@ -149,8 +149,7 @@ class _ProfileContentState extends State<_ProfileContent>
                               )
                             : null,
                         child: widget.account.profileIconId == null
-                            ? const Icon(Icons.person,
-                                size: 60, color: Colors.white)
+                            ? const Icon(Icons.person, size: 60, color: Colors.white)
                             : null,
                       ),
                     ),
@@ -165,7 +164,7 @@ class _ProfileContentState extends State<_ProfileContent>
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                _buildInfoCard(
+                _InfoCard(
                   title: 'REGION',
                   value: widget.account.region.name.toUpperCase(),
                   icon: Icons.public,
@@ -177,9 +176,7 @@ class _ProfileContentState extends State<_ProfileContent>
                   decoration: BoxDecoration(
                     color: const Color(0xFF1E1E1E),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.05),
-                    ),
+                    border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withValues(alpha: 0.3),
@@ -228,9 +225,8 @@ class _ProfileContentState extends State<_ProfileContent>
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => BlocProvider(
-                                  create: (_) => GameCubit(
-                                    getCurrentGameUseCase: getIt(),
-                                  ),
+                                  create: (_) =>
+                                      GameCubit(getCurrentGameUseCase: getIt()),
                                   child: const GamePage(),
                                 ),
                               ),
@@ -248,12 +244,17 @@ class _ProfileContentState extends State<_ProfileContent>
       ],
     );
   }
+}
 
-  Widget _buildInfoCard({
-    required String title,
-    required String value,
-    required IconData icon,
-  }) {
+class _InfoCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final IconData icon;
+
+  const _InfoCard({required this.title, required this.value, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Icon(icon, color: Colors.white38, size: 20),
