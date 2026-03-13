@@ -21,8 +21,22 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
   final SessionRepository _sessionRepository;
   final SummonerSpellsRepository _summonerSpellsRepository;
 
+  GameInformation? _cachedGameInfo;
+  DateTime? _lastFetchTime;
+
+  static const _cacheValidDuration = Duration(minutes: 20);
+
+  bool get _isCacheValid {
+    if (_cachedGameInfo == null || _lastFetchTime == null) return false;
+    return DateTime.now().difference(_lastFetchTime!) < _cacheValidDuration;
+  }
+
   @override
   Future<Result<GameInformation, Exception>> findOnGameMatch() async {
+    if (_isCacheValid) {
+      return Result.success(_cachedGameInfo!);
+    }
+
     try {
       final puuid = _sessionRepository.currentAccount?.puuid;
 
@@ -56,9 +70,15 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
               .toList() ??
           [];
 
-      return Result.success(
-        GameInformation(matchId: response.gameId.toString(), players: players),
+      final gameInfo = GameInformation(
+        matchId: response.gameId.toString(),
+        players: players,
       );
+
+      _cachedGameInfo = gameInfo;
+      _lastFetchTime = DateTime.now();
+
+      return Result.success(gameInfo);
     } on DioException catch (e) {
       return Result.failure(
         ApiException(
