@@ -184,6 +184,7 @@ class _TeamHeader extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         child: Row(
+          spacing: 8,
           children: [
             Container(
               width: 4,
@@ -193,7 +194,6 @@ class _TeamHeader extends StatelessWidget {
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(width: 8),
             Text(
               title,
               style: TextStyle(

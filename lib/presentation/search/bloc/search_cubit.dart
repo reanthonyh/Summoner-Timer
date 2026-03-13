@@ -46,7 +46,10 @@ class SearchCubit extends Cubit<SearchState> {
         await loadSavedAccounts();
       },
       failure: (error) async {
-        emit(SearchState.error(error.toString()));
+        // Log the full error details for debugging
+        // ignore: avoid_print
+        print('Search error: $error');
+        emit(const SearchState.error('Unable to find that Account'));
       },
     );
   }
@@ -60,7 +63,10 @@ class SearchCubit extends Cubit<SearchState> {
         await loadSavedAccounts();
       },
       failure: (error) async {
-        emit(SearchState.error(error.toString()));
+        // Log the full error details for debugging
+        // ignore: avoid_print
+        print('Search error: $error');
+        emit(const SearchState.error('Unable to find that Account'));
       },
     );
   }

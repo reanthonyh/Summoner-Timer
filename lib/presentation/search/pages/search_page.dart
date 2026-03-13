@@ -348,8 +348,11 @@ class _RecentAccountsSection extends StatelessWidget {
                   );
                 },
                 success: (_) => const Center(child: CircularProgressIndicator()),
-                error: (message) => Center(
-                  child: Text(message, style: const TextStyle(color: Colors.red)),
+                error: (message) => const Center(
+                  child: Text(
+                    'Unable to find that Account',
+                    style: TextStyle(color: Colors.red),
+                  ),
                 ),
                 orElse: () {
                   return const Center(child: CircularProgressIndicator());
