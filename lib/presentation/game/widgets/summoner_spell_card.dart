@@ -1,55 +1,92 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
 final class SummonerSpellCard extends StatefulWidget {
-  const SummonerSpellCard({super.key, required this.spell});
+  const SummonerSpellCard({
+    super.key,
+    required this.spell,
+    this.isInteractive = true,
+    this.onCooldownStateChanged,
+  });
 
   final SummonerSpell spell;
+  final bool isInteractive;
+  final void Function(bool isActive)? onCooldownStateChanged;
 
   @override
   State<SummonerSpellCard> createState() => _SummonerSpellCardState();
 }
 
-class _SummonerSpellCardState extends State<SummonerSpellCard>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _SummonerSpellCardState extends State<SummonerSpellCard> {
+  Timer? _timer;
+  DateTime? _startTime;
   bool _isCooldownActive = false;
+
+  int get _remainingSeconds {
+    if (!_isCooldownActive || _startTime == null) return widget.spell.cooldownSeconds;
+    final elapsed = DateTime.now().difference(_startTime!).inSeconds;
+    final remaining = widget.spell.cooldownSeconds - elapsed;
+    return remaining > 0 ? remaining : 0;
+  }
+
+  double get _progress {
+    if (!_isCooldownActive || _startTime == null) return 1.0;
+    final elapsed = DateTime.now().difference(_startTime!).inSeconds;
+    final remaining = widget.spell.cooldownSeconds - elapsed;
+    return (remaining / widget.spell.cooldownSeconds).clamp(0.0, 1.0);
+  }
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: widget.spell.cooldownSeconds),
-    );
+    _startTimerLoop();
+  }
 
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
+  void _startTimerLoop() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_isCooldownActive) {
         setState(() {
-          _isCooldownActive = false;
+          // Trigger rebuild to update time display
         });
-        _controller.reset();
+        if (_remainingSeconds <= 0) {
+          _stopTimer();
+        }
       }
     });
   }
 
+  void _stopTimer() {
+    setState(() {
+      _isCooldownActive = false;
+      _startTime = null;
+    });
+    widget.onCooldownStateChanged?.call(false);
+  }
+
   void _toggleTimer() {
+    if (!widget.isInteractive) return;
+
     if (_isCooldownActive) {
-      _controller.reset();
-      setState(() {
-        _isCooldownActive = false;
-      });
+      _stopTimer();
     } else {
       setState(() {
         _isCooldownActive = true;
+        _startTime = DateTime.now();
       });
-      _controller.forward();
+      widget.onCooldownStateChanged?.call(true);
+    }
+  }
+
+  void _resetTimer() {
+    if (_isCooldownActive) {
+      _stopTimer();
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -57,14 +94,7 @@ class _SummonerSpellCardState extends State<SummonerSpellCard>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _toggleTimer,
-      onLongPress: () {
-        if (_isCooldownActive) {
-          _controller.reset();
-          setState(() {
-            _isCooldownActive = false;
-          });
-        }
-      },
+      onLongPress: widget.isInteractive ? _resetTimer : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         margin: const EdgeInsets.all(4),
@@ -106,42 +136,33 @@ class _SummonerSpellCardState extends State<SummonerSpellCard>
 
               // Cooldown Progress Overlay
               if (_isCooldownActive)
-                AnimatedBuilder(
-                  animation: _controller,
-                  builder: (context, child) {
-                    final remainingSeconds =
-                        (widget.spell.cooldownSeconds * (1 - _controller.value)).ceil();
-                    return Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        SizedBox.expand(
-                          child: CircularProgressIndicator(
-                            value: 1 - _controller.value,
-                            strokeWidth: 4,
-                            backgroundColor: Colors.white10,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                              Colors.redAccent,
-                            ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox.expand(
+                      child: CircularProgressIndicator(
+                        value: _progress,
+                        strokeWidth: 4,
+                        backgroundColor: Colors.white10,
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.redAccent),
+                      ),
+                    ),
+                    Text(
+                      '$_remainingSeconds',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            blurRadius: 4,
+                            color: Colors.black,
+                            offset: Offset(0, 2),
                           ),
-                        ),
-                        Text(
-                          '$remainingSeconds',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                blurRadius: 4,
-                                color: Colors.black,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
             ],
           ),

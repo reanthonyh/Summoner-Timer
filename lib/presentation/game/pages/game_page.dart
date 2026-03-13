@@ -4,6 +4,7 @@ import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/presentation/game/bloc/game_cubit.dart';
 import 'package:summoner_timer/presentation/game/bloc/game_state.dart';
 import 'package:summoner_timer/presentation/game/widgets/summoner_spell_card.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 final class GamePage extends StatefulWidget {
   const GamePage({super.key});
@@ -13,10 +14,29 @@ final class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  int _activeTimers = 0;
+
+  void _onTimerStateChanged(bool isActive) {
+    setState(() {
+      if (isActive) {
+        _activeTimers++;
+      } else {
+        _activeTimers--;
+      }
+    });
+    WakelockPlus.toggle(enable: _activeTimers > 0);
+  }
+
   @override
   void initState() {
     super.initState();
     context.read<GameCubit>().fetchCurrentGame();
+  }
+
+  @override
+  void dispose() {
+    WakelockPlus.disable();
+    super.dispose();
   }
 
   @override
@@ -34,7 +54,10 @@ class _GamePageState extends State<GamePage> {
             ),
             loading: () =>
                 const Center(child: CircularProgressIndicator(color: Colors.redAccent)),
-            loaded: (gameInfo) => _GameSliverView(gameInfo: gameInfo),
+            loaded: (gameInfo) => _GameSliverView(
+              gameInfo: gameInfo,
+              onTimerStateChanged: _onTimerStateChanged,
+            ),
             error: (message, statusCode, responseBody, errorType) {
               final isNotFound = statusCode == 404 || errorType == 'NOT_FOUND';
               final displayMessage = isNotFound
@@ -78,8 +101,9 @@ class _GamePageState extends State<GamePage> {
 
 class _GameSliverView extends StatelessWidget {
   final GameInformation gameInfo;
+  final Function(bool) onTimerStateChanged;
 
-  const _GameSliverView({required this.gameInfo});
+  const _GameSliverView({required this.gameInfo, required this.onTimerStateChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +143,11 @@ class _GameSliverView extends StatelessWidget {
         const _TeamHeader(title: 'ENEMY TEAM', color: Colors.redAccent),
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
-            return _AnimatedPlayerRow(player: enemyTeam[index], index: index);
+            return _AnimatedPlayerRow(
+              player: enemyTeam[index],
+              index: index,
+              onTimerStateChanged: onTimerStateChanged,
+            );
           }, childCount: enemyTeam.length),
         ),
         const SliverToBoxAdapter(
@@ -134,6 +162,7 @@ class _GameSliverView extends StatelessWidget {
             return _AnimatedPlayerRow(
               player: allyTeam[index],
               index: index + enemyTeam.length,
+              onTimerStateChanged: onTimerStateChanged,
             );
           }, childCount: allyTeam.length),
         ),
@@ -182,10 +211,15 @@ class _TeamHeader extends StatelessWidget {
 }
 
 class _AnimatedPlayerRow extends StatelessWidget {
-  const _AnimatedPlayerRow({required this.player, required this.index});
+  const _AnimatedPlayerRow({
+    required this.player,
+    required this.index,
+    required this.onTimerStateChanged,
+  });
 
   final GameParticipant player;
   final int index;
+  final Function(bool) onTimerStateChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -265,13 +299,21 @@ class _AnimatedPlayerRow extends StatelessWidget {
             SizedBox(
               width: 54,
               height: 54,
-              child: SummonerSpellCard(spell: player.spellOne),
+              child: SummonerSpellCard(
+                spell: player.spellOne,
+                isInteractive: player.team == Team.enemy,
+                onCooldownStateChanged: onTimerStateChanged,
+              ),
             ),
             const SizedBox(width: 4),
             SizedBox(
               width: 54,
               height: 54,
-              child: SummonerSpellCard(spell: player.spellTwo),
+              child: SummonerSpellCard(
+                spell: player.spellTwo,
+                isInteractive: player.team == Team.enemy,
+                onCooldownStateChanged: onTimerStateChanged,
+              ),
             ),
           ],
         ),
