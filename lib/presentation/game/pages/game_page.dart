@@ -99,16 +99,36 @@ class _GamePageState extends State<GamePage> {
   }
 }
 
-class _GameSliverView extends StatelessWidget {
+class _GameSliverView extends StatefulWidget {
   final GameInformation gameInfo;
   final Function(bool) onTimerStateChanged;
 
   const _GameSliverView({required this.gameInfo, required this.onTimerStateChanged});
 
   @override
+  State<_GameSliverView> createState() => _GameSliverViewState();
+}
+
+class _GameSliverViewState extends State<_GameSliverView> {
+  late List<GameParticipant> _enemyTeam;
+
+  @override
+  void initState() {
+    super.initState();
+    _enemyTeam = widget.gameInfo.players.where((p) => p.team == Team.enemy).toList();
+  }
+
+  @override
+  void didUpdateWidget(_GameSliverView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.gameInfo.matchId != widget.gameInfo.matchId) {
+      _enemyTeam = widget.gameInfo.players.where((p) => p.team == Team.enemy).toList();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final enemyTeam = gameInfo.players.where((p) => p.team == Team.enemy).toList();
-    final allyTeam = gameInfo.players.where((p) => p.team == Team.ally).toList();
+    final allyTeam = widget.gameInfo.players.where((p) => p.team == Team.ally).toList();
 
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
@@ -141,14 +161,32 @@ class _GameSliverView extends StatelessWidget {
           ],
         ),
         const _TeamHeader(title: 'ENEMY TEAM', color: Colors.redAccent),
-        SliverList(
-          delegate: SliverChildBuilderDelegate((context, index) {
-            return _AnimatedPlayerRow(
-              player: enemyTeam[index],
-              index: index,
-              onTimerStateChanged: onTimerStateChanged,
-            );
-          }, childCount: enemyTeam.length),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: _enemyTeam.length * 98.0,
+            child: ReorderableListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              buildDefaultDragHandles: false,
+              itemCount: _enemyTeam.length,
+              onReorder: (oldIndex, newIndex) {
+                setState(() {
+                  if (newIndex > oldIndex) newIndex--;
+                  final item = _enemyTeam.removeAt(oldIndex);
+                  _enemyTeam.insert(newIndex, item);
+                });
+              },
+              itemBuilder: (context, index) {
+                return _AnimatedPlayerRow(
+                  key: ValueKey(_enemyTeam[index].riotId + index.toString()),
+                  player: _enemyTeam[index],
+                  index: index,
+                  isEnemy: true,
+                  onTimerStateChanged: widget.onTimerStateChanged,
+                );
+              },
+            ),
+          ),
         ),
         const SliverToBoxAdapter(
           child: Padding(
@@ -160,9 +198,11 @@ class _GameSliverView extends StatelessWidget {
         SliverList(
           delegate: SliverChildBuilderDelegate((context, index) {
             return _AnimatedPlayerRow(
+              key: ValueKey(allyTeam[index].riotId),
               player: allyTeam[index],
-              index: index + enemyTeam.length,
-              onTimerStateChanged: onTimerStateChanged,
+              index: index + _enemyTeam.length,
+              isEnemy: false,
+              onTimerStateChanged: widget.onTimerStateChanged,
             );
           }, childCount: allyTeam.length),
         ),
@@ -212,13 +252,16 @@ class _TeamHeader extends StatelessWidget {
 
 class _AnimatedPlayerRow extends StatelessWidget {
   const _AnimatedPlayerRow({
+    super.key,
     required this.player,
     required this.index,
+    required this.isEnemy,
     required this.onTimerStateChanged,
   });
 
   final GameParticipant player;
   final int index;
+  final bool isEnemy;
   final Function(bool) onTimerStateChanged;
 
   @override
@@ -250,6 +293,14 @@ class _AnimatedPlayerRow extends StatelessWidget {
         ),
         child: Row(
           children: [
+            if (isEnemy)
+              ReorderableDragStartListener(
+                index: index,
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 12),
+                  child: Icon(Icons.drag_handle, color: Colors.white38, size: 24),
+                ),
+              ),
             Container(
               padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
