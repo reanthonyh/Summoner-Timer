@@ -6,6 +6,8 @@ part 'account.freezed.dart';
 
 @freezed
 abstract class Account with _$Account {
+  const Account._();
+
   const factory Account({
     required String puuid,
     required int level,
@@ -14,4 +16,6 @@ abstract class Account with _$Account {
     required Region region,
     required String iconUrl,
   }) = _Account;
+
+  String get riotID => '$gameName#$tagLine';
 }

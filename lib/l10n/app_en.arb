@@ -1,0 +1,44 @@
+{
+  "@@locale": "en",
+  "@@context": "ENG Dictionary",
+  "search_title": "Search your Account",
+  "@search_title": {
+    "description": "Title - Search Page"
+  },
+  "seach_name_label": "Game Name",
+  "@seach_name_label": {
+    "description": "Label Name - Search Page"
+  },
+  "search_name_placeholder": "e.g. Name#1234",
+  "@search_name_placeholder": {
+    "description": "Placeholder Name - Search Page"
+  },
+  "search_name_invalid": "Riot Name is invalid",
+  "@search_name_invalid": {
+    "description": "Invalid Text - Search Page"
+  },
+  "search_tag_label": "Tag",
+  "@search_tag_label": {
+    "description": "Label Tag - Search Page"
+  },
+  "search_tag_placeholder": "e.g LAN",
+  "@search_tag_placeholder": {
+    "description": "Placeholder Tag - Search Page"
+  },
+  "search_tag_invalid": "Riot Tag is invalid",
+  "@search_tag_invalid": {
+    "description": "Invalid Text - Search Page"
+  },
+  "search_recent_accounts": "Recent Accounts",
+  "@search_recent_accounts": {
+    "description": " Recent Accounts Subtitle - Search Page"
+  },
+  "search_button": "Search",
+  "@search_button": {
+    "description": "Button - Search Page"
+  },
+  "general_error": "An error happend",
+  "@general_error": {
+    "description": "Genral Error Message - Message"
+  }
+}

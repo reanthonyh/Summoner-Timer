@@ -210,8 +210,8 @@ return $default(_that.puuid,_that.level,_that.gameName,_that.tagLine,_that.regio
 /// @nodoc
 
 
-class _Account implements Account {
-  const _Account({required this.puuid, required this.level, required this.gameName, required this.tagLine, required this.region, required this.iconUrl});
+class _Account extends Account {
+  const _Account({required this.puuid, required this.level, required this.gameName, required this.tagLine, required this.region, required this.iconUrl}): super._();
   
 
 @override final  String puuid;

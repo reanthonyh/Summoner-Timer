@@ -5,9 +5,13 @@ final class _SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = TextTheme.of(context);
+    final colorScheme = ColorScheme.of(context);
+    final intl = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
-        child: BlocListener<SearchCubit, SearchState>(
+        child: BlocListener<SearchFormCubit, SearchFormState>(
           listener: (context, state) {
             if (state.status == .error) {
               ScaffoldMessenger.of(context)
@@ -27,54 +31,57 @@ final class _SearchView extends StatelessWidget {
               spacing: 12,
               children: [
                 const Icon(Icons.person_search, size: 64),
-                const Text(
-                  'Search your RiotID',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const Divider(),
-                _SearchForm(),
-                const Divider(),
-                Expanded(
-                  child: BlocSelector<SearchCubit, SearchState, List<Account>>(
-                    selector: (state) => state.recentAccounts,
-                    builder: (context, state) {
-                      return Column(
-                        spacing: 4,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8),
-                            child: Text(
-                              'Recent Accounts',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: state.length,
-                              itemBuilder: (context, index) {
-                                final account = state[index];
-                                return ListTile(
-                                  leading: CircleAvatar(
-                                    child: CachedNetworkImage(imageUrl: account.iconUrl),
-                                  ),
-                                  title: Text('${account.gameName}#${account.tagLine}'),
-                                  subtitle: Text(account.region.name.toUpperCase()),
-                                  onTap: () {
-                                    debugPrint('Navigating to Profile with $account');
+                Text(intl.search_title, style: textTheme.displayMedium),
 
-                                    context.read<SearchCubit>().searchWithPUUID(
-                                      account.puuid,
+                _SearchForm(),
+
+                Divider(color: colorScheme.primary),
+                Expanded(
+                  child:
+                      BlocSelector<
+                        RecentAccountsCubit,
+                        RecentAccountsState,
+                        List<Account>
+                      >(
+                        selector: (state) => state.recentAccounts,
+                        builder: (context, recentAccounts) {
+                          return Column(
+                            spacing: 8,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                intl.search_recent_accounts,
+                                style: textTheme.titleMedium,
+                              ),
+
+                              Expanded(
+                                child: ListView.builder(
+                                  itemCount: recentAccounts.length,
+                                  itemBuilder: (context, index) {
+                                    final account = recentAccounts[index];
+                                    return ListTile(
+                                      leading: CircleAvatar(
+                                        child: CachedNetworkImage(
+                                          imageUrl: account.iconUrl,
+                                        ),
+                                      ),
+                                      title: Text(account.riotID),
+                                      subtitle: Text(account.region.name.toUpperCase()),
+                                      onTap: () {
+                                        debugPrint('Navigating to Profile with $account');
+
+                                        context.read<SearchFormCubit>().searchWithPUUID(
+                                          account.puuid,
+                                        );
+                                      },
                                     );
                                   },
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                 ),
               ],
             ),
@@ -107,7 +114,10 @@ class _SearchFormState extends State<_SearchForm> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<SearchCubit>();
+    final cubit = context.watch<SearchFormCubit>();
+
+    final colorScheme = ColorScheme.of(context);
+    final intl = AppLocalizations.of(context)!;
 
     return Card(
       child: Padding(
@@ -120,37 +130,37 @@ class _SearchFormState extends State<_SearchForm> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Game Name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                decoration: InputDecoration(
+                  labelText: intl.seach_name_label,
+                  hintText: intl.search_name_placeholder,
+                  prefixIcon: const Icon(Icons.person),
+                  iconColor: colorScheme.primary,
                 ),
                 onChanged: cubit.updateName,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Name should not be empty' : null,
+                    value?.isEmpty ?? true ? intl.search_name_invalid : null,
               ),
 
               TextFormField(
                 controller: _tagController,
-                decoration: const InputDecoration(
-                  labelText: 'Tag Line',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.tag),
-                  hintText: 'e.g., NA',
+                decoration: InputDecoration(
+                  labelText: intl.search_tag_label,
+                  prefixIcon: const Icon(Icons.tag),
+                  hintText: intl.search_tag_placeholder,
                 ),
                 onChanged: cubit.updateTag,
                 validator: (value) =>
-                    value?.isEmpty ?? true ? 'Tag should not be empty' : null,
+                    value?.isEmpty ?? true ? intl.search_tag_invalid : null,
               ),
 
-              BlocSelector<SearchCubit, SearchState, bool>(
+              BlocSelector<SearchFormCubit, SearchFormState, bool>(
                 selector: (state) => state.status.isLoading,
-                builder: (context, state) => SizedBox(
+                builder: (context, isLoadingState) => SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
-                    onPressed: state ? null : cubit.searchWithRiotID,
-                    label: const Text('Search'),
-                    icon: state
+                    onPressed: isLoadingState ? null : cubit.searchWithRiotID,
+                    label: Text(intl.search_button),
+                    icon: isLoadingState
                         ? const SizedBox(
                             width: 20,
                             height: 20,

@@ -2,30 +2,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/di/injection_container.dart';
 import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
-import 'search_state.dart';
+import 'search_form_state.dart';
 
-final class SearchCubit extends Cubit<SearchState> {
-  SearchCubit() : super(SearchState.initial()) {
-    _fetchRecentAccounts();
-  }
+final class SearchFormCubit extends Cubit<SearchFormState> {
+  SearchFormCubit() : super(SearchFormState.initial());
 
   final _searchAccountUseCase = getIt<GetAccountUseCase>();
-  final _getRecentAccounts = getIt<GetSavedAccountsUseCase>();
-
-  void _fetchRecentAccounts() async {
-    emit(state.copyWith(status: .loading));
-
-    final recentAccounts = await _getRecentAccounts();
-
-    recentAccounts.when(
-      success: (data) {
-        emit(state.copyWith(status: .initial, recentAccounts: data));
-      },
-      failure: (error) {
-        emit(state.copyWith(status: .error, message: "Not found recent accounts"));
-      },
-    );
-  }
 
   void updateName(String? name) => emit(state.copyWith(name: name));
 
@@ -45,7 +27,7 @@ final class SearchCubit extends Cubit<SearchState> {
         emit(state.copyWith(status: .success));
       },
       failure: (error) {
-        print('SearchCubit - searchWithRiotID : $error');
+        print('SearchFormCubit - searchWithRiotID : $error');
         emit(
           state.copyWith(status: .error, message: "Not found account with that RiotID"),
         );
@@ -63,7 +45,7 @@ final class SearchCubit extends Cubit<SearchState> {
         emit(state.copyWith(status: .success));
       },
       failure: (error) {
-        print('SearchCubit - searchWithPUUID : $error');
+        print('SearchFormCubit - searchWithPUUID : $error');
         emit(state.copyWith(status: .error, message: "Failure on search that account"));
       },
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:summoner_timer/l10n/l10n.dart';
 
 import './features/search/page/search_page.dart';
 import './features/profile/page/profile_page.dart';
@@ -18,6 +19,8 @@ final class RootApp extends StatelessWidget {
         ProfilePage.routeEntry,
         GamePage.routeEntry,
       ]),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
