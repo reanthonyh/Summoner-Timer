@@ -58,7 +58,6 @@ class _SearchFormState extends State<_SearchForm> {
                   ),
                 ),
                 textInputAction: TextInputAction.next,
-                onChanged: cubit.updateName,
                 validator: (value) =>
                     value?.isEmpty ?? true ? intl.search_name_invalid : null,
               ),
@@ -78,10 +77,12 @@ class _SearchFormState extends State<_SearchForm> {
                 textInputAction: TextInputAction.search,
                 onFieldSubmitted: (_) {
                   if (_formKey.currentState?.validate() ?? false) {
-                    cubit.searchWithRiotID();
+                    cubit.searchWithRiotID(
+                      name: _nameController.text,
+                      tag: _tagController.text,
+                    );
                   }
                 },
-                onChanged: cubit.updateTag,
                 validator: (value) =>
                     value?.isEmpty ?? true ? intl.search_tag_invalid : null,
               ),
@@ -98,7 +99,10 @@ class _SearchFormState extends State<_SearchForm> {
                         ? null
                         : () {
                             if (_formKey.currentState?.validate() ?? false) {
-                              cubit.searchWithRiotID();
+                              cubit.searchWithRiotID(
+                                name: _nameController.text,
+                                tag: _tagController.text,
+                              );
                             }
                           },
                     label: Text(intl.search_button),

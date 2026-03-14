@@ -121,6 +121,13 @@ final class GetAccountUseCase {
 - **Widgets**: Place in `presentation/<feature>/widgets/`
 - **Cubits/Blocs**: Place in `presentation/<feature>/bloc/` or `cubit/`
 - **Widget Composition**: Avoid inline widget functions (e.g., `Widget _buildHeader() {...}`). Instead, create private stateless widget classes (e.g., `_Header extends StatelessWidget`) for better performance, reusability, and code organization.
+- **State Orchestration**: When multiple Cubits are present on a single page, use `BlocListener` at the View level to coordinate between them (e.g., refreshing a "Recent" list after a successful search).
+- **Form Management**: Avoid having multiple sources of truth. If using `Cubit` state for form data, either use `TextEditingController` for input and only sync on submit, or sync `onChanged` and ensure the Cubit handles clearing/updating controllers if needed.
+- **Navigation Status**: After a successful navigation triggered by a state status (e.g., `.success`), consider resetting the status to `.initial` or handling the "back" case to avoid stale UI states.
+- **UI Feedback Standard**: 
+    - Use `BlocListener` for one-time events like showing SnackBars or Navigation.
+    - Centralize boilerplate error handling (e.g., `ScaffoldMessenger` calls) within a helper method or extension.
+    - Avoid hiding existing data during "refresh" loading states; prefer silent loading or incremental indicators.
 
 #### Data Layer
 - **Models**: Use freezed + json_serializable for JSON serialization

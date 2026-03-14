@@ -23,6 +23,7 @@ final class _SearchView extends StatelessWidget {
             }
 
             if (state.status.isSuccess) {
+              context.read<SearchFormCubit>().resetStatus();
               Navigator.of(context).pushNamed(ProfilePage.routeName);
             }
           },
@@ -54,7 +55,7 @@ final class _SearchView extends StatelessWidget {
               ),
               BlocBuilder<RecentAccountsCubit, RecentAccountsState>(
                 builder: (context, state) {
-                  if (state.status.isLoading) {
+                  if (state.status.isLoading && state.recentAccounts.isEmpty) {
                     return const SliverFillRemaining(
                       hasScrollBody: false,
                       child: Center(child: CircularProgressIndicator.adaptive()),

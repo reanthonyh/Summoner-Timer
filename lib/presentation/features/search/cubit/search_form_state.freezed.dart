@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SearchFormState {
 
- String? get name; String? get tag; UiStatus get status; String? get message;
+ UiStatus get status; String? get message;
 /// Create a copy of SearchFormState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $SearchFormStateCopyWith<SearchFormState> get copyWith => _$SearchFormStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchFormState&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchFormState&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,tag,status,message);
+int get hashCode => Object.hash(runtimeType,status,message);
 
 @override
 String toString() {
-  return 'SearchFormState(name: $name, tag: $tag, status: $status, message: $message)';
+  return 'SearchFormState(status: $status, message: $message)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $SearchFormStateCopyWith<$Res>  {
   factory $SearchFormStateCopyWith(SearchFormState value, $Res Function(SearchFormState) _then) = _$SearchFormStateCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? tag, UiStatus status, String? message
+ UiStatus status, String? message
 });
 
 
@@ -62,11 +62,9 @@ class _$SearchFormStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchFormState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? tag = freezed,Object? status = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? message = freezed,}) {
   return _then(_self.copyWith(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,tag: freezed == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
-as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -153,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? tag,  UiStatus status,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UiStatus status,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchFormState() when $default != null:
-return $default(_that.name,_that.tag,_that.status,_that.message);case _:
+return $default(_that.status,_that.message);case _:
   return orElse();
 
 }
@@ -174,10 +172,10 @@ return $default(_that.name,_that.tag,_that.status,_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? tag,  UiStatus status,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UiStatus status,  String? message)  $default,) {final _that = this;
 switch (_that) {
 case _SearchFormState():
-return $default(_that.name,_that.tag,_that.status,_that.message);case _:
+return $default(_that.status,_that.message);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +192,10 @@ return $default(_that.name,_that.tag,_that.status,_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? tag,  UiStatus status,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UiStatus status,  String? message)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchFormState() when $default != null:
-return $default(_that.name,_that.tag,_that.status,_that.message);case _:
+return $default(_that.status,_that.message);case _:
   return null;
 
 }
@@ -209,11 +207,9 @@ return $default(_that.name,_that.tag,_that.status,_that.message);case _:
 
 
 class _SearchFormState implements SearchFormState {
-  const _SearchFormState({this.name, this.tag, required this.status, this.message});
+  const _SearchFormState({required this.status, this.message});
   
 
-@override final  String? name;
-@override final  String? tag;
 @override final  UiStatus status;
 @override final  String? message;
 
@@ -227,16 +223,16 @@ _$SearchFormStateCopyWith<_SearchFormState> get copyWith => __$SearchFormStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchFormState&&(identical(other.name, name) || other.name == name)&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchFormState&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,name,tag,status,message);
+int get hashCode => Object.hash(runtimeType,status,message);
 
 @override
 String toString() {
-  return 'SearchFormState(name: $name, tag: $tag, status: $status, message: $message)';
+  return 'SearchFormState(status: $status, message: $message)';
 }
 
 
@@ -247,7 +243,7 @@ abstract mixin class _$SearchFormStateCopyWith<$Res> implements $SearchFormState
   factory _$SearchFormStateCopyWith(_SearchFormState value, $Res Function(_SearchFormState) _then) = __$SearchFormStateCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? tag, UiStatus status, String? message
+ UiStatus status, String? message
 });
 
 
@@ -264,11 +260,9 @@ class __$SearchFormStateCopyWithImpl<$Res>
 
 /// Create a copy of SearchFormState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? tag = freezed,Object? status = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? message = freezed,}) {
   return _then(_SearchFormState(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,tag: freezed == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
-as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

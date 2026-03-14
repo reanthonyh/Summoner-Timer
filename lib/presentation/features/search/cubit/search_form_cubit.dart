@@ -10,28 +10,26 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
   final _searchAccountUseCase = getIt<GetAccountUseCase>();
   final _saveAccountUseCase = getIt<SaveAccountUseCase>();
 
-  void updateName(String? name) => emit(state.copyWith(name: name));
+  void resetStatus() => emit(state.copyWith(status: UiStatus.initial));
 
-  void updateTag(String? tag) => emit(state.copyWith(tag: tag));
-
-  void searchWithRiotID() async {
-    emit(state.copyWith(status: .loading));
-
-    if (state.name == null && state.tag == null) return;
+  void searchWithRiotID({required String name, required String tag}) async {
+    emit(state.copyWith(status: UiStatus.loading));
 
     final result = await _searchAccountUseCase(
-      riotId: (name: state.name!, tag: state.tag!),
+      riotId: (name: name, tag: tag),
     );
 
     result.when(
       success: (data) async {
         await _saveAccountUseCase(data);
-        emit(state.copyWith(status: .success));
+        emit(state.copyWith(status: UiStatus.success));
       },
       failure: (error) {
-        print('SearchFormCubit - searchWithRiotID : $error');
         emit(
-          state.copyWith(status: .error, message: "Not found account with that RiotID"),
+          state.copyWith(
+            status: UiStatus.error,
+            message: "Not found account with that RiotID",
+          ),
         );
       },
     );
