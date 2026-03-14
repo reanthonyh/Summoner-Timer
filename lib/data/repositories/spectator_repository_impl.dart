@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/core/exceptions/exceptions.dart';
 import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
@@ -7,9 +6,7 @@ import 'package:summoner_timer/data/datasources/riot_region_source.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
-import 'package:summoner_timer/domain/repositories/session_repository.dart';
-import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
-import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
+import 'package:summoner_timer/domain/repositories/repositories.dart';
 
 final class SpectatorRepositoryImpl implements SpectatorRepository {
   SpectatorRepositoryImpl({

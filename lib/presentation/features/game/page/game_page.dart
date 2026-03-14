@@ -1,5 +1,3 @@
-// TODO Implement this library.
-
 import 'package:flutter/material.dart';
 
 final class GamePage extends StatelessWidget {
