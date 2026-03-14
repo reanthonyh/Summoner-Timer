@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/session_repository.dart';
 
@@ -8,10 +9,21 @@ final class SessionRepositoryImpl implements SessionRepository {
   Account? get currentAccount => _currentAccount;
 
   @override
-  RiotHost get platformHost => _currentAccount?.region.platformHost ?? RiotHost.la1;
+  RiotPlatform get platformHost {
+    final region = _currentAccount?.region;
+    if (region == null) return RiotPlatform.la1;
+
+    return switch (region) {
+      Region.lan => RiotPlatform.la1,
+      Region.las => RiotPlatform.la2,
+      Region.na => RiotPlatform.na1,
+      Region.euw => RiotPlatform.euw1,
+    };
+  }
 
   @override
-  RiotHost get regionalHost => _currentAccount?.region.regionalHost ?? RiotHost.americas;
+  RiotRegion get regionalHost =>
+      (_currentAccount?.region == Region.euw ? RiotRegion.europe : RiotRegion.americas);
 
   @override
   void setAccount(Account account) => _currentAccount = account;

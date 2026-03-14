@@ -1,13 +1,10 @@
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
-import 'package:summoner_timer/data/models/game_match/participant_model.dart';
-import 'package:summoner_timer/data/models/summoner_spells/summoner_spell_model.dart';
+import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
 import 'summoner_spell_mapper.dart';
 
-class GameParticipantMapper {
-  GameParticipantMapper._();
-
+abstract final class GameParticipantMapper {
   static GameParticipant fromModel(
     ParticipantModel model,
     Map<String, SummonerSpellModel> spellsData,

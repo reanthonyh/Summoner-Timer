@@ -1,35 +1,35 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:summoner_timer/domain/entities/entities.dart';
+import 'package:summoner_timer/data/models/models.dart';
 
 abstract interface class LocalAccountDataSource {
-  Future<List<Account>> getSavedAccounts();
-  Future<void> saveAccount(Account account);
+  Future<List<AccountModelResponse>> getSavedAccounts();
+  Future<void> saveAccount(AccountModelResponse account);
 }
 
 final class LocalAccountDataSourceImpl implements LocalAccountDataSource {
   static const _accountsKey = 'saved_accounts_v2';
 
   @override
-  Future<List<Account>> getSavedAccounts() async {
+  Future<List<AccountModelResponse>> getSavedAccounts() async {
     final prefs = await SharedPreferences.getInstance();
     final accountsJson = prefs.getStringList(_accountsKey) ?? [];
 
     return accountsJson
         .map((json) {
           try {
-            return Account.fromJson(jsonDecode(json));
+            return AccountModelResponse.fromJson(jsonDecode(json));
           } catch (e) {
             print('LocalAccountDataSource: Error parsing account: $e');
             return null;
           }
         })
-        .whereType<Account>()
+        .whereType<AccountModelResponse>()
         .toList();
   }
 
   @override
-  Future<void> saveAccount(Account account) async {
+  Future<void> saveAccount(AccountModelResponse account) async {
     final prefs = await SharedPreferences.getInstance();
     final accounts = await getSavedAccounts();
 

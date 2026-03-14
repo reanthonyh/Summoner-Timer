@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/core/exceptions/exceptions.dart';
 import 'package:summoner_timer/core/utils/result.dart';
-import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
+import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
+import 'package:summoner_timer/data/datasources/riot_region_source.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
@@ -12,12 +14,14 @@ import 'package:summoner_timer/domain/repositories/summoner_spells_repository.da
 final class SpectatorRepositoryImpl implements SpectatorRepository {
   SpectatorRepositoryImpl({
     required this.riotApi,
+    required this.riotPlatformSource,
     required SessionRepository sessionRepository,
     required SummonerSpellsRepository summonerSpellsRepository,
   }) : _sessionRepository = sessionRepository,
        _summonerSpellsRepository = summonerSpellsRepository;
 
-  final RiotAmericasApi riotApi;
+  final RiotRegionSource riotApi;
+  final RiotPlatformSource riotPlatformSource;
   final SessionRepository _sessionRepository;
   final SummonerSpellsRepository _summonerSpellsRepository;
 
@@ -44,9 +48,15 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
         throw Exception('Account not setted with puuid');
       }
 
-      final response = await riotApi.getMatchInformation(puuid);
+      final request = GameMatchModelRequest(
+        puuid: puuid,
+        platform: _sessionRepository.platformHost,
+      );
+
+      final response = await riotPlatformSource.getMatchInformation(request);
 
       final summonerSpellsResult = await _summonerSpellsRepository.getSummonerSpells();
+
       final spellsList = summonerSpellsResult.when(
         success: (spells) => spells,
         failure: (_) => <SummonerSpell>[],

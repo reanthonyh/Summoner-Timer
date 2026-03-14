@@ -5,12 +5,8 @@ part 'account_model_response.g.dart';
 
 @freezed
 abstract class AccountModelResponse with _$AccountModelResponse {
-  const factory AccountModelResponse({
-    String? puuid,
-    String? gameName,
-    String? tagLine,
-    int? profileIconId,
-  }) = _AccountModelResponse;
+  const factory AccountModelResponse({String? puuid, String? gameName, String? tagLine}) =
+      _AccountModelResponse;
 
   factory AccountModelResponse.fromJson(Map<String, Object?> json) =>
       _$AccountModelResponseFromJson(json);

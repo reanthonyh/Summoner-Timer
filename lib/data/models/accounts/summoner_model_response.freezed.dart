@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SummonerModelResponse {
 
- String? get puuid;@JsonKey(name: 'profileIconId') int? get profileIconId;@JsonKey(name: 'revisionDate') int? get revisionDate;@JsonKey(name: 'summonerLevel') int? get summonerLevel;
+ String? get puuid; int? get profileIconId; int? get revisionDate; int? get summonerLevel;
 /// Create a copy of SummonerModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $SummonerModelResponseCopyWith<$Res>  {
   factory $SummonerModelResponseCopyWith(SummonerModelResponse value, $Res Function(SummonerModelResponse) _then) = _$SummonerModelResponseCopyWithImpl;
 @useResult
 $Res call({
- String? puuid,@JsonKey(name: 'profileIconId') int? profileIconId,@JsonKey(name: 'revisionDate') int? revisionDate,@JsonKey(name: 'summonerLevel') int? summonerLevel
+ String? puuid, int? profileIconId, int? revisionDate, int? summonerLevel
 });
 
 
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid, @JsonKey(name: 'profileIconId')  int? profileIconId, @JsonKey(name: 'revisionDate')  int? revisionDate, @JsonKey(name: 'summonerLevel')  int? summonerLevel)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid,  int? profileIconId,  int? revisionDate,  int? summonerLevel)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SummonerModelResponse() when $default != null:
 return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summonerLevel);case _:
@@ -177,7 +177,7 @@ return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summone
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid, @JsonKey(name: 'profileIconId')  int? profileIconId, @JsonKey(name: 'revisionDate')  int? revisionDate, @JsonKey(name: 'summonerLevel')  int? summonerLevel)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid,  int? profileIconId,  int? revisionDate,  int? summonerLevel)  $default,) {final _that = this;
 switch (_that) {
 case _SummonerModelResponse():
 return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summonerLevel);case _:
@@ -197,7 +197,7 @@ return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summone
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid, @JsonKey(name: 'profileIconId')  int? profileIconId, @JsonKey(name: 'revisionDate')  int? revisionDate, @JsonKey(name: 'summonerLevel')  int? summonerLevel)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid,  int? profileIconId,  int? revisionDate,  int? summonerLevel)?  $default,) {final _that = this;
 switch (_that) {
 case _SummonerModelResponse() when $default != null:
 return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summonerLevel);case _:
@@ -212,13 +212,13 @@ return $default(_that.puuid,_that.profileIconId,_that.revisionDate,_that.summone
 @JsonSerializable()
 
 class _SummonerModelResponse implements SummonerModelResponse {
-  const _SummonerModelResponse({this.puuid, @JsonKey(name: 'profileIconId') this.profileIconId, @JsonKey(name: 'revisionDate') this.revisionDate, @JsonKey(name: 'summonerLevel') this.summonerLevel});
+  const _SummonerModelResponse({this.puuid, this.profileIconId, this.revisionDate, this.summonerLevel});
   factory _SummonerModelResponse.fromJson(Map<String, dynamic> json) => _$SummonerModelResponseFromJson(json);
 
 @override final  String? puuid;
-@override@JsonKey(name: 'profileIconId') final  int? profileIconId;
-@override@JsonKey(name: 'revisionDate') final  int? revisionDate;
-@override@JsonKey(name: 'summonerLevel') final  int? summonerLevel;
+@override final  int? profileIconId;
+@override final  int? revisionDate;
+@override final  int? summonerLevel;
 
 /// Create a copy of SummonerModelResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -253,7 +253,7 @@ abstract mixin class _$SummonerModelResponseCopyWith<$Res> implements $SummonerM
   factory _$SummonerModelResponseCopyWith(_SummonerModelResponse value, $Res Function(_SummonerModelResponse) _then) = __$SummonerModelResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String? puuid,@JsonKey(name: 'profileIconId') int? profileIconId,@JsonKey(name: 'revisionDate') int? revisionDate,@JsonKey(name: 'summonerLevel') int? summonerLevel
+ String? puuid, int? profileIconId, int? revisionDate, int? summonerLevel
 });
 
 

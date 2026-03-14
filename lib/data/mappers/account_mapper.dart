@@ -1,23 +1,41 @@
-import 'package:summoner_timer/data/models/accounts/account_model_response.dart';
-import 'package:summoner_timer/data/models/accounts/region_model_response.dart';
+import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
-class AccountMapper {
-  AccountMapper._();
-
+abstract final class AccountMapper {
   static Account fromModels({
     required AccountModelResponse accountModel,
+    required SummonerModelResponse summonerModel,
     required RegionModelResponse regionModel,
   }) {
     return Account(
       puuid: accountModel.puuid ?? '',
+      level: summonerModel.summonerLevel ?? 0,
       gameName: accountModel.gameName ?? '',
       tagLine: accountModel.tagLine ?? '',
       region: Region.values.firstWhere(
-        (element) => element.code == regionModel.region,
+        (element) => element.name == regionModel.region,
         orElse: () => Region.lan,
       ),
-      profileIconId: accountModel.profileIconId,
+      profileIconId: summonerModel.profileIconId,
+    );
+  }
+
+  static Account fromModel(AccountModelResponse accountModel) {
+    return Account(
+      puuid: accountModel.puuid ?? '',
+      level: 0,
+      gameName: accountModel.gameName ?? '',
+      tagLine: accountModel.tagLine ?? '',
+      region: Region.lan,
+      profileIconId: 0,
+    );
+  }
+
+  static AccountModelResponse toModel(Account account) {
+    return AccountModelResponse(
+      puuid: account.puuid,
+      gameName: account.gameName,
+      tagLine: account.tagLine,
     );
   }
 }

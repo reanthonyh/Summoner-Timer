@@ -1,20 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:summoner_timer/domain/entities/riot_host.dart';
 
 final class RiotDioClient {
   RiotDioClient._();
 
-  static final Map<RiotHost, Dio> _clients = {};
+  static final Dio _dio = _createDio();
 
-  static Dio getClient(RiotHost host) {
-    if (_clients.containsKey(host)) {
-      return _clients[host]!;
-    }
+  static Dio get client => _dio;
 
+  static Dio _createDio() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: host.url,
         headers: {
           'X-Riot-Token': dotenv.env['RIOT_API_KEY'],
           'Accept': 'application/json',
@@ -27,11 +23,10 @@ final class RiotDioClient {
         requestHeader: true,
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => print('DIO [${host.url}]: $obj'),
+        logPrint: (obj) => print('Riot API: $obj'),
       ),
     );
 
-    _clients[host] = dio;
     return dio;
   }
 }

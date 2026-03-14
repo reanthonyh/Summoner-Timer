@@ -11,33 +11,30 @@ part of 'account.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$Account {
 
- String get puuid; String get gameName; String get tagLine; Region get region; int? get profileIconId;
+ String get puuid; int get level; String get gameName; String get tagLine; Region get region; int? get profileIconId;
 /// Create a copy of Account
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $AccountCopyWith<Account> get copyWith => _$AccountCopyWithImpl<Account>(this as Account, _$identity);
 
-  /// Serializes this Account to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.level, level) || other.level == level)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,region,profileIconId);
+int get hashCode => Object.hash(runtimeType,puuid,level,gameName,tagLine,region,profileIconId);
 
 @override
 String toString() {
-  return 'Account(puuid: $puuid, gameName: $gameName, tagLine: $tagLine, region: $region, profileIconId: $profileIconId)';
+  return 'Account(puuid: $puuid, level: $level, gameName: $gameName, tagLine: $tagLine, region: $region, profileIconId: $profileIconId)';
 }
 
 
@@ -48,7 +45,7 @@ abstract mixin class $AccountCopyWith<$Res>  {
   factory $AccountCopyWith(Account value, $Res Function(Account) _then) = _$AccountCopyWithImpl;
 @useResult
 $Res call({
- String puuid, String gameName, String tagLine, Region region, int? profileIconId
+ String puuid, int level, String gameName, String tagLine, Region region, int? profileIconId
 });
 
 
@@ -65,10 +62,11 @@ class _$AccountCopyWithImpl<$Res>
 
 /// Create a copy of Account
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? puuid = null,Object? gameName = null,Object? tagLine = null,Object? region = null,Object? profileIconId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? puuid = null,Object? level = null,Object? gameName = null,Object? tagLine = null,Object? region = null,Object? profileIconId = freezed,}) {
   return _then(_self.copyWith(
 puuid: null == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
-as String,gameName: null == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
+as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
+as int,gameName: null == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
 as String,tagLine: null == tagLine ? _self.tagLine : tagLine // ignore: cast_nullable_to_non_nullable
 as String,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
 as Region,profileIconId: freezed == profileIconId ? _self.profileIconId : profileIconId // ignore: cast_nullable_to_non_nullable
@@ -157,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String puuid,  String gameName,  String tagLine,  Region region,  int? profileIconId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String puuid,  int level,  String gameName,  String tagLine,  Region region,  int? profileIconId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Account() when $default != null:
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
+return $default(_that.puuid,_that.level,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
   return orElse();
 
 }
@@ -178,10 +176,10 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.prof
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String puuid,  String gameName,  String tagLine,  Region region,  int? profileIconId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String puuid,  int level,  String gameName,  String tagLine,  Region region,  int? profileIconId)  $default,) {final _that = this;
 switch (_that) {
 case _Account():
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
+return $default(_that.puuid,_that.level,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +196,10 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.prof
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String puuid,  String gameName,  String tagLine,  Region region,  int? profileIconId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String puuid,  int level,  String gameName,  String tagLine,  Region region,  int? profileIconId)?  $default,) {final _that = this;
 switch (_that) {
 case _Account() when $default != null:
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
+return $default(_that.puuid,_that.level,_that.gameName,_that.tagLine,_that.region,_that.profileIconId);case _:
   return null;
 
 }
@@ -210,13 +208,14 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.region,_that.prof
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _Account implements Account {
-  const _Account({required this.puuid, required this.gameName, required this.tagLine, required this.region, this.profileIconId});
-  factory _Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);
+  const _Account({required this.puuid, required this.level, required this.gameName, required this.tagLine, required this.region, this.profileIconId});
+  
 
 @override final  String puuid;
+@override final  int level;
 @override final  String gameName;
 @override final  String tagLine;
 @override final  Region region;
@@ -228,23 +227,20 @@ class _Account implements Account {
 @pragma('vm:prefer-inline')
 _$AccountCopyWith<_Account> get copyWith => __$AccountCopyWithImpl<_Account>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$AccountToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.level, level) || other.level == level)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
-int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,region,profileIconId);
+int get hashCode => Object.hash(runtimeType,puuid,level,gameName,tagLine,region,profileIconId);
 
 @override
 String toString() {
-  return 'Account(puuid: $puuid, gameName: $gameName, tagLine: $tagLine, region: $region, profileIconId: $profileIconId)';
+  return 'Account(puuid: $puuid, level: $level, gameName: $gameName, tagLine: $tagLine, region: $region, profileIconId: $profileIconId)';
 }
 
 
@@ -255,7 +251,7 @@ abstract mixin class _$AccountCopyWith<$Res> implements $AccountCopyWith<$Res> {
   factory _$AccountCopyWith(_Account value, $Res Function(_Account) _then) = __$AccountCopyWithImpl;
 @override @useResult
 $Res call({
- String puuid, String gameName, String tagLine, Region region, int? profileIconId
+ String puuid, int level, String gameName, String tagLine, Region region, int? profileIconId
 });
 
 
@@ -272,10 +268,11 @@ class __$AccountCopyWithImpl<$Res>
 
 /// Create a copy of Account
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? puuid = null,Object? gameName = null,Object? tagLine = null,Object? region = null,Object? profileIconId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? puuid = null,Object? level = null,Object? gameName = null,Object? tagLine = null,Object? region = null,Object? profileIconId = freezed,}) {
   return _then(_Account(
 puuid: null == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
-as String,gameName: null == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
+as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
+as int,gameName: null == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
 as String,tagLine: null == tagLine ? _self.tagLine : tagLine // ignore: cast_nullable_to_non_nullable
 as String,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
 as Region,profileIconId: freezed == profileIconId ? _self.profileIconId : profileIconId // ignore: cast_nullable_to_non_nullable

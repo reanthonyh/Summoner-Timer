@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AccountModelResponse {
 
- String? get puuid; String? get gameName; String? get tagLine; int? get profileIconId;
+ String? get puuid; String? get gameName; String? get tagLine;
 /// Create a copy of AccountModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AccountModelResponseCopyWith<AccountModelResponse> get copyWith => _$AccountMod
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,profileIconId);
+int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine);
 
 @override
 String toString() {
-  return 'AccountModelResponse(puuid: $puuid, gameName: $gameName, tagLine: $tagLine, profileIconId: $profileIconId)';
+  return 'AccountModelResponse(puuid: $puuid, gameName: $gameName, tagLine: $tagLine)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AccountModelResponseCopyWith<$Res>  {
   factory $AccountModelResponseCopyWith(AccountModelResponse value, $Res Function(AccountModelResponse) _then) = _$AccountModelResponseCopyWithImpl;
 @useResult
 $Res call({
- String? puuid, String? gameName, String? tagLine, int? profileIconId
+ String? puuid, String? gameName, String? tagLine
 });
 
 
@@ -65,13 +65,12 @@ class _$AccountModelResponseCopyWithImpl<$Res>
 
 /// Create a copy of AccountModelResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? gameName = freezed,Object? tagLine = freezed,Object? profileIconId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? gameName = freezed,Object? tagLine = freezed,}) {
   return _then(_self.copyWith(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,gameName: freezed == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
 as String?,tagLine: freezed == tagLine ? _self.tagLine : tagLine // ignore: cast_nullable_to_non_nullable
-as String?,profileIconId: freezed == profileIconId ? _self.profileIconId : profileIconId // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,
   ));
 }
 
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid,  String? gameName,  String? tagLine,  int? profileIconId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? puuid,  String? gameName,  String? tagLine)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AccountModelResponse() when $default != null:
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);case _:
+return $default(_that.puuid,_that.gameName,_that.tagLine);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);ca
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid,  String? gameName,  String? tagLine,  int? profileIconId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? puuid,  String? gameName,  String? tagLine)  $default,) {final _that = this;
 switch (_that) {
 case _AccountModelResponse():
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);case _:
+return $default(_that.puuid,_that.gameName,_that.tagLine);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);ca
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid,  String? gameName,  String? tagLine,  int? profileIconId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? puuid,  String? gameName,  String? tagLine)?  $default,) {final _that = this;
 switch (_that) {
 case _AccountModelResponse() when $default != null:
-return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);case _:
+return $default(_that.puuid,_that.gameName,_that.tagLine);case _:
   return null;
 
 }
@@ -212,13 +211,12 @@ return $default(_that.puuid,_that.gameName,_that.tagLine,_that.profileIconId);ca
 @JsonSerializable()
 
 class _AccountModelResponse implements AccountModelResponse {
-  const _AccountModelResponse({this.puuid, this.gameName, this.tagLine, this.profileIconId});
+  const _AccountModelResponse({this.puuid, this.gameName, this.tagLine});
   factory _AccountModelResponse.fromJson(Map<String, dynamic> json) => _$AccountModelResponseFromJson(json);
 
 @override final  String? puuid;
 @override final  String? gameName;
 @override final  String? tagLine;
-@override final  int? profileIconId;
 
 /// Create a copy of AccountModelResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine,profileIconId);
+int get hashCode => Object.hash(runtimeType,puuid,gameName,tagLine);
 
 @override
 String toString() {
-  return 'AccountModelResponse(puuid: $puuid, gameName: $gameName, tagLine: $tagLine, profileIconId: $profileIconId)';
+  return 'AccountModelResponse(puuid: $puuid, gameName: $gameName, tagLine: $tagLine)';
 }
 
 
@@ -253,7 +251,7 @@ abstract mixin class _$AccountModelResponseCopyWith<$Res> implements $AccountMod
   factory _$AccountModelResponseCopyWith(_AccountModelResponse value, $Res Function(_AccountModelResponse) _then) = __$AccountModelResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String? puuid, String? gameName, String? tagLine, int? profileIconId
+ String? puuid, String? gameName, String? tagLine
 });
 
 
@@ -270,13 +268,12 @@ class __$AccountModelResponseCopyWithImpl<$Res>
 
 /// Create a copy of AccountModelResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? gameName = freezed,Object? tagLine = freezed,Object? profileIconId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? puuid = freezed,Object? gameName = freezed,Object? tagLine = freezed,}) {
   return _then(_AccountModelResponse(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,gameName: freezed == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
 as String?,tagLine: freezed == tagLine ? _self.tagLine : tagLine // ignore: cast_nullable_to_non_nullable
-as String?,profileIconId: freezed == profileIconId ? _self.profileIconId : profileIconId // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,
   ));
 }
 

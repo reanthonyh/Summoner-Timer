@@ -1,22 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
 import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
-import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
-import 'package:summoner_timer/data/datasources/riot_summoner_api.dart';
-import 'package:summoner_timer/data/repositories/account_repository_impl.dart';
-import 'package:summoner_timer/data/repositories/session_repository_impl.dart';
-import 'package:summoner_timer/data/repositories/spectator_repository_impl.dart';
-import 'package:summoner_timer/data/repositories/summoner_spells_repository_impl.dart';
-import 'package:summoner_timer/domain/repositories/account_repository.dart';
-import 'package:summoner_timer/domain/repositories/session_repository.dart';
-import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
-import 'package:summoner_timer/domain/repositories/summoner_spells_repository.dart';
-import 'package:summoner_timer/domain/usecases/get_account_usecase.dart';
-import 'package:summoner_timer/domain/usecases/get_current_game_usecase.dart';
-import 'package:summoner_timer/domain/usecases/get_saved_accounts_usecase.dart';
-import 'package:summoner_timer/domain/usecases/get_summoner_spells_usecase.dart';
-import 'package:summoner_timer/domain/usecases/save_account_usecase.dart';
-import 'package:summoner_timer/domain/usecases/set_account_usecase.dart';
+import 'package:summoner_timer/data/datasources/riot_region_source.dart';
+import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
+import 'package:summoner_timer/data/repositories/data_repositories.dart';
+import 'package:summoner_timer/domain/repositories/repositories.dart';
+import 'package:summoner_timer/domain/usecases/usecases.dart';
 
 final getIt = GetIt.instance;
 
@@ -26,20 +15,16 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton<LocalAccountDataSource>(() => LocalAccountDataSourceImpl());
 
   // Data Sources
-  getIt.registerLazySingleton<RiotAmericasApi>(
-    () => RiotAmericasApi(sessionRepository: getIt<SessionRepository>()),
-  );
-  getIt.registerLazySingleton<RiotSummonerApi>(
-    () => RiotSummonerApi(sessionRepository: getIt<SessionRepository>()),
-  );
+  getIt.registerLazySingleton<RiotRegionSource>(() => RiotRegionSource());
+  getIt.registerLazySingleton<RiotPlatformSource>(() => RiotPlatformSource());
   getIt.registerLazySingleton<DataDragonApi>(() => DataDragonApi());
 
   // Repositories
   getIt.registerLazySingleton<AccountRepository>(
     () => AccountRepositoryImpl(
-      dataSource: getIt<RiotAmericasApi>(),
+      dataSource: getIt<RiotRegionSource>(),
       localDataSource: getIt<LocalAccountDataSource>(),
-      summonerDataSource: getIt<RiotSummonerApi>(),
+      summonerDataSource: getIt<RiotPlatformSource>(),
       sessionRepository: getIt<SessionRepository>(),
     ),
   );
@@ -50,7 +35,8 @@ Future<void> setupDependencies() async {
 
   getIt.registerLazySingleton<SpectatorRepository>(
     () => SpectatorRepositoryImpl(
-      riotApi: getIt<RiotAmericasApi>(),
+      riotApi: getIt<RiotRegionSource>(),
+      riotPlatformSource: getIt<RiotPlatformSource>(),
       summonerSpellsRepository: getIt<SummonerSpellsRepository>(),
       sessionRepository: getIt<SessionRepository>(),
     ),

@@ -1,10 +1,8 @@
 import 'package:summoner_timer/data/datasources/data_dragon_api.dart';
-import 'package:summoner_timer/data/models/summoner_spells/summoner_spell_model.dart';
+import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
-class SummonerSpellMapper {
-  SummonerSpellMapper._();
-
+abstract final class SummonerSpellMapper {
   static SummonerSpell fromModel(SummonerSpellModel model, DataDragonApi api) {
     return SummonerSpell(
       id: model.key?.toString() ?? '',

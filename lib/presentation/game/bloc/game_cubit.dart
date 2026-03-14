@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/exceptions/exceptions.dart';
 import 'package:summoner_timer/core/utils/result.dart';
-import 'package:summoner_timer/domain/usecases/get_current_game_usecase.dart';
+import 'package:summoner_timer/domain/usecases/usecases.dart';
 
 import 'game_state.dart';
 

@@ -1,7 +1,8 @@
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
-import 'package:summoner_timer/data/datasources/riot_americas_api.dart';
-import 'package:summoner_timer/data/datasources/riot_summoner_api.dart';
+import 'package:summoner_timer/data/datasources/riot_region_source.dart';
+import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
@@ -16,30 +17,40 @@ final class AccountRepositoryImpl implements AccountRepository {
     required SessionRepository sessionRepository,
   }) : _sessionRepository = sessionRepository;
 
-  final RiotAmericasApi dataSource;
-  final RiotSummonerApi summonerDataSource;
+  final RiotRegionSource dataSource;
+  final RiotPlatformSource summonerDataSource;
   final LocalAccountDataSource localDataSource;
   final SessionRepository _sessionRepository;
 
   @override
   Future<Result<Account, Exception>> retrieveSummonerByPUUID(String puuid) async {
     try {
-      final accountResponseResult = await dataSource.getAccountByPUUID(puuid);
+      final accountResult = await dataSource.getAccountByPUUID(puuid);
 
-      if (accountResponseResult.puuid == null) {
+      if (accountResult.puuid == null) {
         throw Exception('Account not found for PUUID: $puuid');
       }
 
-      final summonerResponse = await summonerDataSource.getSummonerByPUUID(puuid);
-      final accountResponse = accountResponseResult.copyWith(
-        profileIconId: summonerResponse.profileIconId,
+      final regionResult = await dataSource.getSummonerRegion(puuid);
+
+      if (regionResult.region == null) {
+        throw Exception('Region not found for PUUID: $puuid');
+      }
+
+      final summonerResult = await summonerDataSource.getSummonerByPUUID(
+        GameMatchModelRequest(
+          puuid: puuid,
+          platform: RiotPlatform.values.firstWhere(
+            (platform) => platform.name == regionResult.region,
+            orElse: () => RiotPlatform.la1,
+          ),
+        ),
       );
 
-      final regionResponse = await dataSource.getSummonerRegion(puuid);
-
       final account = AccountMapper.fromModels(
-        accountModel: accountResponse,
-        regionModel: regionResponse,
+        accountModel: accountResult,
+        summonerModel: summonerResult,
+        regionModel: regionResult,
       );
 
       _sessionRepository.setAccount(account);
@@ -59,23 +70,33 @@ final class AccountRepositoryImpl implements AccountRepository {
     try {
       final request = AccountModelRequest(name: name, tag: tag);
 
-      final accountResponseResult = await dataSource.getAccount(request);
+      final accountResult = await dataSource.getAccount(request);
 
-      final puuid = accountResponseResult.puuid;
+      final puuid = accountResult.puuid;
       if (puuid == null) {
         throw Exception('Account not found for $name#$tag');
       }
 
-      final summonerResponse = await summonerDataSource.getSummonerByPUUID(puuid);
-      final accountResponse = accountResponseResult.copyWith(
-        profileIconId: summonerResponse.profileIconId,
+      final regionResult = await dataSource.getSummonerRegion(puuid);
+
+      if (regionResult.region == null) {
+        throw Exception('Region not found for $name#$tag');
+      }
+
+      final summonerResult = await summonerDataSource.getSummonerByPUUID(
+        GameMatchModelRequest(
+          puuid: puuid,
+          platform: RiotPlatform.values.firstWhere(
+            (platform) => platform.name == regionResult.region,
+            orElse: () => RiotPlatform.la1,
+          ),
+        ),
       );
 
-      final regionResponse = await dataSource.getSummonerRegion(puuid);
-
       final account = AccountMapper.fromModels(
-        accountModel: accountResponse,
-        regionModel: regionResponse,
+        accountModel: accountResult,
+        summonerModel: summonerResult,
+        regionModel: regionResult,
       );
 
       _sessionRepository.setAccount(account);
@@ -90,8 +111,9 @@ final class AccountRepositoryImpl implements AccountRepository {
   @override
   Future<Result<List<Account>, Exception>> getSavedAccounts() async {
     try {
-      final accounts = await localDataSource.getSavedAccounts();
-      return Result.success(accounts);
+      final models = await localDataSource.getSavedAccounts();
+      final entities = models.map(AccountMapper.fromModel).toList();
+      return Result.success(entities);
     } catch (e) {
       return Result.failure(e as Exception);
     }
@@ -100,7 +122,8 @@ final class AccountRepositoryImpl implements AccountRepository {
   @override
   Future<Result<void, Exception>> saveAccount(Account account) async {
     try {
-      await localDataSource.saveAccount(account);
+      final model = AccountMapper.toModel(account);
+      await localDataSource.saveAccount(model);
       return const Result.success(null);
     } catch (e) {
       return Result.failure(e as Exception);

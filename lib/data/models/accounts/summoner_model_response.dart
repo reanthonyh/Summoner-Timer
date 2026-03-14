@@ -7,9 +7,9 @@ part 'summoner_model_response.g.dart';
 abstract class SummonerModelResponse with _$SummonerModelResponse {
   const factory SummonerModelResponse({
     String? puuid,
-    @JsonKey(name: 'profileIconId') int? profileIconId,
-    @JsonKey(name: 'revisionDate') int? revisionDate,
-    @JsonKey(name: 'summonerLevel') int? summonerLevel,
+    int? profileIconId,
+    int? revisionDate,
+    int? summonerLevel,
   }) = _SummonerModelResponse;
 
   factory SummonerModelResponse.fromJson(Map<String, Object?> json) =>

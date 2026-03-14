@@ -1,11 +1,12 @@
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
 abstract interface class SessionRepository {
   Account? get currentAccount;
 
-  RiotHost get platformHost;
+  RiotPlatform get platformHost;
 
-  RiotHost get regionalHost;
+  RiotRegion get regionalHost;
 
   void setAccount(Account account);
 

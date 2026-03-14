@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'summoner_spell.dart';
+import '../summoner_spells/summoner_spell.dart';
 
 part 'game_participant.freezed.dart';
 
