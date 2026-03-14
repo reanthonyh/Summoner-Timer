@@ -148,6 +148,12 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get search_button;
 
+  /// No recent accounts message - Search Page
+  ///
+  /// In en, this message translates to:
+  /// **'No recent accounts found'**
+  String get search_no_recent_accounts;
+
   /// Genral Error Message - Message
   ///
   /// In en, this message translates to:

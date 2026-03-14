@@ -36,5 +36,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search_button => 'Search';
 
   @override
+  String get search_no_recent_accounts => 'No recent accounts found';
+
+  @override
   String get general_error => 'An error happend';
 }

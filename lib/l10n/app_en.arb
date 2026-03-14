@@ -37,6 +37,10 @@
   "@search_button": {
     "description": "Button - Search Page"
   },
+  "search_no_recent_accounts": "No recent accounts found",
+  "@search_no_recent_accounts": {
+    "description": "No recent accounts message - Search Page"
+  },
   "general_error": "An error happend",
   "@general_error": {
     "description": "Genral Error Message - Message"

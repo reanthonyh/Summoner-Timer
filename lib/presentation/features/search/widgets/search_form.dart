@@ -24,18 +24,25 @@ class _SearchFormState extends State<_SearchForm> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<SearchFormCubit>();
+    final cubit = context.read<SearchFormCubit>();
 
-    final colorScheme = ColorScheme.of(context);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final intl = AppLocalizations.of(context)!;
 
     return Card(
+      elevation: 0,
+      color: colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: colorScheme.outlineVariant),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
-            spacing: 12,
+            spacing: 16,
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
@@ -44,8 +51,13 @@ class _SearchFormState extends State<_SearchForm> {
                   labelText: intl.seach_name_label,
                   hintText: intl.search_name_placeholder,
                   prefixIcon: const Icon(Icons.person),
-                  iconColor: colorScheme.primary,
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
+                textInputAction: TextInputAction.next,
                 onChanged: cubit.updateName,
                 validator: (value) =>
                     value?.isEmpty ?? true ? intl.search_name_invalid : null,
@@ -55,26 +67,46 @@ class _SearchFormState extends State<_SearchForm> {
                 controller: _tagController,
                 decoration: InputDecoration(
                   labelText: intl.search_tag_label,
-                  prefixIcon: const Icon(Icons.tag),
                   hintText: intl.search_tag_placeholder,
+                  prefixIcon: const Icon(Icons.tag),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
+                textInputAction: TextInputAction.search,
+                onFieldSubmitted: (_) {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    cubit.searchWithRiotID();
+                  }
+                },
                 onChanged: cubit.updateTag,
                 validator: (value) =>
                     value?.isEmpty ?? true ? intl.search_tag_invalid : null,
               ),
 
+              const SizedBox(height: 8),
+
               BlocSelector<SearchFormCubit, SearchFormState, bool>(
                 selector: (state) => state.status.isLoading,
                 builder: (context, isLoadingState) => SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: isLoadingState ? null : cubit.searchWithRiotID,
+                  height: 56,
+                  child: FilledButton.icon(
+                    onPressed: isLoadingState
+                        ? null
+                        : () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              cubit.searchWithRiotID();
+                            }
+                          },
                     label: Text(intl.search_button),
                     icon: isLoadingState
                         ? const SizedBox(
                             width: 20,
                             height: 20,
-                            child: CircularProgressIndicator.adaptive(),
+                            child: CircularProgressIndicator.adaptive(strokeWidth: 2),
                           )
                         : const Icon(Icons.search),
                   ),
