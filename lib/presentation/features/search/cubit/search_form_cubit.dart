@@ -8,6 +8,7 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
   SearchFormCubit() : super(SearchFormState.initial());
 
   final _searchAccountUseCase = getIt<GetAccountUseCase>();
+  final _saveAccountUseCase = getIt<SaveAccountUseCase>();
 
   void updateName(String? name) => emit(state.copyWith(name: name));
 
@@ -23,7 +24,8 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
     );
 
     result.when(
-      success: (_) {
+      success: (data) async {
+        await _saveAccountUseCase(data);
         emit(state.copyWith(status: .success));
       },
       failure: (error) {

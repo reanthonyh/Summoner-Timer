@@ -112,11 +112,41 @@ final class AccountRepositoryImpl implements AccountRepository {
   Future<Result<List<Account>, Exception>> getSavedAccounts() async {
     try {
       final models = await localDataSource.getSavedAccounts();
-      final entities = models.map(AccountMapper.fromModel).toList();
 
+      if (models.isEmpty) {
+        return const Result.success([]);
+      }
 
+      final accounts = <Account>[];
+      for (final model in models) {
+        final puuid = model.puuid;
+        if (puuid == null) continue;
 
-      return Result.success(entities);
+        final accountResult = await dataSource.getAccountByPUUID(puuid);
+        if (accountResult.puuid == null) continue;
+
+        final regionResult = await dataSource.getSummonerRegion(puuid);
+        if (regionResult.region == null) continue;
+
+        final summonerResult = await summonerDataSource.getSummonerByPUUID(
+          GameMatchModelRequest(
+            puuid: puuid,
+            platform: RiotPlatform.values.firstWhere(
+              (platform) => platform.name == regionResult.region,
+              orElse: () => RiotPlatform.la1,
+            ),
+          ),
+        );
+
+        final account = AccountMapper.fromModels(
+          accountModel: accountResult,
+          summonerModel: summonerResult,
+          regionModel: regionResult,
+        );
+        accounts.add(account);
+      }
+
+      return Result.success(accounts);
     } catch (e) {
       return Result.failure(e as Exception);
     }

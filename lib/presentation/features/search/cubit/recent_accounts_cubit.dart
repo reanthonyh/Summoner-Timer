@@ -9,12 +9,12 @@ final class RecentAccountsCubit extends Cubit<RecentAccountsState> {
     _fetchRecentAccounts();
   }
 
-  final _getRecentAccounts = getIt<GetSavedAccountsUseCase>();
+  final _getSavedAccountsUseCase = getIt<GetSavedAccountsUseCase>();
 
   void _fetchRecentAccounts() async {
     emit(state.copyWith(status: .loading));
 
-    final recentAccounts = await _getRecentAccounts();
+    final recentAccounts = await _getSavedAccountsUseCase();
 
     recentAccounts.when(
       success: (data) {
