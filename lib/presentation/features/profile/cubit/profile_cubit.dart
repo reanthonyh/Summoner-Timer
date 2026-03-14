@@ -10,6 +10,12 @@ final class ProfileCubit extends Cubit<ProfileState> {
   }
 
   final _getAccountSession = getIt<GetCurrentAccountUseCase>();
+  final _logoutUseCase = getIt<LogoutUseCase>();
+
+  void logout() {
+    _logoutUseCase();
+    emit(state.copyWith(status: .initial, account: null));
+  }
 
   void _fetchData() {
     emit(state.copyWith(status: .loading));

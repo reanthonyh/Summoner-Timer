@@ -59,6 +59,9 @@ Future<void> setupDependencies() async {
   getIt.registerFactory<GetSavedAccountsUseCase>(
     () => GetSavedAccountsUseCase(repository: getIt<AccountRepository>()),
   );
+  getIt.registerFactory<LogoutUseCase>(
+    () => LogoutUseCase(repository: getIt<SessionRepository>()),
+  );
   getIt.registerFactory<SaveAccountUseCase>(
     () => SaveAccountUseCase(repository: getIt<AccountRepository>()),
   );

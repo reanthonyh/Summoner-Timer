@@ -159,6 +159,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error happend'**
   String get general_error;
+
+  /// Title - Profile Page
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile_title;
+
+  /// Level indicator - Profile Page
+  ///
+  /// In en, this message translates to:
+  /// **'Level {level}'**
+  String profile_level(int level);
+
+  /// Search Game Button - Profile Page
+  ///
+  /// In en, this message translates to:
+  /// **'Find Live Game'**
+  String get profile_search_game;
+
+  /// Change Account Button - Profile Page
+  ///
+  /// In en, this message translates to:
+  /// **'Change Account'**
+  String get profile_change_account;
+
+  /// In game check - Profile Page
+  ///
+  /// In en, this message translates to:
+  /// **'Not currently in a game'**
+  String get profile_not_in_game;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

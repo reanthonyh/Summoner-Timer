@@ -40,4 +40,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get general_error => 'An error happend';
+
+  @override
+  String get profile_title => 'Profile';
+
+  @override
+  String profile_level(int level) {
+    return 'Level $level';
+  }
+
+  @override
+  String get profile_search_game => 'Find Live Game';
+
+  @override
+  String get profile_change_account => 'Change Account';
+
+  @override
+  String get profile_not_in_game => 'Not currently in a game';
 }

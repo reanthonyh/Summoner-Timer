@@ -44,5 +44,30 @@
   "general_error": "An error happend",
   "@general_error": {
     "description": "Genral Error Message - Message"
+  },
+  "profile_title": "Profile",
+  "@profile_title": {
+    "description": "Title - Profile Page"
+  },
+  "profile_level": "Level {level}",
+  "@profile_level": {
+    "description": "Level indicator - Profile Page",
+    "placeholders": {
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "profile_search_game": "Find Live Game",
+  "@profile_search_game": {
+    "description": "Search Game Button - Profile Page"
+  },
+  "profile_change_account": "Change Account",
+  "@profile_change_account": {
+    "description": "Change Account Button - Profile Page"
+  },
+  "profile_not_in_game": "Not currently in a game",
+  "@profile_not_in_game": {
+    "description": "In game check - Profile Page"
   }
 }
