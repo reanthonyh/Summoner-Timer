@@ -5,7 +5,7 @@ abstract final class LocalSummonerSpellsDataSource {
   static SummonerSpellsModelResponse getSummonerSpells() {
     return SummonerSpellsModelResponse(
       type: 'summoner',
-      version: ApiConstants.dataDragonVersion,
+      version: DataDragonURL.dataDragonVersion,
       data: {
         'SummonerBarrier': _createSpell(
           id: 'SummonerBarrier',

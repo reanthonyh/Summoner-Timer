@@ -1,32 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:summoner_timer/core/di/injection_container.dart';
-import 'package:summoner_timer/presentation/home/cubit/home_cubit.dart';
-import 'package:summoner_timer/presentation/home/pages/home_page.dart';
-import 'package:summoner_timer/presentation/profile/bloc/profile_cubit.dart';
-import 'package:summoner_timer/presentation/search/bloc/search_cubit.dart';
 
-final class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+import './features/search/page/search_page.dart';
+import './features/profile/page/profile_page.dart';
+import './features/game/page/game_page.dart';
+
+final class RootApp extends StatelessWidget {
+  const RootApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Summoner Timer',
-      theme: ThemeData.dark().copyWith(scaffoldBackgroundColor: const Color(0xFF151515)),
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => HomeCubit()),
-          BlocProvider(
-            create: (_) => SearchCubit(
-              getAccountUseCase: getIt(),
-              getSavedAccountsUseCase: getIt(),
-              saveAccountUseCase: getIt(),
-            ),
-          ),
-          BlocProvider(create: (_) => ProfileCubit(sessionRepository: getIt())),
-        ],
-        child: const HomePage(),
+      theme: AppTheme.defaultTheme(),
+      darkTheme: AppTheme.darkTheme(),
+      initialRoute: SearchPage.routeName,
+      routes: Map.fromEntries([
+        SearchPage.routeEntry,
+        ProfilePage.routeEntry,
+        GamePage.routeEntry,
+      ]),
+    );
+  }
+}
+
+abstract final class AppTheme {
+  static const _wineSeed = Color(0xFF722F37);
+
+  static ThemeData defaultTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: _wineSeed,
+        brightness: Brightness.light,
+      ),
+    );
+  }
+
+  static ThemeData darkTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: _wineSeed,
+        brightness: Brightness.dark,
       ),
     );
   }

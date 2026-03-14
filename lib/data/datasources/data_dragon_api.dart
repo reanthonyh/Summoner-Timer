@@ -4,19 +4,19 @@ import 'package:summoner_timer/core/constants/api_constants.dart';
 import '../models/models.dart';
 
 final class DataDragonApi {
-  DataDragonApi() : _client = Dio(BaseOptions(baseUrl: ApiConstants.dataDragonBaseUrl));
+  DataDragonApi() : _client = Dio(BaseOptions(baseUrl: DataDragonURL.dataDragonBaseUrl));
 
   final Dio _client;
 
   String getFullImageUrl(String fullName) =>
-      '${ApiConstants.dataDragonBaseUrl}/img/spell/$fullName';
+      '${DataDragonURL.dataDragonBaseUrl}/img/spell/$fullName';
   String getSpriteUrl(String spriteName) =>
-      '${ApiConstants.dataDragonBaseUrl}/img/sprite/$spriteName';
+      '${DataDragonURL.dataDragonBaseUrl}/img/sprite/$spriteName';
   String getProfileIconUrl(int profileIconId) =>
-      '${ApiConstants.dataDragonBaseUrl}/img/profileicon/$profileIconId.png';
+      '${DataDragonURL.dataDragonBaseUrl}/img/profileicon/$profileIconId.png';
 
   Future<SummonerSpellsModelResponse> getSummonerSpells() async {
-    final url = '${ApiConstants.dataDragonBaseUrl}/data/en_US/summoner.json';
+    final url = '${DataDragonURL.dataDragonBaseUrl}/data/en_US/summoner.json';
 
     print('DataDragonSummonerSpellsApi - Request: GET $url');
 

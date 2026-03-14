@@ -12,6 +12,6 @@ abstract class Account with _$Account {
     required String gameName,
     required String tagLine,
     required Region region,
-    int? profileIconId,
+    required String iconUrl,
   }) = _Account;
 }

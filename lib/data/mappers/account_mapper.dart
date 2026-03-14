@@ -1,3 +1,4 @@
+import 'package:summoner_timer/core/constants/api_constants.dart';
 import 'package:summoner_timer/data/models/models.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
@@ -16,7 +17,7 @@ abstract final class AccountMapper {
         (element) => element.name == regionModel.region,
         orElse: () => Region.lan,
       ),
-      profileIconId: summonerModel.profileIconId,
+      iconUrl: DataDragonURL.iconUrl(summonerModel.profileIconId.toString()),
     );
   }
 
@@ -27,7 +28,7 @@ abstract final class AccountMapper {
       gameName: accountModel.gameName ?? '',
       tagLine: accountModel.tagLine ?? '',
       region: Region.lan,
-      profileIconId: 0,
+      iconUrl: DataDragonURL.iconUrl('0'),
     );
   }
 

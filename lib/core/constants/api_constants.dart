@@ -1,7 +1,10 @@
-abstract final class ApiConstants {
+abstract final class DataDragonURL {
   static const String dataDragonVersion = '16.4.1';
   static const String dataDragonBaseUrl =
       'https://ddragon.leagueoflegends.com/cdn/$dataDragonVersion';
+
+  static String iconUrl(String iconPng) =>
+      '$dataDragonBaseUrl/img/profileIcon/$iconPng.png';
 }
 
 enum RiotRegion {
