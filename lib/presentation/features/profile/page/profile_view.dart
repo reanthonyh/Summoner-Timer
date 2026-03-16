@@ -56,7 +56,7 @@ final class _ProfileView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: AppSpacing.md,
+                            padding: AppSpacing.sm,
                             decoration: BoxDecoration(
                               color: colorScheme.secondaryContainer,
                               borderRadius: BorderRadius.circular(20),
@@ -71,17 +71,17 @@ final class _ProfileView extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                padding: AppSpacing.md,
                 sliver: SliverToBoxAdapter(
                   child: Card(
-                    elevation: 0,
+                    elevation: 2,
                     color: colorScheme.surfaceContainerLow,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
                       side: BorderSide(color: colorScheme.outlineVariant),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(24),
+                      padding: AppSpacing.lg,
                       child: Column(
                         spacing: 24,
                         children: [
@@ -109,7 +109,7 @@ final class _ProfileView extends StatelessWidget {
                               icon: const Icon(Icons.play_arrow),
                               label: Text(
                                 intl.profile_search_game,
-                                style: const TextStyle(fontSize: 18),
+                                style: textTheme.displayMedium,
                               ),
                               style: FilledButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -125,19 +125,19 @@ final class _ProfileView extends StatelessWidget {
                 ),
               ),
               SliverPadding(
-                padding: const EdgeInsets.all(16),
+                padding: AppSpacing.md,
                 sliver: SliverToBoxAdapter(
                   child: OutlinedButton.icon(
                     onPressed: () {
                       context.read<ProfileCubit>().logout();
                       Navigator.of(
                         context,
-                      ).pushNamedAndRemoveUntil('search', (_) => false);
+                      ).pushNamedAndRemoveUntil(SearchPage.routeName, (_) => false);
                     },
                     icon: const Icon(Icons.switch_account),
                     label: Text(intl.profile_change_account),
                     style: OutlinedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      padding: AppSpacing.sm,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
@@ -159,7 +159,7 @@ final class _ProfileView extends StatelessWidget {
           ..clearSnackBars()
           ..showSnackBar(
             SnackBar(
-              content: Text(state.message ?? "An error happend"),
+              content: Text(state.message ?? AppLocalizations.of(context)!.general_error),
               duration: Durations.extralong2,
             ),
           );

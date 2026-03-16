@@ -1,6 +1,6 @@
-import 'package:summoner_timer/core/utils/result.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 
 abstract interface class SpectatorRepository {
-  Future<Result<GameInformation, Exception>> findOnGameMatch();
+  AsyncResult<GameInformation> findOnGameMatch();
 }

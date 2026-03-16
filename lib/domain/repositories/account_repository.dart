@@ -1,15 +1,15 @@
-import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
+import 'package:result_dart/result_dart.dart';
 
 abstract interface class AccountRepository {
-  Future<Result<Account, Exception>> retrieveSummonerByNameTag({
+  AsyncResult<Account> retrieveSummonerByNameTag({
     required String name,
     required String tag,
   });
 
-  Future<Result<Account, Exception>> retrieveSummonerByPUUID(String puuid);
+  AsyncResult<Account> retrieveSummonerByPUUID(String puuid);
 
-  Future<Result<List<Account>, Exception>> getSavedAccounts();
+  AsyncResult<List<Account>> getSavedAccounts();
 
-  Future<Result<void, Exception>> saveAccount(Account account);
+  AsyncResult<Unit> saveAccount(Account account);
 }

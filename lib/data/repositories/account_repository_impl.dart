@@ -1,5 +1,5 @@
+import 'package:result_dart/result_dart.dart';
 import 'package:summoner_timer/core/constants/api_constants.dart';
-import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/local_account_datasource.dart';
 import 'package:summoner_timer/data/datasources/riot_region_source.dart';
 import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
@@ -23,7 +23,7 @@ final class AccountRepositoryImpl implements AccountRepository {
   final SessionRepository _sessionRepository;
 
   @override
-  Future<Result<Account, Exception>> retrieveSummonerByPUUID(String puuid) async {
+  AsyncResult<Account> retrieveSummonerByPUUID(String puuid) async {
     try {
       final accountResult = await dataSource.getAccountByPUUID(puuid);
 
@@ -55,15 +55,15 @@ final class AccountRepositoryImpl implements AccountRepository {
 
       _sessionRepository.setAccount(account);
 
-      return Result.success(account);
+      return account.toSuccess();
     } catch (err) {
       print('Repository Impl: Error retrieving account: $err');
-      return Result.failure(err as Exception);
+      return Exception('Failed to retrieve account: $err').toFailure();
     }
   }
 
   @override
-  Future<Result<Account, Exception>> retrieveSummonerByNameTag({
+  AsyncResult<Account> retrieveSummonerByNameTag({
     required String name,
     required String tag,
   }) async {
@@ -101,20 +101,20 @@ final class AccountRepositoryImpl implements AccountRepository {
 
       _sessionRepository.setAccount(account);
 
-      return Result.success(account);
+      return account.toSuccess();
     } catch (e) {
       print('Repository Impl: Error retrieving account: $e');
-      return Result.failure(e as Exception);
+      return Exception('Failed to retrieve account: $e').toFailure();
     }
   }
 
   @override
-  Future<Result<List<Account>, Exception>> getSavedAccounts() async {
+  AsyncResult<List<Account>> getSavedAccounts() async {
     try {
       final models = await localDataSource.getSavedAccounts();
 
       if (models.isEmpty) {
-        return const Result.success([]);
+        return const Success([]);
       }
 
       final accounts = <Account>[];
@@ -146,20 +146,23 @@ final class AccountRepositoryImpl implements AccountRepository {
         accounts.add(account);
       }
 
-      return Result.success(accounts);
+      return accounts.toSuccess();
     } catch (e) {
-      return Result.failure(e as Exception);
+      print('Repository Impl: Error retrieving saved accounts: $e');
+      return Exception('Failed to retrieve saved accounts: $e').toFailure();
     }
   }
 
   @override
-  Future<Result<void, Exception>> saveAccount(Account account) async {
+  AsyncResult<Unit> saveAccount(Account account) async {
     try {
       final model = AccountMapper.toModel(account);
       await localDataSource.saveAccount(model);
-      return const Result.success(null);
+
+      return unit.toSuccess();
     } catch (e) {
-      return Result.failure(e as Exception);
+      print('Repository Impl: Error saving account: $e');
+      return Exception('Failed to save account: $e').toFailure();
     }
   }
 }

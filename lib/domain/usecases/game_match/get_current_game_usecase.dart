@@ -1,4 +1,4 @@
-import 'package:summoner_timer/core/utils/result.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
 
@@ -7,7 +7,7 @@ final class GetCurrentGameUseCase {
 
   final SpectatorRepository repository;
 
-  Future<Result<GameInformation, Exception>> call() {
+  AsyncResult<GameInformation> call() {
     return repository.findOnGameMatch();
   }
 }

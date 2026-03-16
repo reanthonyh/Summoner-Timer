@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:summoner_timer/core/exceptions/exceptions.dart';
-import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/data/datasources/riot_platform_source.dart';
 import 'package:summoner_timer/data/datasources/riot_region_source.dart';
 import 'package:summoner_timer/data/mappers/mappers.dart';
@@ -33,9 +33,9 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
   }
 
   @override
-  Future<Result<GameInformation, Exception>> findOnGameMatch() async {
+  AsyncResult<GameInformation> findOnGameMatch() async {
     if (_isCacheValid) {
-      return Result.success(_cachedGameInfo!);
+      return _cachedGameInfo!.toSuccess();
     }
 
     try {
@@ -54,15 +54,16 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
 
       final summonerSpellsResult = await _summonerSpellsRepository.getSummonerSpells();
 
-      final spellsList = summonerSpellsResult.when(
-        success: (spells) => spells,
-        failure: (_) => <SummonerSpell>[],
+      final spellsList = summonerSpellsResult.fold(
+        (success) => success,
+        (failure) => <SummonerSpell>[],
       );
 
       final userParticipant = response.participants?.firstWhere(
-        (p) => p.puuid == puuid,
+        (participant) => participant.puuid == puuid,
         orElse: () => const ParticipantModel(),
       );
+
       final userTeamId = userParticipant?.teamId ?? 0;
 
       final List<GameParticipant> players =
@@ -85,18 +86,16 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
       _cachedGameInfo = gameInfo;
       _lastFetchTime = DateTime.now();
 
-      return Result.success(gameInfo);
+      return gameInfo.toSuccess();
     } on DioException catch (e) {
-      return Result.failure(
-        ApiException(
-          message: e.message ?? 'Network error occurred',
-          statusCode: e.response?.statusCode,
-          responseBody: e.response?.data?.toString(),
-          errorType: e.type.name,
-        ),
-      );
+      return ApiException(
+        message: e.message ?? 'Network error occurred',
+        statusCode: e.response?.statusCode,
+        responseBody: e.response?.data?.toString(),
+        errorType: e.type.name,
+      ).toFailure();
     } catch (e) {
-      return Result.failure(ApiException(message: e.toString()));
+      return Exception('An unexpected error occurred').toFailure();
     }
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/core/di/injection_container.dart';
-import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
 
 import 'search_form_state.dart';
@@ -19,20 +18,23 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
 
     final result = await _searchAccountUseCase(riotId: (name: name, tag: tag));
 
-    result.when(
-      success: (data) async {
-        await _saveAccountUseCase(data);
-        emit(state.copyWith(status: UiStatus.success));
-      },
-      failure: (error) {
-        emit(
-          state.copyWith(
-            status: UiStatus.error,
-            message: "Not found account with that RiotID",
-          ),
-        );
-      },
-    );
+    if (result.isSuccess()) {
+      final data = result.getOrNull()!;
+      final saveResult = await _saveAccountUseCase(data);
+
+      if (saveResult.isSuccess()) {
+        emit(state.copyWith(status: .success));
+      } else {
+        emit(state.copyWith(status: .error, message: 'Failed to save account'));
+      }
+    } else {
+      emit(
+        state.copyWith(
+          status: UiStatus.error,
+          message: 'Not found account with that RiotID',
+        ),
+      );
+    }
   }
 
   void searchWithPUUID(String puuid) async {
@@ -40,11 +42,11 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
 
     final result = await _searchAccountUseCase(puuid: puuid);
 
-    result.when(
-      success: (_) {
+    result.fold(
+      (_) {
         emit(state.copyWith(status: .success));
       },
-      failure: (error) {
+      (error) {
         print('SearchFormCubit - searchWithPUUID : $error');
         emit(state.copyWith(status: .error, message: "Failure on search that account"));
       },

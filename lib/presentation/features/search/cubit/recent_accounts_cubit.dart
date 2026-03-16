@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/di/injection_container.dart';
-import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
+
 import 'recent_accounts_state.dart';
 
 final class RecentAccountsCubit extends Cubit<RecentAccountsState> {
@@ -16,11 +16,11 @@ final class RecentAccountsCubit extends Cubit<RecentAccountsState> {
 
     final recentAccounts = await _getSavedAccountsUseCase();
 
-    recentAccounts.when(
-      success: (data) {
+    recentAccounts.fold(
+      (data) {
         emit(state.copyWith(status: .initial, recentAccounts: data));
       },
-      failure: (error) {
+      (error) {
         emit(state.copyWith(status: .error, message: "Not found recent accounts"));
       },
     );

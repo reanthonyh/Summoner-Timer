@@ -24,6 +24,7 @@ dependencies:
   json_annotation: ^4.11.0
   shared_preferences: ^2.5.4
   wakelock_plus: ^1.4.0
+  result_dart: ^2.2.0
 
 dev_dependencies:
   flutter_test:

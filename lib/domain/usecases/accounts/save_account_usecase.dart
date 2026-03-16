@@ -1,4 +1,4 @@
-import 'package:summoner_timer/core/utils/result.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
 import 'package:summoner_timer/domain/repositories/account_repository.dart';
 
@@ -7,7 +7,7 @@ final class SaveAccountUseCase {
 
   final AccountRepository repository;
 
-  Future<Result<void, Exception>> call(Account account) {
+  AsyncResult<Unit> call(Account account) async {
     return repository.saveAccount(account);
   }
 }
