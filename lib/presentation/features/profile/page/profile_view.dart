@@ -34,7 +34,7 @@ final class _ProfileView extends StatelessWidget {
                     spacing: 16,
                     children: [
                       CircleAvatar(
-                        radius: 64,
+                        radius: 80,
                         backgroundImage: account.iconUrl.isNotEmpty
                             ? CachedNetworkImageProvider(account.iconUrl)
                             : null,
@@ -77,7 +77,7 @@ final class _ProfileView extends StatelessWidget {
                     elevation: 2,
                     color: colorScheme.surfaceContainerLow,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(16),
                       side: BorderSide(color: colorScheme.outlineVariant),
                     ),
                     child: Padding(
@@ -99,24 +99,12 @@ final class _ProfileView extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 64,
-                            child: FilledButton.icon(
-                              onPressed: () {
-                                // TODO: Add navigation to GamePage or search game logic
-                              },
-                              icon: const Icon(Icons.play_arrow),
-                              label: Text(
-                                intl.profile_search_game,
-                                style: textTheme.displayMedium,
-                              ),
-                              style: FilledButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                            ),
+                          FilledButton.icon(
+                            onPressed: () {
+                              // TODO: Add navigation to GamePage or search game logic
+                            },
+                            icon: const Icon(Icons.play_arrow),
+                            label: Text(intl.profile_search_game),
                           ),
                         ],
                       ),

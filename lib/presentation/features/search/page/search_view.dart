@@ -30,16 +30,16 @@ final class _SearchView extends StatelessWidget {
           child: CustomScrollView(
             slivers: [
               SliverPadding(
-                padding: AppSpacing.sm,
+                padding: AppSpacing.lg,
                 sliver: SliverToBoxAdapter(
                   child: Column(
-                    spacing: 8,
+                    spacing: 16,
                     children: [
-                      const Icon(Icons.person_search, size: 64),
+                      const Icon(Icons.person_search, size: 48),
 
                       Text(
                         intl.search_title,
-                        style: textTheme.displayMedium,
+                        style: textTheme.headlineLarge,
                         textAlign: TextAlign.center,
                       ),
 
@@ -96,21 +96,24 @@ final class _SearchView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final account = state.recentAccounts.elementAt(index);
 
-                        return ListTile(
-                          leading: CircleAvatar(
-                            child: CachedNetworkImage(imageUrl: account.iconUrl),
+                        return Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: CachedNetworkImage(imageUrl: account.iconUrl),
+                            ),
+                            title: Text(account.riotID),
+                            subtitle: Text(account.region.name.toUpperCase()),
+                            onTap: () {
+                              debugPrint('Navigating to Profile with $account');
+
+                              final cubit = context.read<SearchFormCubit>();
+
+                              if (!cubit.state.status.isLoading) {
+                                cubit.searchWithPUUID(account.puuid);
+                              }
+                            },
                           ),
-                          title: Text(account.riotID),
-                          subtitle: Text(account.region.name.toUpperCase()),
-                          onTap: () {
-                            debugPrint('Navigating to Profile with $account');
-
-                            final cubit = context.read<SearchFormCubit>();
-
-                            if (!cubit.state.status.isLoading) {
-                              cubit.searchWithPUUID(account.puuid);
-                            }
-                          },
                         );
                       },
                     ),

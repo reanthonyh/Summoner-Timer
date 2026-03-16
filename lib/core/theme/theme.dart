@@ -107,8 +107,8 @@ abstract class AppSpacing {
 abstract class AppTheme {
   static const Color _primaryColor = Color(0xFF722F37);
   static const Color _accentColor = Color(0xFFC71585);
-  static const Color _backgroundColor = Color(0xFFF5F5F5);
-  static const Color _surfaceColor = Color(0xFF36454F);
+  static const Color _backgroundColor = Colors.white;
+  static const Color _surfaceColor = Color(0xFF1E1E1E);
 
   static ThemeData get lightTheme {
     return ThemeData(
