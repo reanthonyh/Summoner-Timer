@@ -11,6 +11,7 @@ final class _ProfileView extends StatelessWidget {
     final intl = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: AppBar(title: Text(intl.profile_title), centerTitle: true),
       body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: _handleListener,
         builder: (context, state) {
@@ -26,26 +27,11 @@ final class _ProfileView extends StatelessWidget {
 
           return CustomScrollView(
             slivers: [
-              SliverAppBar.large(
-                title: Text(intl.profile_title),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      context.read<ProfileCubit>().logout();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        'search',
-                        (_) => false,
-                      );
-                    },
-                    icon: const Icon(Icons.logout),
-                    tooltip: intl.profile_change_account,
-                  ),
-                ],
-              ),
               SliverPadding(
-                padding: const EdgeInsets.all(16),
+                padding: AppSpacing.lg,
                 sliver: SliverToBoxAdapter(
                   child: Column(
+                    spacing: 16,
                     children: [
                       CircleAvatar(
                         radius: 64,
@@ -56,7 +42,7 @@ final class _ProfileView extends StatelessWidget {
                             ? const Icon(Icons.person, size: 64)
                             : null,
                       ),
-                      const SizedBox(height: 16),
+
                       Text(
                         account.riotID,
                         style: textTheme.displaySmall?.copyWith(
@@ -64,34 +50,20 @@ final class _ProfileView extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+
                       Row(
+                        spacing: 16,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
+                            padding: AppSpacing.md,
                             decoration: BoxDecoration(
                               color: colorScheme.secondaryContainer,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(
-                              account.region.name.toUpperCase(),
-                              style: textTheme.labelLarge?.copyWith(
-                                color: colorScheme.onSecondaryContainer,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            child: Text(account.region.name.toUpperCase()),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            intl.profile_level(account.level),
-                            style: textTheme.titleMedium?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          ),
+                          Text(intl.profile_level(account.level)),
                         ],
                       ),
                     ],
@@ -158,10 +130,9 @@ final class _ProfileView extends StatelessWidget {
                   child: OutlinedButton.icon(
                     onPressed: () {
                       context.read<ProfileCubit>().logout();
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        'search',
-                        (_) => false,
-                      );
+                      Navigator.of(
+                        context,
+                      ).pushNamedAndRemoveUntil('search', (_) => false);
                     },
                     icon: const Icon(Icons.switch_account),
                     label: Text(intl.profile_change_account),

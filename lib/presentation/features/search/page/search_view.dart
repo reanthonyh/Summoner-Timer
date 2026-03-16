@@ -14,7 +14,7 @@ final class _SearchView extends StatelessWidget {
       body: SafeArea(
         child: BlocListener<SearchFormCubit, SearchFormState>(
           listener: (context, state) {
-            if (state.status == .error) {
+            if (state.status.isError) {
               ScaffoldMessenger.of(context)
                 ..clearSnackBars()
                 ..showSnackBar(
@@ -30,17 +30,19 @@ final class _SearchView extends StatelessWidget {
           child: CustomScrollView(
             slivers: [
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                padding: AppSpacing.sm,
                 sliver: SliverToBoxAdapter(
                   child: Column(
                     spacing: 8,
                     children: [
                       const Icon(Icons.person_search, size: 64),
+
                       Text(
                         intl.search_title,
                         style: textTheme.displayMedium,
                         textAlign: TextAlign.center,
                       ),
+
                       const _SearchForm(),
                       Divider(color: colorScheme.primary),
                     ],

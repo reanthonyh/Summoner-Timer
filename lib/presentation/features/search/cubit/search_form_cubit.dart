@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/core/di/injection_container.dart';
 import 'package:summoner_timer/core/utils/result.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
+
 import 'search_form_state.dart';
 
 final class SearchFormCubit extends Cubit<SearchFormState> {
@@ -15,9 +17,7 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
   void searchWithRiotID({required String name, required String tag}) async {
     emit(state.copyWith(status: UiStatus.loading));
 
-    final result = await _searchAccountUseCase(
-      riotId: (name: name, tag: tag),
-    );
+    final result = await _searchAccountUseCase(riotId: (name: name, tag: tag));
 
     result.when(
       success: (data) async {

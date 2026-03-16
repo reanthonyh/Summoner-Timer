@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/constants/enums.dart';
+import 'package:summoner_timer/core/theme/theme.dart';
 import 'package:summoner_timer/l10n/l10n.dart';
 import 'package:summoner_timer/presentation/features/profile/page/profile_page.dart';
 

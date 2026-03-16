@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:summoner_timer/core/theme/theme.dart';
 import 'package:summoner_timer/l10n/l10n.dart';
 
 import './features/search/page/search_page.dart';
@@ -11,8 +12,8 @@ final class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: AppTheme.defaultTheme(),
-      darkTheme: AppTheme.darkTheme(),
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       initialRoute: SearchPage.routeName,
       routes: Map.fromEntries([
         SearchPage.routeEntry,
@@ -21,30 +22,6 @@ final class RootApp extends StatelessWidget {
       ]),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-    );
-  }
-}
-
-abstract final class AppTheme {
-  static const _wineSeed = Color(0xFF722F37);
-
-  static ThemeData defaultTheme() {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: _wineSeed,
-        brightness: Brightness.light,
-      ),
-    );
-  }
-
-  static ThemeData darkTheme() {
-    return ThemeData(
-      useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: _wineSeed,
-        brightness: Brightness.dark,
-      ),
     );
   }
 }
