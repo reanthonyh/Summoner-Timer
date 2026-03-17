@@ -4,7 +4,7 @@ import 'package:summoner_timer/domain/entities/entities.dart';
 
 part 'game_state.freezed.dart';
 
-class SpellTimer {
+final class SpellTimer {
   const SpellTimer({
     required this.remainingSeconds,
     required this.totalSeconds,

@@ -26,38 +26,39 @@ class _GameViewState extends State<_GameView> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final intl = AppLocalizations.of(context)!;
 
-    return BlocConsumer<GameBloc, GameState>(
-      builder: (context, state) {
-        if (state.status.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: BlocConsumer<GameBloc, GameState>(
+          builder: (context, state) {
+            if (state.status.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        if (state.status.isError) {
-          return _ErrorView(
-            message: state.message ?? intl.general_error,
-            onRetry: () => context.read<GameBloc>().add(const GameEvent.retryLoadGame()),
-            intl: intl,
-          );
-        }
+            if (state.status.isError) {
+              return _ErrorView();
+            }
 
-        if (state.status.isSuccess && state.gameInformation != null) {
-          return _GameContent(
-            gameInformation: state.gameInformation!,
-            activeTimers: state.activeTimers,
-          );
-        }
+            if (state.status.isSuccess && state.gameInformation != null) {
+              return _GameContent(
+                gameInformation: state.gameInformation!,
+                activeTimers: state.activeTimers,
+              );
+            }
 
-        return _NoGameView(
-          message: intl.game_not_in_game,
-          onRetry: () => context.read<GameBloc>().add(const GameEvent.retryLoadGame()),
-          intl: intl,
-        );
-      },
-      listener: (context, state) {
-        if (state.status.isSuccess) {
-          context.read<GameBloc>().add(const GameEvent.gameView());
-        }
-      },
+            return _NoGameView(
+              message: intl.game_not_in_game,
+              onRetry: () =>
+                  context.read<GameBloc>().add(const GameEvent.retryLoadGame()),
+            );
+          },
+          listener: (context, state) {
+            if (state.status.isSuccess) {
+              context.read<GameBloc>().add(const GameEvent.gameView());
+            }
+          },
+        ),
+      ),
     );
   }
 
@@ -68,11 +69,8 @@ class _GameViewState extends State<_GameView> with WidgetsBindingObserver {
   }
 }
 
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.message, required this.onRetry});
-
-  final String message;
-  final VoidCallback onRetry;
+final class _ErrorView extends StatelessWidget {
+  const _ErrorView();
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +81,16 @@ class _ErrorView extends StatelessWidget {
         spacing: 16,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(message),
-          ElevatedButton(onPressed: onRetry, child: Text(intl.game_retry)),
+          BlocSelector<GameBloc, GameState, String>(
+            selector: (state) => state.message ?? intl.general_error,
+            builder: (context, message) => Text(message),
+          ),
+
+          ElevatedButton(
+            onPressed: () =>
+                context.read<GameBloc>().add(const GameEvent.retryLoadGame()),
+            child: Text(intl.game_retry),
+          ),
         ],
       ),
     );

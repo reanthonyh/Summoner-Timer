@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/core/theme/theme.dart';
 import 'package:summoner_timer/l10n/l10n.dart';
+import 'package:summoner_timer/presentation/features/game/page/game_page.dart';
 import 'package:summoner_timer/presentation/features/search/page/search_page.dart';
 
 import '../cubit/cubit.dart';

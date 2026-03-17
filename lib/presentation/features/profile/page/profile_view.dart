@@ -101,7 +101,7 @@ final class _ProfileView extends StatelessWidget {
                           ),
                           FilledButton.icon(
                             onPressed: () {
-                              // TODO: Add navigation to GamePage or search game logic
+                              Navigator.of(context).pushNamed(GamePage.routeName);
                             },
                             icon: const Icon(Icons.play_arrow),
                             label: Text(intl.profile_search_game),

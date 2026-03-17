@@ -88,11 +88,14 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
 
       return gameInfo.toSuccess();
     } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        return ApiException(message: 'No active game found', statusCode: 404).toFailure();
+      }
+
       return ApiException(
         message: e.message ?? 'Network error occurred',
         statusCode: e.response?.statusCode,
         responseBody: e.response?.data?.toString(),
-        errorType: e.type.name,
       ).toFailure();
     } catch (e) {
       return ApiException(message: 'An unexpected error occurred').toFailure();
