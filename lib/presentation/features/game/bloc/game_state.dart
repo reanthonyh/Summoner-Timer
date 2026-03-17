@@ -9,11 +9,13 @@ final class SpellTimer {
     required this.remainingSeconds,
     required this.totalSeconds,
     required this.startedAt,
+    required this.isRunning,
   });
 
   final int remainingSeconds;
   final int totalSeconds;
   final DateTime startedAt;
+  final bool isRunning;
 }
 
 @freezed

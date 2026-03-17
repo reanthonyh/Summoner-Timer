@@ -11,5 +11,9 @@ abstract class GameEvent with _$GameEvent {
     required String participantId,
     required int spellSlot,
   }) = StartSpellTimerEvent;
+  const factory GameEvent.prepareSpellTimer({
+    required String participantId,
+    required int spellSlot,
+  }) = PrepareSpellTimerEvent;
   const factory GameEvent.tickTimers() = TickTimersEvent;
 }

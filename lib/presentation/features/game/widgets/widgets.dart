@@ -306,8 +306,8 @@ class _SpellTimerBox extends StatelessWidget {
     return BlocSelector<GameBloc, GameState, SpellTimer?>(
       selector: (state) => state.activeTimers[timerKey],
       builder: (context, timer) {
-        final remainingSeconds = timer?.remainingSeconds;
-        final hasTimer = remainingSeconds != null;
+        final isRunning = timer?.isRunning ?? false;
+        final remainingSeconds = timer?.remainingSeconds ?? 0;
         const size = 52.0;
 
         return Material(
@@ -321,6 +321,14 @@ class _SpellTimerBox extends StatelessWidget {
                 ),
               );
             },
+            onLongPress: () {
+              context.read<GameBloc>().add(
+                GameEvent.prepareSpellTimer(
+                  participantId: participantId,
+                  spellSlot: spellSlot,
+                ),
+              );
+            },
             borderRadius: BorderRadius.circular(8),
             child: Container(
               width: size,
@@ -328,10 +336,10 @@ class _SpellTimerBox extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: hasTimer
+                  color: isRunning
                       ? Colors.redAccent
                       : theme.colorScheme.primary.withValues(alpha: 0.5),
-                  width: hasTimer ? 2 : 1,
+                  width: isRunning ? 2 : 1,
                 ),
               ),
               child: ClipRRect(
@@ -342,10 +350,10 @@ class _SpellTimerBox extends StatelessWidget {
                     CachedNetworkImage(
                       imageUrl: spell.imageUrl,
                       fit: BoxFit.cover,
-                      color: hasTimer ? Colors.black.withValues(alpha: 0.6) : null,
-                      colorBlendMode: hasTimer ? BlendMode.darken : null,
+                      color: isRunning ? Colors.black.withValues(alpha: 0.6) : null,
+                      colorBlendMode: isRunning ? BlendMode.darken : null,
                     ),
-                    if (hasTimer)
+                    if (isRunning)
                       Text(
                         _formatTime(remainingSeconds),
                         style: theme.textTheme.labelMedium,

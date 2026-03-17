@@ -14,6 +14,7 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     on<RetryLoadGameEvent>(_onRetryLoadGame);
     on<ResumeTimersEvent>(_onResumeTimers);
     on<StartSpellTimerEvent>(_onStartSpellTimer);
+    on<PrepareSpellTimerEvent>(_onPrepareSpellTimer);
     on<TickTimersEvent>(_onTickTimers);
   }
 
@@ -23,10 +24,10 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _startTicker() {
     if (_ticker?.isActive ?? false) return;
-    
+
     _ticker?.cancel();
     _ticker = Timer.periodic(
-      const Duration(seconds: 1), 
+      const Duration(seconds: 1),
       (_) => add(const GameEvent.tickTimers()),
     );
   }
@@ -38,12 +39,18 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
 
   Map<String, SpellTimer> _calculateUpdatedTimers(Map<String, SpellTimer> currentTimers) {
     if (currentTimers.isEmpty) return {};
-    
+
     final now = DateTime.now();
     final updatedTimers = <String, SpellTimer>{};
 
     for (final entry in currentTimers.entries) {
       final timer = entry.value;
+
+      if (!timer.isRunning) {
+        updatedTimers[entry.key] = timer;
+        continue;
+      }
+
       final elapsed = now.difference(timer.startedAt).inSeconds;
       final remaining = timer.totalSeconds - elapsed;
 
@@ -52,9 +59,20 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
           remainingSeconds: remaining,
           totalSeconds: timer.totalSeconds,
           startedAt: timer.startedAt,
+          isRunning: true,
+        );
+      } else {
+        // Timer finished: keep the entry so UI can show a "prepared" state and
+        // allow users to restart it via long-press.
+        updatedTimers[entry.key] = SpellTimer(
+          remainingSeconds: timer.totalSeconds,
+          totalSeconds: timer.totalSeconds,
+          startedAt: now,
+          isRunning: false,
         );
       }
     }
+
     return updatedTimers;
   }
 
@@ -63,7 +81,8 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     final result = await _getCurrentGameUseCase();
 
     result.fold(
-      (gameInfo) => emit(state.copyWith(status: UiStatus.success, gameInformation: gameInfo)),
+      (gameInfo) =>
+          emit(state.copyWith(status: UiStatus.success, gameInformation: gameInfo)),
       (failure) => emit(state.copyWith(status: UiStatus.error, message: failure.message)),
     );
   }
@@ -76,11 +95,15 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     final updatedTimers = _calculateUpdatedTimers(state.activeTimers);
     emit(state.copyWith(activeTimers: updatedTimers));
 
-    if (updatedTimers.isNotEmpty) {
+    if (_hasRunningTimers(updatedTimers)) {
       _startTicker();
     } else {
       _stopTicker();
     }
+  }
+
+  bool _hasRunningTimers(Map<String, SpellTimer> timers) {
+    return timers.values.any((timer) => timer.isRunning);
   }
 
   void _onStartSpellTimer(StartSpellTimerEvent event, Emitter<GameState> emit) {
@@ -99,6 +122,7 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
       remainingSeconds: spell.cooldownSeconds,
       totalSeconds: spell.cooldownSeconds,
       startedAt: DateTime.now(),
+      isRunning: true,
     );
 
     final updatedTimers = Map<String, SpellTimer>.from(state.activeTimers);
@@ -108,14 +132,39 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     _startTicker();
   }
 
+  void _onPrepareSpellTimer(PrepareSpellTimerEvent event, Emitter<GameState> emit) {
+    final gameInfo = state.gameInformation;
+    if (gameInfo == null) return;
+
+    final participant = gameInfo.players.firstWhere(
+      (p) => p.riotId == event.participantId,
+      orElse: () => throw Exception('Participant not found'),
+    );
+
+    final spell = event.spellSlot == 1 ? participant.spellOne : participant.spellTwo;
+    final timerKey = '${event.participantId}_${event.spellSlot}';
+
+    final timer = SpellTimer(
+      remainingSeconds: spell.cooldownSeconds,
+      totalSeconds: spell.cooldownSeconds,
+      startedAt: DateTime.now(),
+      isRunning: false,
+    );
+
+    final updatedTimers = Map<String, SpellTimer>.from(state.activeTimers);
+    updatedTimers[timerKey] = timer;
+
+    emit(state.copyWith(activeTimers: updatedTimers));
+  }
+
   void _onTickTimers(TickTimersEvent event, Emitter<GameState> emit) {
     final updatedTimers = _calculateUpdatedTimers(state.activeTimers);
-    
+
     // Check if anything actually changed (all timers might have same remaining seconds if tick is fast)
     // or if the list became empty.
     emit(state.copyWith(activeTimers: updatedTimers));
 
-    if (updatedTimers.isEmpty) {
+    if (!_hasRunningTimers(updatedTimers)) {
       _stopTicker();
     }
   }
