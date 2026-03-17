@@ -14,10 +14,10 @@ final class SessionRepositoryImpl implements SessionRepository {
     if (region == null) return RiotPlatform.la1;
 
     return switch (region) {
-      Region.lan => RiotPlatform.la1,
-      Region.las => RiotPlatform.la2,
-      Region.na => RiotPlatform.na1,
-      Region.euw => RiotPlatform.euw1,
+      .lan => RiotPlatform.la1,
+      .las => RiotPlatform.la2,
+      .na => RiotPlatform.na1,
+      .euw => RiotPlatform.euw1,
     };
   }
 

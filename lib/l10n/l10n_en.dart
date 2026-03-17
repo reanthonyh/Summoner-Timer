@@ -69,4 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get game_enemy_team => 'Enemy Team';
+
+  @override
+  String get game_live_title => 'Live Game';
 }

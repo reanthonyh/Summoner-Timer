@@ -85,5 +85,9 @@
   "game_enemy_team": "Enemy Team",
   "@game_enemy_team": {
     "description": "Enemy team label - Game Page"
+  },
+  "game_live_title": "Live Game",
+  "@game_live_title": {
+    "description": "Title - Live Game Page"
   }
 }

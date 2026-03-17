@@ -13,10 +13,9 @@ abstract final class AccountMapper {
       level: summonerModel.summonerLevel ?? 0,
       gameName: accountModel.gameName ?? '',
       tagLine: accountModel.tagLine ?? '',
-      region: Region.values.firstWhere(
-        (element) => element.name == regionModel.region,
-        orElse: () => Region.lan,
-      ),
+      region: RiotPlatform.values
+          .firstWhere((element) => element.name == regionModel.region, orElse: () => .la1)
+          .toRegion,
       iconUrl: DataDragonURL.iconUrl(summonerModel.profileIconId.toString()),
     );
   }
@@ -39,4 +38,14 @@ abstract final class AccountMapper {
       tagLine: account.tagLine,
     );
   }
+}
+
+extension on RiotPlatform {
+  Region get toRegion => switch (this) {
+    .la1 => Region.lan,
+    .la2 => Region.las,
+    .na1 => Region.na,
+    .euw1 => Region.euw,
+    _ => Region.lan,
+  };
 }

@@ -39,14 +39,14 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
     }
 
     try {
-      final puuid = _sessionRepository.currentAccount?.puuid;
+      final accountSession = _sessionRepository.currentAccount;
 
-      if (puuid == null) {
+      if (accountSession == null) {
         throw Exception('Account not setted with puuid');
       }
 
       final request = GameMatchModelRequest(
-        puuid: puuid,
+        puuid: accountSession.puuid,
         platform: _sessionRepository.platformHost,
       );
 
@@ -60,7 +60,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
       );
 
       final userParticipant = response.participants?.firstWhere(
-        (participant) => participant.puuid == puuid,
+        (participant) => participant.puuid == accountSession.puuid,
         orElse: () => const ParticipantModel(),
       );
 

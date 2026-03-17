@@ -213,6 +213,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enemy Team'**
   String get game_enemy_team;
+
+  /// Title - Live Game Page
+  ///
+  /// In en, this message translates to:
+  /// **'Live Game'**
+  String get game_live_title;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
