@@ -12,7 +12,6 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
   GameBloc() : super(GameState.initial()) {
     on<LoadGameEvent>(_onLoadGame);
     on<RetryLoadGameEvent>(_onRetryLoadGame);
-    on<GameViewEvent>(_onGameView);
     on<ResumeTimersEvent>(_onResumeTimers);
     on<StartSpellTimerEvent>(_onStartSpellTimer);
     on<TickTimersEvent>(_onTickTimers);
@@ -23,37 +22,27 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
   Timer? _ticker;
 
   void _startTicker() {
-    const second = Duration(seconds: 1);
-
+    if (_ticker?.isActive ?? false) return;
+    
     _ticker?.cancel();
-    _ticker = Timer.periodic(second, (_) => add(const GameEvent.tickTimers()));
-  }
-
-  void _onLoadGame(LoadGameEvent event, Emitter<GameState> emit) async {
-    emit(state.copyWith(status: .loading));
-    final result = await _getCurrentGameUseCase();
-
-    result.fold(
-      (gameInfo) => emit(state.copyWith(status: .success, gameInformation: gameInfo)),
-      (failure) => emit(state.copyWith(status: .error, message: failure.message)),
+    _ticker = Timer.periodic(
+      const Duration(seconds: 1), 
+      (_) => add(const GameEvent.tickTimers()),
     );
   }
 
-  void _onRetryLoadGame(RetryLoadGameEvent event, Emitter<GameState> emit) {
-    add(const GameEvent.loadGame());
+  void _stopTicker() {
+    _ticker?.cancel();
+    _ticker = null;
   }
 
-  void _onGameView(GameViewEvent event, Emitter<GameState> emit) {
-    if (state.status.isSuccess) {
-      _startTicker();
-    }
-  }
-
-  void _onResumeTimers(ResumeTimersEvent event, Emitter<GameState> emit) {
+  Map<String, SpellTimer> _calculateUpdatedTimers(Map<String, SpellTimer> currentTimers) {
+    if (currentTimers.isEmpty) return {};
+    
     final now = DateTime.now();
     final updatedTimers = <String, SpellTimer>{};
 
-    for (final entry in state.activeTimers.entries) {
+    for (final entry in currentTimers.entries) {
       final timer = entry.value;
       final elapsed = now.difference(timer.startedAt).inSeconds;
       final remaining = timer.totalSeconds - elapsed;
@@ -66,13 +55,31 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
         );
       }
     }
+    return updatedTimers;
+  }
 
+  void _onLoadGame(LoadGameEvent event, Emitter<GameState> emit) async {
+    emit(state.copyWith(status: UiStatus.loading));
+    final result = await _getCurrentGameUseCase();
+
+    result.fold(
+      (gameInfo) => emit(state.copyWith(status: UiStatus.success, gameInformation: gameInfo)),
+      (failure) => emit(state.copyWith(status: UiStatus.error, message: failure.message)),
+    );
+  }
+
+  void _onRetryLoadGame(RetryLoadGameEvent event, Emitter<GameState> emit) {
+    add(const GameEvent.loadGame());
+  }
+
+  void _onResumeTimers(ResumeTimersEvent event, Emitter<GameState> emit) {
+    final updatedTimers = _calculateUpdatedTimers(state.activeTimers);
     emit(state.copyWith(activeTimers: updatedTimers));
 
-    if (state.activeTimers.isNotEmpty && _ticker?.isActive != true) {
+    if (updatedTimers.isNotEmpty) {
       _startTicker();
-    } else if (state.activeTimers.isEmpty) {
-      _ticker?.cancel();
+    } else {
+      _stopTicker();
     }
   }
 
@@ -98,36 +105,18 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     updatedTimers[timerKey] = timer;
 
     emit(state.copyWith(activeTimers: updatedTimers));
-
-    if (_ticker?.isActive != true) {
-      _startTicker();
-    }
+    _startTicker();
   }
 
   void _onTickTimers(TickTimersEvent event, Emitter<GameState> emit) {
-    final now = DateTime.now();
-    final updatedTimers = <String, SpellTimer>{};
-    bool hasActiveTimers = false;
-
-    for (final entry in state.activeTimers.entries) {
-      final timer = entry.value;
-      final elapsed = now.difference(timer.startedAt).inSeconds;
-      final remaining = timer.totalSeconds - elapsed;
-
-      if (remaining > 0) {
-        updatedTimers[entry.key] = SpellTimer(
-          remainingSeconds: remaining,
-          totalSeconds: timer.totalSeconds,
-          startedAt: timer.startedAt,
-        );
-        hasActiveTimers = true;
-      }
-    }
-
+    final updatedTimers = _calculateUpdatedTimers(state.activeTimers);
+    
+    // Check if anything actually changed (all timers might have same remaining seconds if tick is fast)
+    // or if the list became empty.
     emit(state.copyWith(activeTimers: updatedTimers));
 
-    if (!hasActiveTimers) {
-      _ticker?.cancel();
+    if (updatedTimers.isEmpty) {
+      _stopTicker();
     }
   }
 

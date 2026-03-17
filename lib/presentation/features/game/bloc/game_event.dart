@@ -6,7 +6,6 @@ part 'game_event.freezed.dart';
 abstract class GameEvent with _$GameEvent {
   const factory GameEvent.loadGame() = LoadGameEvent;
   const factory GameEvent.retryLoadGame() = RetryLoadGameEvent;
-  const factory GameEvent.gameView() = GameViewEvent;
   const factory GameEvent.resumeTimers() = ResumeTimersEvent;
   const factory GameEvent.startSpellTimer({
     required String participantId,
