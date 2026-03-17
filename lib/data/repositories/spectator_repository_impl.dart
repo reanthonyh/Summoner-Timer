@@ -33,7 +33,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
   }
 
   @override
-  AsyncResult<GameInformation> findOnGameMatch() async {
+  AsyncResultDart<GameInformation, ApiException> findOnGameMatch() async {
     if (_isCacheValid) {
       return _cachedGameInfo!.toSuccess();
     }
@@ -95,7 +95,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
         errorType: e.type.name,
       ).toFailure();
     } catch (e) {
-      return Exception('An unexpected error occurred').toFailure();
+      return ApiException(message: 'An unexpected error occurred').toFailure();
     }
   }
 }

@@ -55,12 +55,16 @@ extension GameEventPatterns on GameEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadGame value)?  loadGame,TResult Function( GameView value)?  gameView,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadGameEvent value)?  loadGame,TResult Function( RetryLoadGameEvent value)?  retryLoadGame,TResult Function( GameViewEvent value)?  gameView,TResult Function( ResumeTimersEvent value)?  resumeTimers,TResult Function( StartSpellTimerEvent value)?  startSpellTimer,TResult Function( TickTimersEvent value)?  tickTimers,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case LoadGame() when loadGame != null:
-return loadGame(_that);case GameView() when gameView != null:
-return gameView(_that);case _:
+case LoadGameEvent() when loadGame != null:
+return loadGame(_that);case RetryLoadGameEvent() when retryLoadGame != null:
+return retryLoadGame(_that);case GameViewEvent() when gameView != null:
+return gameView(_that);case ResumeTimersEvent() when resumeTimers != null:
+return resumeTimers(_that);case StartSpellTimerEvent() when startSpellTimer != null:
+return startSpellTimer(_that);case TickTimersEvent() when tickTimers != null:
+return tickTimers(_that);case _:
   return orElse();
 
 }
@@ -78,12 +82,16 @@ return gameView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadGame value)  loadGame,required TResult Function( GameView value)  gameView,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadGameEvent value)  loadGame,required TResult Function( RetryLoadGameEvent value)  retryLoadGame,required TResult Function( GameViewEvent value)  gameView,required TResult Function( ResumeTimersEvent value)  resumeTimers,required TResult Function( StartSpellTimerEvent value)  startSpellTimer,required TResult Function( TickTimersEvent value)  tickTimers,}){
 final _that = this;
 switch (_that) {
-case LoadGame():
-return loadGame(_that);case GameView():
-return gameView(_that);case _:
+case LoadGameEvent():
+return loadGame(_that);case RetryLoadGameEvent():
+return retryLoadGame(_that);case GameViewEvent():
+return gameView(_that);case ResumeTimersEvent():
+return resumeTimers(_that);case StartSpellTimerEvent():
+return startSpellTimer(_that);case TickTimersEvent():
+return tickTimers(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -100,12 +108,16 @@ return gameView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadGame value)?  loadGame,TResult? Function( GameView value)?  gameView,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadGameEvent value)?  loadGame,TResult? Function( RetryLoadGameEvent value)?  retryLoadGame,TResult? Function( GameViewEvent value)?  gameView,TResult? Function( ResumeTimersEvent value)?  resumeTimers,TResult? Function( StartSpellTimerEvent value)?  startSpellTimer,TResult? Function( TickTimersEvent value)?  tickTimers,}){
 final _that = this;
 switch (_that) {
-case LoadGame() when loadGame != null:
-return loadGame(_that);case GameView() when gameView != null:
-return gameView(_that);case _:
+case LoadGameEvent() when loadGame != null:
+return loadGame(_that);case RetryLoadGameEvent() when retryLoadGame != null:
+return retryLoadGame(_that);case GameViewEvent() when gameView != null:
+return gameView(_that);case ResumeTimersEvent() when resumeTimers != null:
+return resumeTimers(_that);case StartSpellTimerEvent() when startSpellTimer != null:
+return startSpellTimer(_that);case TickTimersEvent() when tickTimers != null:
+return tickTimers(_that);case _:
   return null;
 
 }
@@ -122,11 +134,15 @@ return gameView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadGame,TResult Function()?  gameView,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadGame,TResult Function()?  retryLoadGame,TResult Function()?  gameView,TResult Function()?  resumeTimers,TResult Function( String participantId,  int spellSlot)?  startSpellTimer,TResult Function()?  tickTimers,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case LoadGame() when loadGame != null:
-return loadGame();case GameView() when gameView != null:
-return gameView();case _:
+case LoadGameEvent() when loadGame != null:
+return loadGame();case RetryLoadGameEvent() when retryLoadGame != null:
+return retryLoadGame();case GameViewEvent() when gameView != null:
+return gameView();case ResumeTimersEvent() when resumeTimers != null:
+return resumeTimers();case StartSpellTimerEvent() when startSpellTimer != null:
+return startSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent() when tickTimers != null:
+return tickTimers();case _:
   return orElse();
 
 }
@@ -144,11 +160,15 @@ return gameView();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadGame,required TResult Function()  gameView,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadGame,required TResult Function()  retryLoadGame,required TResult Function()  gameView,required TResult Function()  resumeTimers,required TResult Function( String participantId,  int spellSlot)  startSpellTimer,required TResult Function()  tickTimers,}) {final _that = this;
 switch (_that) {
-case LoadGame():
-return loadGame();case GameView():
-return gameView();case _:
+case LoadGameEvent():
+return loadGame();case RetryLoadGameEvent():
+return retryLoadGame();case GameViewEvent():
+return gameView();case ResumeTimersEvent():
+return resumeTimers();case StartSpellTimerEvent():
+return startSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent():
+return tickTimers();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -165,11 +185,15 @@ return gameView();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadGame,TResult? Function()?  gameView,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadGame,TResult? Function()?  retryLoadGame,TResult? Function()?  gameView,TResult? Function()?  resumeTimers,TResult? Function( String participantId,  int spellSlot)?  startSpellTimer,TResult? Function()?  tickTimers,}) {final _that = this;
 switch (_that) {
-case LoadGame() when loadGame != null:
-return loadGame();case GameView() when gameView != null:
-return gameView();case _:
+case LoadGameEvent() when loadGame != null:
+return loadGame();case RetryLoadGameEvent() when retryLoadGame != null:
+return retryLoadGame();case GameViewEvent() when gameView != null:
+return gameView();case ResumeTimersEvent() when resumeTimers != null:
+return resumeTimers();case StartSpellTimerEvent() when startSpellTimer != null:
+return startSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent() when tickTimers != null:
+return tickTimers();case _:
   return null;
 
 }
@@ -180,8 +204,8 @@ return gameView();case _:
 /// @nodoc
 
 
-class LoadGame implements GameEvent {
-  const LoadGame();
+class LoadGameEvent implements GameEvent {
+  const LoadGameEvent();
   
 
 
@@ -191,7 +215,7 @@ class LoadGame implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadGame);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadGameEvent);
 }
 
 
@@ -212,8 +236,8 @@ String toString() {
 /// @nodoc
 
 
-class GameView implements GameEvent {
-  const GameView();
+class RetryLoadGameEvent implements GameEvent {
+  const RetryLoadGameEvent();
   
 
 
@@ -223,7 +247,39 @@ class GameView implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameView);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RetryLoadGameEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameEvent.retryLoadGame()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class GameViewEvent implements GameEvent {
+  const GameViewEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameViewEvent);
 }
 
 
@@ -233,6 +289,138 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'GameEvent.gameView()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ResumeTimersEvent implements GameEvent {
+  const ResumeTimersEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResumeTimersEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameEvent.resumeTimers()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class StartSpellTimerEvent implements GameEvent {
+  const StartSpellTimerEvent({required this.participantId, required this.spellSlot});
+  
+
+ final  String participantId;
+ final  int spellSlot;
+
+/// Create a copy of GameEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$StartSpellTimerEventCopyWith<StartSpellTimerEvent> get copyWith => _$StartSpellTimerEventCopyWithImpl<StartSpellTimerEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StartSpellTimerEvent&&(identical(other.participantId, participantId) || other.participantId == participantId)&&(identical(other.spellSlot, spellSlot) || other.spellSlot == spellSlot));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,participantId,spellSlot);
+
+@override
+String toString() {
+  return 'GameEvent.startSpellTimer(participantId: $participantId, spellSlot: $spellSlot)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $StartSpellTimerEventCopyWith<$Res> implements $GameEventCopyWith<$Res> {
+  factory $StartSpellTimerEventCopyWith(StartSpellTimerEvent value, $Res Function(StartSpellTimerEvent) _then) = _$StartSpellTimerEventCopyWithImpl;
+@useResult
+$Res call({
+ String participantId, int spellSlot
+});
+
+
+
+
+}
+/// @nodoc
+class _$StartSpellTimerEventCopyWithImpl<$Res>
+    implements $StartSpellTimerEventCopyWith<$Res> {
+  _$StartSpellTimerEventCopyWithImpl(this._self, this._then);
+
+  final StartSpellTimerEvent _self;
+  final $Res Function(StartSpellTimerEvent) _then;
+
+/// Create a copy of GameEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? participantId = null,Object? spellSlot = null,}) {
+  return _then(StartSpellTimerEvent(
+participantId: null == participantId ? _self.participantId : participantId // ignore: cast_nullable_to_non_nullable
+as String,spellSlot: null == spellSlot ? _self.spellSlot : spellSlot // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class TickTimersEvent implements GameEvent {
+  const TickTimersEvent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TickTimersEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'GameEvent.tickTimers()';
 }
 
 

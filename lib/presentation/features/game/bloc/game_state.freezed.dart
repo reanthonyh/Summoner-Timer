@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GameState {
 
- GameInformation? get gameInformation; UiStatus get status; String? get message;
+ GameInformation? get gameInformation; UiStatus get status; String? get message; Map<String, SpellTimer> get activeTimers;
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $GameStateCopyWith<GameState> get copyWith => _$GameStateCopyWithImpl<GameState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other.activeTimers, activeTimers));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,gameInformation,status,message);
+int get hashCode => Object.hash(runtimeType,gameInformation,status,message,const DeepCollectionEquality().hash(activeTimers));
 
 @override
 String toString() {
-  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message)';
+  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message, activeTimers: $activeTimers)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $GameStateCopyWith<$Res>  {
   factory $GameStateCopyWith(GameState value, $Res Function(GameState) _then) = _$GameStateCopyWithImpl;
 @useResult
 $Res call({
- GameInformation? gameInformation, UiStatus status, String? message
+ GameInformation? gameInformation, UiStatus status, String? message, Map<String, SpellTimer> activeTimers
 });
 
 
@@ -62,12 +62,13 @@ class _$GameStateCopyWithImpl<$Res>
 
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? gameInformation = freezed,Object? status = null,Object? message = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? gameInformation = freezed,Object? status = null,Object? message = freezed,Object? activeTimers = null,}) {
   return _then(_self.copyWith(
 gameInformation: freezed == gameInformation ? _self.gameInformation : gameInformation // ignore: cast_nullable_to_non_nullable
 as GameInformation?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,activeTimers: null == activeTimers ? _self.activeTimers : activeTimers // ignore: cast_nullable_to_non_nullable
+as Map<String, SpellTimer>,
   ));
 }
 /// Create a copy of GameState
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( GameInformation? gameInformation,  UiStatus status,  String? message)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( GameInformation? gameInformation,  UiStatus status,  String? message,  Map<String, SpellTimer> activeTimers)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GameState() when $default != null:
-return $default(_that.gameInformation,_that.status,_that.message);case _:
+return $default(_that.gameInformation,_that.status,_that.message,_that.activeTimers);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.gameInformation,_that.status,_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( GameInformation? gameInformation,  UiStatus status,  String? message)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( GameInformation? gameInformation,  UiStatus status,  String? message,  Map<String, SpellTimer> activeTimers)  $default,) {final _that = this;
 switch (_that) {
 case _GameState():
-return $default(_that.gameInformation,_that.status,_that.message);case _:
+return $default(_that.gameInformation,_that.status,_that.message,_that.activeTimers);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +206,10 @@ return $default(_that.gameInformation,_that.status,_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( GameInformation? gameInformation,  UiStatus status,  String? message)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( GameInformation? gameInformation,  UiStatus status,  String? message,  Map<String, SpellTimer> activeTimers)?  $default,) {final _that = this;
 switch (_that) {
 case _GameState() when $default != null:
-return $default(_that.gameInformation,_that.status,_that.message);case _:
+return $default(_that.gameInformation,_that.status,_that.message,_that.activeTimers);case _:
   return null;
 
 }
@@ -220,12 +221,19 @@ return $default(_that.gameInformation,_that.status,_that.message);case _:
 
 
 class _GameState implements GameState {
-  const _GameState({this.gameInformation, required this.status, this.message});
+  const _GameState({this.gameInformation, required this.status, this.message, final  Map<String, SpellTimer> activeTimers = const {}}): _activeTimers = activeTimers;
   
 
 @override final  GameInformation? gameInformation;
 @override final  UiStatus status;
 @override final  String? message;
+ final  Map<String, SpellTimer> _activeTimers;
+@override@JsonKey() Map<String, SpellTimer> get activeTimers {
+  if (_activeTimers is EqualUnmodifiableMapView) return _activeTimers;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_activeTimers);
+}
+
 
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +245,16 @@ _$GameStateCopyWith<_GameState> get copyWith => __$GameStateCopyWithImpl<_GameSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._activeTimers, _activeTimers));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,gameInformation,status,message);
+int get hashCode => Object.hash(runtimeType,gameInformation,status,message,const DeepCollectionEquality().hash(_activeTimers));
 
 @override
 String toString() {
-  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message)';
+  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message, activeTimers: $activeTimers)';
 }
 
 
@@ -257,7 +265,7 @@ abstract mixin class _$GameStateCopyWith<$Res> implements $GameStateCopyWith<$Re
   factory _$GameStateCopyWith(_GameState value, $Res Function(_GameState) _then) = __$GameStateCopyWithImpl;
 @override @useResult
 $Res call({
- GameInformation? gameInformation, UiStatus status, String? message
+ GameInformation? gameInformation, UiStatus status, String? message, Map<String, SpellTimer> activeTimers
 });
 
 
@@ -274,12 +282,13 @@ class __$GameStateCopyWithImpl<$Res>
 
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? gameInformation = freezed,Object? status = null,Object? message = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? gameInformation = freezed,Object? status = null,Object? message = freezed,Object? activeTimers = null,}) {
   return _then(_GameState(
 gameInformation: freezed == gameInformation ? _self.gameInformation : gameInformation // ignore: cast_nullable_to_non_nullable
 as GameInformation?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,activeTimers: null == activeTimers ? _self._activeTimers : activeTimers // ignore: cast_nullable_to_non_nullable
+as Map<String, SpellTimer>,
   ));
 }
 

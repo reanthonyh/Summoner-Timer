@@ -5,10 +5,8 @@ part 'search_form_state.freezed.dart';
 
 @freezed
 abstract class SearchFormState with _$SearchFormState {
-  const factory SearchFormState({
-    required UiStatus status,
-    String? message,
-  }) = _SearchFormState;
+  const factory SearchFormState({required UiStatus status, String? message}) =
+      _SearchFormState;
 
   factory SearchFormState.initial() => const SearchFormState(status: UiStatus.initial);
 }

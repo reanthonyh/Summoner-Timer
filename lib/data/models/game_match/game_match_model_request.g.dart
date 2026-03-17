@@ -6,19 +6,17 @@ part of 'game_match_model_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_GameMatchModelRequest _$GameMatchModelRequestFromJson(
-  Map<String, dynamic> json,
-) => _GameMatchModelRequest(
-  puuid: json['puuid'] as String,
-  platform: $enumDecode(_$RiotPlatformEnumMap, json['platform']),
-);
+_GameMatchModelRequest _$GameMatchModelRequestFromJson(Map<String, dynamic> json) =>
+    _GameMatchModelRequest(
+      puuid: json['puuid'] as String,
+      platform: $enumDecode(_$RiotPlatformEnumMap, json['platform']),
+    );
 
-Map<String, dynamic> _$GameMatchModelRequestToJson(
-  _GameMatchModelRequest instance,
-) => <String, dynamic>{
-  'puuid': instance.puuid,
-  'platform': _$RiotPlatformEnumMap[instance.platform]!,
-};
+Map<String, dynamic> _$GameMatchModelRequestToJson(_GameMatchModelRequest instance) =>
+    <String, dynamic>{
+      'puuid': instance.puuid,
+      'platform': _$RiotPlatformEnumMap[instance.platform]!,
+    };
 
 const _$RiotPlatformEnumMap = {
   RiotPlatform.la1: 'la1',

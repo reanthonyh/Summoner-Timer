@@ -13,10 +13,9 @@ _RegionModelResponse _$RegionModelResponseFromJson(Map<String, dynamic> json) =>
       region: json['region'] as String?,
     );
 
-Map<String, dynamic> _$RegionModelResponseToJson(
-  _RegionModelResponse instance,
-) => <String, dynamic>{
-  'puuid': instance.puuid,
-  'game': instance.game,
-  'region': instance.region,
-};
+Map<String, dynamic> _$RegionModelResponseToJson(_RegionModelResponse instance) =>
+    <String, dynamic>{
+      'puuid': instance.puuid,
+      'game': instance.game,
+      'region': instance.region,
+    };

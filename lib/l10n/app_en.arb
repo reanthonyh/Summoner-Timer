@@ -69,5 +69,21 @@
   "profile_not_in_game": "Not currently in a game",
   "@profile_not_in_game": {
     "description": "In game check - Profile Page"
+  },
+  "game_not_in_game": "No active game found",
+  "@game_not_in_game": {
+    "description": "Title when no game is found - Game Page"
+  },
+  "game_retry": "Retry",
+  "@game_retry": {
+    "description": "Retry button - Game Page"
+  },
+  "game_ally_team": "Ally Team",
+  "@game_ally_team": {
+    "description": "Ally team label - Game Page"
+  },
+  "game_enemy_team": "Enemy Team",
+  "@game_enemy_team": {
+    "description": "Enemy team label - Game Page"
   }
 }
