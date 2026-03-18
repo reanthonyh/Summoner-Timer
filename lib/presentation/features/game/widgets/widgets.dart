@@ -92,34 +92,54 @@ class _GameContent extends StatefulWidget {
 }
 
 class _GameContentState extends State<_GameContent> {
-  late List<GameParticipant> _enemyPlayers;
+  late Map<String, int> _playerOrder;
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    _enemyPlayers = widget.gameInformation.players
-        .where((p) => p.team == Team.enemy)
-        .toList();
+    _initializePlayerOrder();
+  }
+
+  void _initializePlayerOrder() {
+    _playerOrder = {};
+    int index = 0;
+    for (final player in widget.gameInformation.players.where(
+      (p) => p.team == Team.enemy,
+    )) {
+      _playerOrder[player.riotId] = index++;
+    }
   }
 
   @override
   void didUpdateWidget(covariant _GameContent oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.gameInformation.matchId != widget.gameInformation.matchId) {
-      _enemyPlayers = widget.gameInformation.players
-          .where((p) => p.team == Team.enemy)
-          .toList();
+      _initializePlayerOrder();
     }
   }
 
-  void _movePlayer(int index, int direction) {
+  void _movePlayer(String playerId, int direction) {
     setState(() {
-      final newIndex = index + direction;
-      if (newIndex >= 0 && newIndex < _enemyPlayers.length) {
-        final item = _enemyPlayers.removeAt(index);
-        _enemyPlayers.insert(newIndex, item);
+      final currentOrder = _playerOrder[playerId];
+      if (currentOrder == null) return;
+
+      final newOrder = currentOrder + direction;
+      if (newOrder < 0) return;
+
+      // Find player at newOrder position
+      String? otherPlayerId;
+      for (final entry in _playerOrder.entries) {
+        if (entry.value == newOrder) {
+          otherPlayerId = entry.key;
+          break;
+        }
       }
+
+      if (otherPlayerId == null) return;
+
+      _playerOrder[playerId] = newOrder;
+      _playerOrder[otherPlayerId] = currentOrder;
     });
   }
 
@@ -127,30 +147,33 @@ class _GameContentState extends State<_GameContent> {
   Widget build(BuildContext context) {
     final intl = AppLocalizations.of(context)!;
 
+    final enemyPlayers =
+        widget.gameInformation.players.where((p) => p.team == Team.enemy).toList()..sort(
+          (a, b) => (_playerOrder[a.riotId] ?? 0).compareTo(_playerOrder[b.riotId] ?? 0),
+        );
+
     final allyPlayers = widget.gameInformation.players
         .where((p) => p.team == Team.ally)
         .toList();
 
     return ListView(
-      padding: AppSpacing.lg,
+      padding: AppSpacing.md,
       children: [
         _TeamHeader(
           title: intl.game_enemy_team,
           color: Colors.redAccent,
           icon: Icons.security_rounded,
         ),
-        _DragHintText(),
-        ...List.generate(_enemyPlayers.length, (index) {
-          final player = _enemyPlayers[index];
-          return _ParticipantRow(
-            key: ValueKey('${player.riotId}_$index'),
+        ...List.generate(enemyPlayers.length, (index) {
+          final player = enemyPlayers[index];
+
+          return _EnemyParticipantRow(
+            key: ValueKey(player.riotId),
             participant: player,
-            isEnemy: true,
-            index: index,
             canMoveUp: index > 0,
-            canMoveDown: index < _enemyPlayers.length - 1,
-            onMoveUp: () => _movePlayer(index, -1),
-            onMoveDown: () => _movePlayer(index, 1),
+            canMoveDown: index < enemyPlayers.length - 1,
+            onMoveUp: () => _movePlayer(player.riotId, -1),
+            onMoveDown: () => _movePlayer(player.riotId, 1),
           );
         }),
         const SizedBox(height: 24),
@@ -159,9 +182,7 @@ class _GameContentState extends State<_GameContent> {
           color: Colors.blueAccent,
           icon: Icons.shield_rounded,
         ),
-        ...allyPlayers.map(
-          (player) => _ParticipantRow(participant: player, isEnemy: false),
-        ),
+        ...allyPlayers.map((player) => _AllyParticipantRow(participant: player)),
       ],
     );
   }
@@ -198,44 +219,90 @@ class _TeamHeader extends StatelessWidget {
   }
 }
 
-class _DragHintText extends StatelessWidget {
-  const _DragHintText();
+class _EnemyParticipantRow extends StatelessWidget {
+  const _EnemyParticipantRow({
+    super.key,
+    required this.participant,
+    required this.canMoveUp,
+    required this.canMoveDown,
+    required this.onMoveUp,
+    required this.onMoveDown,
+  });
+
+  final GameParticipant participant;
+  final bool canMoveUp;
+  final bool canMoveDown;
+  final VoidCallback onMoveUp;
+  final VoidCallback onMoveDown;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8, left: 4),
-      child: Text(
-        'Use arrow buttons to reorder by lane',
-        style: theme.textTheme.bodySmall?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-          fontStyle: FontStyle.italic,
+    final arrowButtonStyle = IconButton.styleFrom(padding: .zero);
+
+    return Card(
+      elevation: 1,
+      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+      ),
+      child: Padding(
+        padding: AppSpacing.xs,
+        child: Row(
+          spacing: 5,
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LimitedBox(
+                  maxHeight: 25,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_circle_up),
+                    onPressed: canMoveUp ? onMoveUp : null,
+                    style: arrowButtonStyle,
+                  ),
+                ),
+                LimitedBox(
+                  maxHeight: 25,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_circle_down),
+                    onPressed: canMoveDown ? onMoveDown : null,
+                    style: arrowButtonStyle,
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Text(
+                participant.riotId,
+                style: theme.textTheme.bodyMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            const VerticalDivider(),
+            _SpellTimerBox(
+              spell: participant.spellOne,
+              participantId: participant.riotId,
+              spellSlot: 1,
+            ),
+            _SpellTimerBox(
+              spell: participant.spellTwo,
+              participantId: participant.riotId,
+              spellSlot: 2,
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _ParticipantRow extends StatelessWidget {
-  const _ParticipantRow({
-    super.key,
-    required this.participant,
-    required this.isEnemy,
-    this.index,
-    this.canMoveUp = false,
-    this.canMoveDown = false,
-    this.onMoveUp,
-    this.onMoveDown,
-  });
+class _AllyParticipantRow extends StatelessWidget {
+  const _AllyParticipantRow({required this.participant});
 
   final GameParticipant participant;
-  final bool isEnemy;
-  final int? index;
-  final bool canMoveUp;
-  final bool canMoveDown;
-  final VoidCallback? onMoveUp;
-  final VoidCallback? onMoveDown;
 
   @override
   Widget build(BuildContext context) {
@@ -249,98 +316,21 @@ class _ParticipantRow extends StatelessWidget {
         side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: AppSpacing.xs,
         child: Row(
-          spacing: 4,
+          spacing: 5,
           children: [
-            // Champion placeholder / ID
-            Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: Center(
-                child: Text(
-                  participant.championId.toString(),
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-            const VerticalDivider(thickness: 1, width: 8),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    participant.riotId,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (participant.isBot)
-                    Text(
-                      'BOT',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.secondary,
-                      ),
-                    ),
-                ],
+              child: Text(
+                participant.riotId,
+                style: theme.textTheme.bodyMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const VerticalDivider(),
-            if (isEnemy) ...[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: canMoveUp
-                        ? IconButton(
-                            icon: const Icon(Icons.keyboard_arrow_up, size: 16),
-                            onPressed: onMoveUp,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                          )
-                        : null,
-                  ),
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: canMoveDown
-                        ? IconButton(
-                            icon: const Icon(Icons.keyboard_arrow_down, size: 16),
-                            onPressed: onMoveDown,
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                          )
-                        : null,
-                  ),
-                ],
-              ),
-              const SizedBox(width: 4),
-              _SpellTimerBox(
-                spell: participant.spellOne,
-                participantId: participant.riotId,
-                spellSlot: 1,
-              ),
-              const SizedBox(width: 4),
-              _SpellTimerBox(
-                spell: participant.spellTwo,
-                participantId: participant.riotId,
-                spellSlot: 2,
-              ),
-            ] else ...[
-              _SpellStaticBox(spell: participant.spellOne),
-              const SizedBox(width: 8),
-              _SpellStaticBox(spell: participant.spellTwo),
-            ],
+            _SpellStaticBox(spell: participant.spellOne),
+            _SpellStaticBox(spell: participant.spellTwo),
           ],
         ),
       ),
@@ -366,7 +356,7 @@ class _SpellStaticBox extends StatelessWidget {
         border: Border.all(color: colorScheme.outlineVariant.withValues(alpha: 0.4)),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(7),
+        borderRadius: BorderRadius.circular(6),
         child: CachedNetworkImage(
           imageUrl: spell.imageUrl,
           fit: BoxFit.cover,
@@ -402,58 +392,55 @@ class _SpellTimerBox extends StatelessWidget {
       builder: (context, timer) {
         final isRunning = timer?.isRunning ?? false;
         final remainingSeconds = timer?.remainingSeconds ?? 0;
-        const size = 44.0;
+        const size = 42.0;
 
-        return Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              context.read<GameBloc>().add(
-                GameEvent.startSpellTimer(
-                  participantId: participantId,
-                  spellSlot: spellSlot,
-                ),
-              );
-            },
-            onLongPress: () {
-              context.read<GameBloc>().add(
-                GameEvent.prepareSpellTimer(
-                  participantId: participantId,
-                  spellSlot: spellSlot,
-                ),
-              );
-            },
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: isRunning
-                      ? Colors.redAccent
-                      : theme.colorScheme.primary.withValues(alpha: 0.5),
-                  width: isRunning ? 2 : 1,
-                ),
+        return InkWell(
+          onTap: () {
+            context.read<GameBloc>().add(
+              GameEvent.startSpellTimer(
+                participantId: participantId,
+                spellSlot: spellSlot,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: spell.imageUrl,
-                      fit: BoxFit.cover,
-                      color: isRunning ? Colors.black.withValues(alpha: 0.6) : null,
-                      colorBlendMode: isRunning ? BlendMode.darken : null,
+            );
+          },
+          onLongPress: () {
+            context.read<GameBloc>().add(
+              GameEvent.prepareSpellTimer(
+                participantId: participantId,
+                spellSlot: spellSlot,
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(8),
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(
+                color: isRunning
+                    ? Colors.redAccent
+                    : theme.colorScheme.primary.withValues(alpha: 0.5),
+                width: isRunning ? 2 : 1,
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CachedNetworkImage(
+                    imageUrl: spell.imageUrl,
+                    fit: BoxFit.cover,
+                    color: isRunning ? Colors.black.withValues(alpha: 0.6) : null,
+                    colorBlendMode: isRunning ? BlendMode.darken : null,
+                  ),
+                  if (isRunning)
+                    Text(
+                      _formatTime(remainingSeconds),
+                      style: theme.textTheme.labelMedium,
                     ),
-                    if (isRunning)
-                      Text(
-                        _formatTime(remainingSeconds),
-                        style: theme.textTheme.labelMedium,
-                      ),
-                  ],
-                ),
+                ],
               ),
             ),
           ),
