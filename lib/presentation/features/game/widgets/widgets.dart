@@ -92,10 +92,35 @@ class _GameContent extends StatefulWidget {
 }
 
 class _GameContentState extends State<_GameContent> {
+  late List<GameParticipant> _enemyPlayers;
+
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
+    _enemyPlayers = widget.gameInformation.players
+        .where((p) => p.team == Team.enemy)
+        .toList();
+  }
+
+  @override
+  void didUpdateWidget(covariant _GameContent oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.gameInformation.matchId != widget.gameInformation.matchId) {
+      _enemyPlayers = widget.gameInformation.players
+          .where((p) => p.team == Team.enemy)
+          .toList();
+    }
+  }
+
+  void _movePlayer(int index, int direction) {
+    setState(() {
+      final newIndex = index + direction;
+      if (newIndex >= 0 && newIndex < _enemyPlayers.length) {
+        final item = _enemyPlayers.removeAt(index);
+        _enemyPlayers.insert(newIndex, item);
+      }
+    });
   }
 
   @override
@@ -103,10 +128,7 @@ class _GameContentState extends State<_GameContent> {
     final intl = AppLocalizations.of(context)!;
 
     final allyPlayers = widget.gameInformation.players
-        .where((p) => p.team == .ally)
-        .toList();
-    final enemyPlayers = widget.gameInformation.players
-        .where((p) => p.team == .enemy)
+        .where((p) => p.team == Team.ally)
         .toList();
 
     return ListView(
@@ -117,9 +139,20 @@ class _GameContentState extends State<_GameContent> {
           color: Colors.redAccent,
           icon: Icons.security_rounded,
         ),
-        ...enemyPlayers.map(
-          (player) => _ParticipantRow(participant: player, isEnemy: true),
-        ),
+        _DragHintText(),
+        ...List.generate(_enemyPlayers.length, (index) {
+          final player = _enemyPlayers[index];
+          return _ParticipantRow(
+            key: ValueKey('${player.riotId}_$index'),
+            participant: player,
+            isEnemy: true,
+            index: index,
+            canMoveUp: index > 0,
+            canMoveDown: index < _enemyPlayers.length - 1,
+            onMoveUp: () => _movePlayer(index, -1),
+            onMoveDown: () => _movePlayer(index, 1),
+          );
+        }),
         const SizedBox(height: 24),
         _TeamHeader(
           title: intl.game_ally_team,
@@ -165,11 +198,44 @@ class _TeamHeader extends StatelessWidget {
   }
 }
 
+class _DragHintText extends StatelessWidget {
+  const _DragHintText();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, left: 4),
+      child: Text(
+        'Use arrow buttons to reorder by lane',
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.onSurfaceVariant,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+    );
+  }
+}
+
 class _ParticipantRow extends StatelessWidget {
-  const _ParticipantRow({required this.participant, required this.isEnemy});
+  const _ParticipantRow({
+    super.key,
+    required this.participant,
+    required this.isEnemy,
+    this.index,
+    this.canMoveUp = false,
+    this.canMoveDown = false,
+    this.onMoveUp,
+    this.onMoveDown,
+  });
 
   final GameParticipant participant;
   final bool isEnemy;
+  final int? index;
+  final bool canMoveUp;
+  final bool canMoveDown;
+  final VoidCallback? onMoveUp;
+  final VoidCallback? onMoveDown;
 
   @override
   Widget build(BuildContext context) {
@@ -183,17 +249,17 @@ class _ParticipantRow extends StatelessWidget {
         side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
       ),
       child: Padding(
-        padding: AppSpacing.md,
+        padding: const EdgeInsets.all(8),
         child: Row(
-          spacing: 8,
+          spacing: 4,
           children: [
             // Champion placeholder / ID
             Container(
-              width: 40,
-              height: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Center(
                 child: Text(
@@ -204,7 +270,7 @@ class _ParticipantRow extends StatelessWidget {
                 ),
               ),
             ),
-            const VerticalDivider(),
+            const VerticalDivider(thickness: 1, width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,12 +295,42 @@ class _ParticipantRow extends StatelessWidget {
             ),
             const VerticalDivider(),
             if (isEnemy) ...[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: canMoveUp
+                        ? IconButton(
+                            icon: const Icon(Icons.keyboard_arrow_up, size: 16),
+                            onPressed: onMoveUp,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          )
+                        : null,
+                  ),
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: canMoveDown
+                        ? IconButton(
+                            icon: const Icon(Icons.keyboard_arrow_down, size: 16),
+                            onPressed: onMoveDown,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          )
+                        : null,
+                  ),
+                ],
+              ),
+              const SizedBox(width: 4),
               _SpellTimerBox(
                 spell: participant.spellOne,
                 participantId: participant.riotId,
                 spellSlot: 1,
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 4),
               _SpellTimerBox(
                 spell: participant.spellTwo,
                 participantId: participant.riotId,
@@ -293,9 +389,7 @@ class _SpellTimerBox extends StatelessWidget {
   final int spellSlot;
 
   String _formatTime(int seconds) {
-    final minutes = seconds ~/ 60;
-    final secs = seconds % 60;
-    return '${minutes.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}';
+    return seconds.toString();
   }
 
   @override
@@ -308,7 +402,7 @@ class _SpellTimerBox extends StatelessWidget {
       builder: (context, timer) {
         final isRunning = timer?.isRunning ?? false;
         final remainingSeconds = timer?.remainingSeconds ?? 0;
-        const size = 52.0;
+        const size = 44.0;
 
         return Material(
           color: Colors.transparent,
