@@ -16,4 +16,8 @@ abstract class GameEvent with _$GameEvent {
     required int spellSlot,
   }) = PrepareSpellTimerEvent;
   const factory GameEvent.tickTimers() = TickTimersEvent;
+  const factory GameEvent.reorderEnemyPlayers({
+    required int oldIndex,
+    required int newIndex,
+  }) = ReorderEnemyPlayersEvent;
 }

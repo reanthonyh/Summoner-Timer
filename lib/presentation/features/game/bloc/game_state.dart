@@ -25,7 +25,9 @@ abstract class GameState with _$GameState {
     required UiStatus status,
     String? message,
     @Default({}) Map<String, SpellTimer> activeTimers,
+    @Default([]) List<String> enemyPlayerOrder,
   }) = _GameState;
 
-  factory GameState.initial() => const GameState(status: UiStatus.initial);
+  factory GameState.initial() =>
+      const GameState(status: UiStatus.initial, enemyPlayerOrder: []);
 }

@@ -1,5 +1,60 @@
 part of '../page/game_page.dart';
 
+final class _GameAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _GameAppBar();
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(AppLocalizations.of(context)!.game_live_title),
+      centerTitle: true,
+    );
+  }
+}
+
+final class _GameBody extends StatelessWidget {
+  const _GameBody();
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: BlocConsumer<GameBloc, GameState>(
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.gameInformation != current.gameInformation,
+        builder: (context, state) {
+          if (state.status.isLoading) {
+            return const _GameLoadingView();
+          }
+
+          if (state.status.isError) {
+            return const _ErrorView();
+          }
+
+          if (state.status.isSuccess && state.gameInformation != null) {
+            return _GameContent(gameInformation: state.gameInformation!);
+          }
+
+          return const _NoGameView();
+        },
+        listener: (context, state) {},
+      ),
+    );
+  }
+}
+
+final class _GameLoadingView extends StatelessWidget {
+  const _GameLoadingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
 final class _ErrorView extends StatelessWidget {
   const _ErrorView();
 
@@ -92,98 +147,75 @@ class _GameContent extends StatefulWidget {
 }
 
 class _GameContentState extends State<_GameContent> {
-  late Map<String, int> _playerOrder;
-
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    _initializePlayerOrder();
-  }
-
-  void _initializePlayerOrder() {
-    _playerOrder = {};
-    int index = 0;
-    for (final player in widget.gameInformation.players.where(
-      (p) => p.team == Team.enemy,
-    )) {
-      _playerOrder[player.riotId] = index++;
-    }
-  }
-
-  @override
-  void didUpdateWidget(covariant _GameContent oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.gameInformation.matchId != widget.gameInformation.matchId) {
-      _initializePlayerOrder();
-    }
-  }
-
-  void _movePlayer(String playerId, int direction) {
-    setState(() {
-      final currentOrder = _playerOrder[playerId];
-      if (currentOrder == null) return;
-
-      final newOrder = currentOrder + direction;
-      if (newOrder < 0) return;
-
-      // Find player at newOrder position
-      String? otherPlayerId;
-      for (final entry in _playerOrder.entries) {
-        if (entry.value == newOrder) {
-          otherPlayerId = entry.key;
-          break;
-        }
-      }
-
-      if (otherPlayerId == null) return;
-
-      _playerOrder[playerId] = newOrder;
-      _playerOrder[otherPlayerId] = currentOrder;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final intl = AppLocalizations.of(context)!;
 
-    final enemyPlayers =
-        widget.gameInformation.players.where((p) => p.team == Team.enemy).toList()..sort(
-          (a, b) => (_playerOrder[a.riotId] ?? 0).compareTo(_playerOrder[b.riotId] ?? 0),
+    return BlocBuilder<GameBloc, GameState>(
+      buildWhen: (previous, current) =>
+          previous.enemyPlayerOrder != current.enemyPlayerOrder,
+      builder: (context, state) {
+        final enemyPlayerOrder = state.enemyPlayerOrder.isNotEmpty
+            ? state.enemyPlayerOrder
+            : widget.gameInformation.players
+                  .where((p) => p.team == Team.enemy)
+                  .map((p) => p.riotId)
+                  .toList();
+
+        final enemyPlayers = enemyPlayerOrder
+            .map((id) => widget.gameInformation.players.firstWhere((p) => p.riotId == id))
+            .toList();
+
+        final allyPlayers = widget.gameInformation.players
+            .where((p) => p.team == Team.ally)
+            .toList();
+
+        return ListView(
+          padding: AppSpacing.md,
+          children: [
+            _TeamHeader(
+              title: intl.game_enemy_team,
+              color: Colors.redAccent,
+              icon: Icons.security_rounded,
+            ),
+            ColoredBox(
+              color: Colors.red.withAlpha(25),
+              child: SizedBox(
+                height: enemyPlayers.length * 70.0,
+                child: ReorderableListView.builder(
+                  itemCount: enemyPlayers.length,
+
+                  onReorder: (oldIndex, newIndex) => context.read<GameBloc>().add(
+                    GameEvent.reorderEnemyPlayers(oldIndex: oldIndex, newIndex: newIndex),
+                  ),
+
+                  itemBuilder: (context, index) {
+                    final player = enemyPlayers[index];
+                    return _EnemyParticipantRow(
+                      key: ValueKey(player.riotId),
+                      participant: player,
+                      index: index,
+                    );
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            _TeamHeader(
+              title: intl.game_ally_team,
+              color: Colors.blueAccent,
+              icon: Icons.shield_rounded,
+            ),
+            ...allyPlayers.map((player) => _AllyParticipantRow(participant: player)),
+          ],
         );
-
-    final allyPlayers = widget.gameInformation.players
-        .where((p) => p.team == Team.ally)
-        .toList();
-
-    return ListView(
-      padding: AppSpacing.md,
-      children: [
-        _TeamHeader(
-          title: intl.game_enemy_team,
-          color: Colors.redAccent,
-          icon: Icons.security_rounded,
-        ),
-        ...List.generate(enemyPlayers.length, (index) {
-          final player = enemyPlayers[index];
-
-          return _EnemyParticipantRow(
-            key: ValueKey(player.riotId),
-            participant: player,
-            canMoveUp: index > 0,
-            canMoveDown: index < enemyPlayers.length - 1,
-            onMoveUp: () => _movePlayer(player.riotId, -1),
-            onMoveDown: () => _movePlayer(player.riotId, 1),
-          );
-        }),
-        const SizedBox(height: 24),
-        _TeamHeader(
-          title: intl.game_ally_team,
-          color: Colors.blueAccent,
-          icon: Icons.shield_rounded,
-        ),
-        ...allyPlayers.map((player) => _AllyParticipantRow(participant: player)),
-      ],
+      },
     );
   }
 
@@ -220,80 +252,80 @@ class _TeamHeader extends StatelessWidget {
 }
 
 class _EnemyParticipantRow extends StatelessWidget {
-  const _EnemyParticipantRow({
-    super.key,
+  const _EnemyParticipantRow({super.key, required this.participant, required this.index});
+
+  final GameParticipant participant;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final timerKey1 = '${participant.riotId}_1';
+    final timerKey2 = '${participant.riotId}_2';
+
+    return BlocSelector<GameBloc, GameState, (SpellTimer?, SpellTimer?)>(
+      bloc: context.read<GameBloc>(),
+      selector: (state) => (state.activeTimers[timerKey1], state.activeTimers[timerKey2]),
+      builder: (context, timers) {
+        final (spellOneTimer, spellTwoTimer) = timers;
+        return _EnemyParticipantRowContent(
+          participant: participant,
+          index: index,
+          spellOneTimer: spellOneTimer,
+          spellTwoTimer: spellTwoTimer,
+        );
+      },
+    );
+  }
+}
+
+class _EnemyParticipantRowContent extends StatelessWidget {
+  const _EnemyParticipantRowContent({
     required this.participant,
-    required this.canMoveUp,
-    required this.canMoveDown,
-    required this.onMoveUp,
-    required this.onMoveDown,
+    required this.index,
+    required this.spellOneTimer,
+    required this.spellTwoTimer,
   });
 
   final GameParticipant participant;
-  final bool canMoveUp;
-  final bool canMoveDown;
-  final VoidCallback onMoveUp;
-  final VoidCallback onMoveDown;
+  final int index;
+  final SpellTimer? spellOneTimer;
+  final SpellTimer? spellTwoTimer;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final arrowButtonStyle = IconButton.styleFrom(padding: .zero);
 
-    return Card(
-      elevation: 1,
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-      ),
-      child: Padding(
-        padding: AppSpacing.xs,
-        child: Row(
-          spacing: 5,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                LimitedBox(
-                  maxHeight: 25,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_circle_up),
-                    onPressed: canMoveUp ? onMoveUp : null,
-                    style: arrowButtonStyle,
-                  ),
-                ),
-                LimitedBox(
-                  maxHeight: 25,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_circle_down),
-                    onPressed: canMoveDown ? onMoveDown : null,
-                    style: arrowButtonStyle,
-                  ),
-                ),
-              ],
+    return Padding(
+      padding: AppSpacing.sm,
+      child: Row(
+        spacing: 6,
+        children: [
+          ReorderableDragStartListener(
+            index: index,
+            child: Icon(Icons.drag_indicator, color: theme.colorScheme.onSurfaceVariant),
+          ),
+          Expanded(
+            child: Text(
+              participant.riotId,
+              style: theme.textTheme.bodyLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            Expanded(
-              child: Text(
-                participant.riotId,
-                style: theme.textTheme.bodyMedium,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            const VerticalDivider(),
-            _SpellTimerBox(
-              spell: participant.spellOne,
-              participantId: participant.riotId,
-              spellSlot: 1,
-            ),
-            _SpellTimerBox(
-              spell: participant.spellTwo,
-              participantId: participant.riotId,
-              spellSlot: 2,
-            ),
-          ],
-        ),
+          ),
+          const VerticalDivider(),
+          _SpellTimerBox(
+            spell: participant.spellOne,
+            participantId: participant.riotId,
+            spellSlot: 1,
+            timer: spellOneTimer,
+          ),
+          _SpellTimerBox(
+            spell: participant.spellTwo,
+            participantId: participant.riotId,
+            spellSlot: 2,
+            timer: spellTwoTimer,
+          ),
+        ],
       ),
     );
   }
@@ -308,31 +340,23 @@ class _AllyParticipantRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      elevation: 1,
-      color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
-      ),
-      child: Padding(
-        padding: AppSpacing.xs,
-        child: Row(
-          spacing: 5,
-          children: [
-            Expanded(
-              child: Text(
-                participant.riotId,
-                style: theme.textTheme.bodyMedium,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+    return Padding(
+      padding: AppSpacing.xs,
+      child: Row(
+        spacing: 5,
+        children: [
+          Expanded(
+            child: Text(
+              participant.riotId,
+              style: theme.textTheme.bodyLarge,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            const VerticalDivider(),
-            _SpellStaticBox(spell: participant.spellOne),
-            _SpellStaticBox(spell: participant.spellTwo),
-          ],
-        ),
+          ),
+          const VerticalDivider(),
+          _SpellStaticBox(spell: participant.spellOne),
+          _SpellStaticBox(spell: participant.spellTwo),
+        ],
       ),
     );
   }
@@ -346,7 +370,7 @@ class _SpellStaticBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = ColorScheme.of(context);
-    const size = 38.0;
+    const size = 40.0;
 
     return Container(
       width: size,
@@ -372,11 +396,13 @@ class _SpellTimerBox extends StatelessWidget {
     required this.spell,
     required this.participantId,
     required this.spellSlot,
+    required this.timer,
   });
 
   final SummonerSpell spell;
   final String participantId;
   final int spellSlot;
+  final SpellTimer? timer;
 
   String _formatTime(int seconds) {
     return seconds.toString();
@@ -385,67 +411,57 @@ class _SpellTimerBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final timerKey = '${participantId}_$spellSlot';
+    final isRunning = timer?.isRunning ?? false;
+    final remainingSeconds = timer?.remainingSeconds ?? 0;
+    const size = 50.0;
 
-    return BlocSelector<GameBloc, GameState, SpellTimer?>(
-      selector: (state) => state.activeTimers[timerKey],
-      builder: (context, timer) {
-        final isRunning = timer?.isRunning ?? false;
-        final remainingSeconds = timer?.remainingSeconds ?? 0;
-        const size = 42.0;
-
-        return InkWell(
-          onTap: () {
-            context.read<GameBloc>().add(
-              GameEvent.startSpellTimer(
-                participantId: participantId,
-                spellSlot: spellSlot,
-              ),
-            );
-          },
-          onLongPress: () {
-            context.read<GameBloc>().add(
-              GameEvent.prepareSpellTimer(
-                participantId: participantId,
-                spellSlot: spellSlot,
-              ),
-            );
-          },
-          borderRadius: BorderRadius.circular(8),
-          child: Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: isRunning
-                    ? Colors.redAccent
-                    : theme.colorScheme.primary.withValues(alpha: 0.5),
-                width: isRunning ? 2 : 1,
-              ),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: spell.imageUrl,
-                    fit: BoxFit.cover,
-                    color: isRunning ? Colors.black.withValues(alpha: 0.6) : null,
-                    colorBlendMode: isRunning ? BlendMode.darken : null,
-                  ),
-                  if (isRunning)
-                    Text(
-                      _formatTime(remainingSeconds),
-                      style: theme.textTheme.labelMedium,
-                    ),
-                ],
-              ),
-            ),
-          ),
+    return InkWell(
+      onTap: () {
+        context.read<GameBloc>().add(
+          GameEvent.startSpellTimer(participantId: participantId, spellSlot: spellSlot),
         );
       },
+      onLongPress: () {
+        context.read<GameBloc>().add(
+          GameEvent.prepareSpellTimer(participantId: participantId, spellSlot: spellSlot),
+        );
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: isRunning
+                ? Colors.redAccent
+                : theme.colorScheme.primary.withValues(alpha: 0.5),
+            width: isRunning ? 2 : 1,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              CachedNetworkImage(
+                imageUrl: spell.imageUrl,
+                fit: BoxFit.cover,
+                color: isRunning ? Colors.black.withValues(alpha: 0.5) : null,
+                colorBlendMode: isRunning ? BlendMode.darken : null,
+              ),
+              if (isRunning)
+                Text(
+                  _formatTime(remainingSeconds),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

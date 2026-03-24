@@ -24,39 +24,7 @@ class _GameViewState extends State<_GameView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.game_live_title),
-        centerTitle: true,
-      ),
-      body: SafeArea(
-        child: BlocConsumer<GameBloc, GameState>(
-          buildWhen: (previous, current) =>
-              previous.status != current.status ||
-              previous.gameInformation != current.gameInformation,
-          builder: (context, state) {
-            if (state.status.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            if (state.status.isError) {
-              return const _ErrorView();
-            }
-
-            if (state.status.isSuccess && state.gameInformation != null) {
-              return _GameContent(
-                gameInformation: state.gameInformation!,
-              );
-            }
-
-            return const _NoGameView();
-          },
-          listener: (context, state) {
-            // No-op for now, removed GameViewEvent
-          },
-        ),
-      ),
-    );
+    return const Scaffold(appBar: _GameAppBar(), body: _GameBody());
   }
 
   @override

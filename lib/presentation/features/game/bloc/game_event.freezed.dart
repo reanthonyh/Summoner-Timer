@@ -55,7 +55,7 @@ extension GameEventPatterns on GameEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadGameEvent value)?  loadGame,TResult Function( RetryLoadGameEvent value)?  retryLoadGame,TResult Function( ResumeTimersEvent value)?  resumeTimers,TResult Function( StartSpellTimerEvent value)?  startSpellTimer,TResult Function( PrepareSpellTimerEvent value)?  prepareSpellTimer,TResult Function( TickTimersEvent value)?  tickTimers,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( LoadGameEvent value)?  loadGame,TResult Function( RetryLoadGameEvent value)?  retryLoadGame,TResult Function( ResumeTimersEvent value)?  resumeTimers,TResult Function( StartSpellTimerEvent value)?  startSpellTimer,TResult Function( PrepareSpellTimerEvent value)?  prepareSpellTimer,TResult Function( TickTimersEvent value)?  tickTimers,TResult Function( ReorderEnemyPlayersEvent value)?  reorderEnemyPlayers,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case LoadGameEvent() when loadGame != null:
@@ -64,7 +64,8 @@ return retryLoadGame(_that);case ResumeTimersEvent() when resumeTimers != null:
 return resumeTimers(_that);case StartSpellTimerEvent() when startSpellTimer != null:
 return startSpellTimer(_that);case PrepareSpellTimerEvent() when prepareSpellTimer != null:
 return prepareSpellTimer(_that);case TickTimersEvent() when tickTimers != null:
-return tickTimers(_that);case _:
+return tickTimers(_that);case ReorderEnemyPlayersEvent() when reorderEnemyPlayers != null:
+return reorderEnemyPlayers(_that);case _:
   return orElse();
 
 }
@@ -82,7 +83,7 @@ return tickTimers(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadGameEvent value)  loadGame,required TResult Function( RetryLoadGameEvent value)  retryLoadGame,required TResult Function( ResumeTimersEvent value)  resumeTimers,required TResult Function( StartSpellTimerEvent value)  startSpellTimer,required TResult Function( PrepareSpellTimerEvent value)  prepareSpellTimer,required TResult Function( TickTimersEvent value)  tickTimers,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( LoadGameEvent value)  loadGame,required TResult Function( RetryLoadGameEvent value)  retryLoadGame,required TResult Function( ResumeTimersEvent value)  resumeTimers,required TResult Function( StartSpellTimerEvent value)  startSpellTimer,required TResult Function( PrepareSpellTimerEvent value)  prepareSpellTimer,required TResult Function( TickTimersEvent value)  tickTimers,required TResult Function( ReorderEnemyPlayersEvent value)  reorderEnemyPlayers,}){
 final _that = this;
 switch (_that) {
 case LoadGameEvent():
@@ -91,7 +92,8 @@ return retryLoadGame(_that);case ResumeTimersEvent():
 return resumeTimers(_that);case StartSpellTimerEvent():
 return startSpellTimer(_that);case PrepareSpellTimerEvent():
 return prepareSpellTimer(_that);case TickTimersEvent():
-return tickTimers(_that);case _:
+return tickTimers(_that);case ReorderEnemyPlayersEvent():
+return reorderEnemyPlayers(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,7 +110,7 @@ return tickTimers(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadGameEvent value)?  loadGame,TResult? Function( RetryLoadGameEvent value)?  retryLoadGame,TResult? Function( ResumeTimersEvent value)?  resumeTimers,TResult? Function( StartSpellTimerEvent value)?  startSpellTimer,TResult? Function( PrepareSpellTimerEvent value)?  prepareSpellTimer,TResult? Function( TickTimersEvent value)?  tickTimers,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( LoadGameEvent value)?  loadGame,TResult? Function( RetryLoadGameEvent value)?  retryLoadGame,TResult? Function( ResumeTimersEvent value)?  resumeTimers,TResult? Function( StartSpellTimerEvent value)?  startSpellTimer,TResult? Function( PrepareSpellTimerEvent value)?  prepareSpellTimer,TResult? Function( TickTimersEvent value)?  tickTimers,TResult? Function( ReorderEnemyPlayersEvent value)?  reorderEnemyPlayers,}){
 final _that = this;
 switch (_that) {
 case LoadGameEvent() when loadGame != null:
@@ -117,7 +119,8 @@ return retryLoadGame(_that);case ResumeTimersEvent() when resumeTimers != null:
 return resumeTimers(_that);case StartSpellTimerEvent() when startSpellTimer != null:
 return startSpellTimer(_that);case PrepareSpellTimerEvent() when prepareSpellTimer != null:
 return prepareSpellTimer(_that);case TickTimersEvent() when tickTimers != null:
-return tickTimers(_that);case _:
+return tickTimers(_that);case ReorderEnemyPlayersEvent() when reorderEnemyPlayers != null:
+return reorderEnemyPlayers(_that);case _:
   return null;
 
 }
@@ -134,7 +137,7 @@ return tickTimers(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadGame,TResult Function()?  retryLoadGame,TResult Function()?  resumeTimers,TResult Function( String participantId,  int spellSlot)?  startSpellTimer,TResult Function( String participantId,  int spellSlot)?  prepareSpellTimer,TResult Function()?  tickTimers,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  loadGame,TResult Function()?  retryLoadGame,TResult Function()?  resumeTimers,TResult Function( String participantId,  int spellSlot)?  startSpellTimer,TResult Function( String participantId,  int spellSlot)?  prepareSpellTimer,TResult Function()?  tickTimers,TResult Function( int oldIndex,  int newIndex)?  reorderEnemyPlayers,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case LoadGameEvent() when loadGame != null:
 return loadGame();case RetryLoadGameEvent() when retryLoadGame != null:
@@ -142,7 +145,8 @@ return retryLoadGame();case ResumeTimersEvent() when resumeTimers != null:
 return resumeTimers();case StartSpellTimerEvent() when startSpellTimer != null:
 return startSpellTimer(_that.participantId,_that.spellSlot);case PrepareSpellTimerEvent() when prepareSpellTimer != null:
 return prepareSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent() when tickTimers != null:
-return tickTimers();case _:
+return tickTimers();case ReorderEnemyPlayersEvent() when reorderEnemyPlayers != null:
+return reorderEnemyPlayers(_that.oldIndex,_that.newIndex);case _:
   return orElse();
 
 }
@@ -160,7 +164,7 @@ return tickTimers();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadGame,required TResult Function()  retryLoadGame,required TResult Function()  resumeTimers,required TResult Function( String participantId,  int spellSlot)  startSpellTimer,required TResult Function( String participantId,  int spellSlot)  prepareSpellTimer,required TResult Function()  tickTimers,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  loadGame,required TResult Function()  retryLoadGame,required TResult Function()  resumeTimers,required TResult Function( String participantId,  int spellSlot)  startSpellTimer,required TResult Function( String participantId,  int spellSlot)  prepareSpellTimer,required TResult Function()  tickTimers,required TResult Function( int oldIndex,  int newIndex)  reorderEnemyPlayers,}) {final _that = this;
 switch (_that) {
 case LoadGameEvent():
 return loadGame();case RetryLoadGameEvent():
@@ -168,7 +172,8 @@ return retryLoadGame();case ResumeTimersEvent():
 return resumeTimers();case StartSpellTimerEvent():
 return startSpellTimer(_that.participantId,_that.spellSlot);case PrepareSpellTimerEvent():
 return prepareSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent():
-return tickTimers();case _:
+return tickTimers();case ReorderEnemyPlayersEvent():
+return reorderEnemyPlayers(_that.oldIndex,_that.newIndex);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,7 +190,7 @@ return tickTimers();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadGame,TResult? Function()?  retryLoadGame,TResult? Function()?  resumeTimers,TResult? Function( String participantId,  int spellSlot)?  startSpellTimer,TResult? Function( String participantId,  int spellSlot)?  prepareSpellTimer,TResult? Function()?  tickTimers,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  loadGame,TResult? Function()?  retryLoadGame,TResult? Function()?  resumeTimers,TResult? Function( String participantId,  int spellSlot)?  startSpellTimer,TResult? Function( String participantId,  int spellSlot)?  prepareSpellTimer,TResult? Function()?  tickTimers,TResult? Function( int oldIndex,  int newIndex)?  reorderEnemyPlayers,}) {final _that = this;
 switch (_that) {
 case LoadGameEvent() when loadGame != null:
 return loadGame();case RetryLoadGameEvent() when retryLoadGame != null:
@@ -193,7 +198,8 @@ return retryLoadGame();case ResumeTimersEvent() when resumeTimers != null:
 return resumeTimers();case StartSpellTimerEvent() when startSpellTimer != null:
 return startSpellTimer(_that.participantId,_that.spellSlot);case PrepareSpellTimerEvent() when prepareSpellTimer != null:
 return prepareSpellTimer(_that.participantId,_that.spellSlot);case TickTimersEvent() when tickTimers != null:
-return tickTimers();case _:
+return tickTimers();case ReorderEnemyPlayersEvent() when reorderEnemyPlayers != null:
+return reorderEnemyPlayers(_that.oldIndex,_that.newIndex);case _:
   return null;
 
 }
@@ -464,5 +470,73 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class ReorderEnemyPlayersEvent implements GameEvent {
+  const ReorderEnemyPlayersEvent({required this.oldIndex, required this.newIndex});
+  
+
+ final  int oldIndex;
+ final  int newIndex;
+
+/// Create a copy of GameEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ReorderEnemyPlayersEventCopyWith<ReorderEnemyPlayersEvent> get copyWith => _$ReorderEnemyPlayersEventCopyWithImpl<ReorderEnemyPlayersEvent>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReorderEnemyPlayersEvent&&(identical(other.oldIndex, oldIndex) || other.oldIndex == oldIndex)&&(identical(other.newIndex, newIndex) || other.newIndex == newIndex));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,oldIndex,newIndex);
+
+@override
+String toString() {
+  return 'GameEvent.reorderEnemyPlayers(oldIndex: $oldIndex, newIndex: $newIndex)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ReorderEnemyPlayersEventCopyWith<$Res> implements $GameEventCopyWith<$Res> {
+  factory $ReorderEnemyPlayersEventCopyWith(ReorderEnemyPlayersEvent value, $Res Function(ReorderEnemyPlayersEvent) _then) = _$ReorderEnemyPlayersEventCopyWithImpl;
+@useResult
+$Res call({
+ int oldIndex, int newIndex
+});
+
+
+
+
+}
+/// @nodoc
+class _$ReorderEnemyPlayersEventCopyWithImpl<$Res>
+    implements $ReorderEnemyPlayersEventCopyWith<$Res> {
+  _$ReorderEnemyPlayersEventCopyWithImpl(this._self, this._then);
+
+  final ReorderEnemyPlayersEvent _self;
+  final $Res Function(ReorderEnemyPlayersEvent) _then;
+
+/// Create a copy of GameEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? oldIndex = null,Object? newIndex = null,}) {
+  return _then(ReorderEnemyPlayersEvent(
+oldIndex: null == oldIndex ? _self.oldIndex : oldIndex // ignore: cast_nullable_to_non_nullable
+as int,newIndex: null == newIndex ? _self.newIndex : newIndex // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 // dart format on

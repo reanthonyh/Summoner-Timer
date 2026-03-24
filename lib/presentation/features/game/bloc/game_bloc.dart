@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:summoner_timer/core/constants/enums.dart';
 import 'package:summoner_timer/core/di/injection_container.dart';
+import 'package:summoner_timer/domain/entities/game_match/game_participant.dart';
 import 'package:summoner_timer/domain/usecases/usecases.dart';
 
 import 'game_event.dart';
@@ -16,6 +17,7 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     on<StartSpellTimerEvent>(_onStartSpellTimer);
     on<PrepareSpellTimerEvent>(_onPrepareSpellTimer);
     on<TickTimersEvent>(_onTickTimers);
+    on<ReorderEnemyPlayersEvent>(_onReorderEnemyPlayers);
   }
 
   final _getCurrentGameUseCase = getIt<GetCurrentGameUseCase>();
@@ -81,8 +83,19 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     final result = await _getCurrentGameUseCase();
 
     result.fold(
-      (gameInfo) =>
-          emit(state.copyWith(status: UiStatus.success, gameInformation: gameInfo)),
+      (gameInfo) {
+        final enemyPlayerOrder = gameInfo.players
+            .where((p) => p.team == Team.enemy)
+            .map((p) => p.riotId)
+            .toList();
+        emit(
+          state.copyWith(
+            status: UiStatus.success,
+            gameInformation: gameInfo,
+            enemyPlayerOrder: enemyPlayerOrder,
+          ),
+        );
+      },
       (failure) => emit(state.copyWith(status: UiStatus.error, message: failure.message)),
     );
   }
@@ -167,6 +180,24 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
     if (!_hasRunningTimers(updatedTimers)) {
       _stopTicker();
     }
+  }
+
+  void _onReorderEnemyPlayers(ReorderEnemyPlayersEvent event, Emitter<GameState> emit) {
+    final currentOrder = List<String>.from(state.enemyPlayerOrder);
+    if (event.oldIndex < 0 ||
+        event.oldIndex >= currentOrder.length ||
+        event.newIndex < 0 ||
+        event.newIndex > currentOrder.length) {
+      return;
+    }
+
+    final item = currentOrder.removeAt(event.oldIndex);
+    final adjustedNewIndex = event.newIndex > event.oldIndex
+        ? event.newIndex - 1
+        : event.newIndex;
+    currentOrder.insert(adjustedNewIndex, item);
+
+    emit(state.copyWith(enemyPlayerOrder: currentOrder));
   }
 
   @override
