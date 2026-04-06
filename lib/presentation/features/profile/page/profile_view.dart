@@ -82,31 +82,12 @@ final class _ProfileView extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: AppSpacing.lg,
-                      child: Column(
-                        spacing: 24,
-                        children: [
-                          Column(
-                            spacing: 8,
-                            children: [
-                              Icon(
-                                Icons.videogame_asset,
-                                size: 48,
-                                color: colorScheme.primary,
-                              ),
-                              Text(
-                                intl.profile_not_in_game,
-                                style: textTheme.titleMedium,
-                              ),
-                            ],
-                          ),
-                          FilledButton.icon(
-                            onPressed: () {
-                              Navigator.of(context).pushNamed(GamePage.routeName);
-                            },
-                            icon: const Icon(Icons.play_arrow),
-                            label: Text(intl.profile_search_game),
-                          ),
-                        ],
+                      child: FilledButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(GamePage.routeName);
+                        },
+                        icon: const Icon(Icons.play_arrow),
+                        label: Text(intl.profile_search_game),
                       ),
                     ),
                   ),
