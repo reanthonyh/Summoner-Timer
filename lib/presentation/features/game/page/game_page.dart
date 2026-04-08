@@ -18,7 +18,25 @@ final class GamePage extends StatelessWidget {
 
   static String get routeName => 'game';
 
-  static Route route() => MaterialPageRoute(builder: (context) => const GamePage());
+  static Route route() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const GamePage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 0.1);
+        const end = Offset.zero;
+        const curve = Curves.easeOutCubic;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(position: offsetAnimation, child: child),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 350),
+    );
+  }
 
   static MapEntry<String, WidgetBuilder> get routeEntry =>
       MapEntry(routeName, (context) => const GamePage());

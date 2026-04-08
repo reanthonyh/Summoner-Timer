@@ -16,7 +16,22 @@ final class ProfilePage extends StatelessWidget {
 
   static String get routeName => 'profile';
 
-  static Route route() => MaterialPageRoute(builder: (context) => const ProfilePage());
+  static Route route() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const ProfilePage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeOutCubic;
+
+        final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+      transitionDuration: const Duration(milliseconds: 350),
+    );
+  }
 
   static MapEntry<String, WidgetBuilder> get routeEntry =>
       MapEntry(routeName, (context) => const ProfilePage());
