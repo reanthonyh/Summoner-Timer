@@ -42,6 +42,8 @@ flutter:
   assets:
     - .env
     - assets/icon/
+  shaders:
+    - shaders/game_background.frag
 
 flutter_launcher_icons:
   android: "launcher_icon"

@@ -117,13 +117,6 @@ final class _NoGameView extends StatelessWidget {
               style: theme.textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
-            Text(
-              intl.profile_not_in_game,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
             FilledButton.icon(
               onPressed: () =>
                   context.read<GameBloc>().add(const GameEvent.retryLoadGame()),

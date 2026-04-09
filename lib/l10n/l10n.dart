@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'l10n_en.dart';
+import 'l10n_es.dart';
 
 // ignore_for_file: type=lint
 
@@ -92,7 +93,7 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+  static const List<Locale> supportedLocales = <Locale>[Locale('en'), Locale('es')];
 
   /// Title - Search Page
   ///
@@ -184,12 +185,6 @@ abstract class AppLocalizations {
   /// **'Change Account'**
   String get profile_change_account;
 
-  /// In game check - Profile Page
-  ///
-  /// In en, this message translates to:
-  /// **'Not currently in a game'**
-  String get profile_not_in_game;
-
   /// Title when no game is found - Game Page
   ///
   /// In en, this message translates to:
@@ -230,7 +225,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -241,6 +236,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
   }
 
   throw FlutterError(

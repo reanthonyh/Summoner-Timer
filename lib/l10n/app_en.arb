@@ -66,10 +66,6 @@
   "@profile_change_account": {
     "description": "Change Account Button - Profile Page"
   },
-  "profile_not_in_game": "Not currently in a game",
-  "@profile_not_in_game": {
-    "description": "In game check - Profile Page"
-  },
   "game_not_in_game": "No active game found",
   "@game_not_in_game": {
     "description": "Title when no game is found - Game Page"
