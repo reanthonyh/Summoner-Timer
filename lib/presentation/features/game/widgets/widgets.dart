@@ -8,9 +8,14 @@ final class _GameAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final title = AppLocalizations.of(context)!.game_live_title;
+
     return AppBar(
-      title: Text(AppLocalizations.of(context)!.game_live_title),
+      title: Text(title),
       centerTitle: true,
+      foregroundColor: colorScheme.onPrimaryContainer,
+      backgroundColor: colorScheme.primaryContainer,
     );
   }
 }

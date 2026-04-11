@@ -57,7 +57,14 @@ class _ProfileViewState extends State<_ProfileView> with SingleTickerProviderSta
     final intl = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(intl.profile_title), centerTitle: true),
+      appBar: AppBar(
+        title: Text(intl.profile_title),
+        centerTitle: true,
+        elevation: 4,
+        scrolledUnderElevation: 2,
+        foregroundColor: colorScheme.onPrimaryContainer,
+        backgroundColor: colorScheme.primaryContainer,
+      ),
       body: BlocConsumer<ProfileCubit, ProfileState>(
         listener: _handleListener,
         builder: (context, state) {
