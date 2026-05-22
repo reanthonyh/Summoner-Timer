@@ -159,59 +159,27 @@ class _GameContentState extends State<_GameContent> {
       buildWhen: (previous, current) =>
           previous.enemyPlayerOrder != current.enemyPlayerOrder,
       builder: (context, state) {
-        final enemyPlayerOrder = state.enemyPlayerOrder.isNotEmpty
+        // Resolve player ordering
+        final enemyIds = state.enemyPlayerOrder.isNotEmpty
             ? state.enemyPlayerOrder
             : widget.gameInformation.players
                   .where((p) => p.team == Team.enemy)
                   .map((p) => p.riotId)
                   .toList();
-
-        final enemyPlayers = enemyPlayerOrder
+        final enemyPlayers = enemyIds
             .map((id) => widget.gameInformation.players.firstWhere((p) => p.riotId == id))
             .toList();
-
         final allyPlayers = widget.gameInformation.players
             .where((p) => p.team == Team.ally)
             .toList();
 
-        return ListView(
-          padding: AppSpacing.md,
-          children: [
-            _TeamHeader(
-              title: intl.game_enemy_team,
-              color: Colors.redAccent,
-              icon: Icons.security_rounded,
-            ),
-            ColoredBox(
-              color: Colors.red.withAlpha(25),
-              child: SizedBox(
-                height: enemyPlayers.length * 70.0,
-                child: ReorderableListView.builder(
-                  itemCount: enemyPlayers.length,
+        final enemySection = _EnemySection(intl: intl, enemyPlayers: enemyPlayers);
+        final allySection = _AllySection(intl: intl, allyPlayers: allyPlayers);
 
-                  onReorder: (oldIndex, newIndex) => context.read<GameBloc>().add(
-                    GameEvent.reorderEnemyPlayers(oldIndex: oldIndex, newIndex: newIndex),
-                  ),
-
-                  itemBuilder: (context, index) {
-                    final player = enemyPlayers[index];
-                    return _EnemyParticipantRow(
-                      key: ValueKey(player.riotId),
-                      participant: player,
-                      index: index,
-                    );
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            _TeamHeader(
-              title: intl.game_ally_team,
-              color: Colors.blueAccent,
-              icon: Icons.shield_rounded,
-            ),
-            ...allyPlayers.map((player) => _AllyParticipantRow(participant: player)),
-          ],
+        return OrientationBuilder(
+          builder: (context, orientation) => orientation == Orientation.landscape
+              ? _LandscapeView(intl: intl, enemyPlayers: enemyPlayers, allyPlayers: allyPlayers)
+              : _PortraitView(enemySection: enemySection, allySection: allySection),
         );
       },
     );
@@ -221,6 +189,164 @@ class _GameContentState extends State<_GameContent> {
   void dispose() {
     WakelockPlus.disable();
     super.dispose();
+  }
+}
+
+// Section widget for enemy team
+class _EnemySection extends StatelessWidget {
+  const _EnemySection({required this.intl, required this.enemyPlayers});
+
+  final AppLocalizations intl;
+  final List<GameParticipant> enemyPlayers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _TeamHeader(
+          title: intl.game_enemy_team,
+          color: Colors.redAccent,
+          icon: Icons.security_rounded,
+        ),
+        ColoredBox(
+          color: Colors.red.withAlpha(25),
+          child: SizedBox(
+            height: enemyPlayers.length * 70.0,
+            child: ReorderableListView.builder(
+              itemCount: enemyPlayers.length,
+              onReorderItem: (oldIndex, newIndex) {
+                context.read<GameBloc>().add(
+                  GameEvent.reorderEnemyPlayers(oldIndex: oldIndex, newIndex: newIndex),
+                );
+              },
+              itemBuilder: (context, index) {
+                final player = enemyPlayers[index];
+                return _EnemyParticipantRow(
+                  key: ValueKey(player.riotId),
+                  participant: player,
+                  index: index,
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Section widget for ally team
+class _AllySection extends StatelessWidget {
+  const _AllySection({required this.intl, required this.allyPlayers});
+
+  final AppLocalizations intl;
+  final List<GameParticipant> allyPlayers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 24),
+        _TeamHeader(
+          title: intl.game_ally_team,
+          color: Colors.blueAccent,
+          icon: Icons.shield_rounded,
+        ),
+        ...allyPlayers.map((p) => _AllyParticipantRow(participant: p)),
+      ],
+    );
+  }
+}
+
+class _PortraitView extends StatelessWidget {
+  const _PortraitView({required this.enemySection, required this.allySection});
+
+  final Widget enemySection;
+  final Widget allySection;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(padding: AppSpacing.md, children: [enemySection, allySection]);
+  }
+}
+
+class _LandscapeView extends StatelessWidget {
+  const _LandscapeView({
+    required this.intl,
+    required this.enemyPlayers,
+    required this.allyPlayers,
+  });
+
+  final AppLocalizations intl;
+  final List<GameParticipant> enemyPlayers;
+  final List<GameParticipant> allyPlayers;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _TeamHeader(
+                title: intl.game_enemy_team,
+                color: Colors.redAccent,
+                icon: Icons.security_rounded,
+              ),
+              Expanded(
+                child: ColoredBox(
+                  color: Colors.red.withAlpha(25),
+                  child: ReorderableListView.builder(
+                    itemCount: enemyPlayers.length,
+                    onReorderItem: (oldIndex, newIndex) {
+                      context.read<GameBloc>().add(
+                        GameEvent.reorderEnemyPlayers(
+                          oldIndex: oldIndex,
+                          newIndex: newIndex,
+                        ),
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      final player = enemyPlayers[index];
+                      return _EnemyParticipantRow(
+                        key: ValueKey(player.riotId),
+                        participant: player,
+                        index: index,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const VerticalDivider(width: 1),
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _TeamHeader(
+                title: intl.game_ally_team,
+                color: Colors.blueAccent,
+                icon: Icons.shield_rounded,
+              ),
+              Expanded(
+                child: ListView(
+                  children: allyPlayers
+                      .map((p) => _AllyParticipantRow(participant: p))
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -328,6 +454,7 @@ class _EnemyParticipantRowContent extends StatelessWidget {
     );
   }
 }
+
 
 class _AllyParticipantRow extends StatelessWidget {
   const _AllyParticipantRow({required this.participant});
