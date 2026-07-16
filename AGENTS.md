@@ -5,19 +5,23 @@
 ---
 
 ## Core commands (do not assume defaults)
+
 - **Get dependencies**: `flutter pub get`
 - **Run code generation** (freezed, json_serializable, etc.):
+
   ```bash
   dart run build_runner build --delete-conflicting-outputs
   ```
+
 - **Launch app**: `flutter run`
 - **Static analysis**: `flutter analyze` (or `dart analyze`)
-- **Run tests**: `flutter test` – *currently no test files, add them under `test/`*.
+- **Run tests**: `flutter test` – _currently no test files, add them under `test/`_.
 - **Format code**: `dart format .` respects `analysis_options.yaml` (page width 90, trailing commas automated).
 
 ---
 
 ## Architecture snapshot
+
 - **Entry point**: `lib/presentation/root.dart` → `RootApp` (MaterialApp with routes).
 - **Feature modules** live under `lib/presentation/<feature>/` with sub‑folders:
   - `bloc/` – BLoC/Cubit state management.
@@ -32,6 +36,7 @@
 ---
 
 ## Feature‑specific notes (Game page)
+
 - `GamePage` (`lib/presentation/features/game/page/game_page.dart`) provides a `BlocProvider` for `GameBloc` and shows `_GameView`.
 - `_GameContent` builds the enemy/ally lists; see `widgets.dart` for the widget tree.
 - **Responsive handling**: orientation is read via `MediaQuery.of(context).orientation`. Landscape layout uses a side‑by‑side `Row` of two `SingleChildScrollView`s; portrait falls back to a single `ListView`.
@@ -42,6 +47,7 @@
 ---
 
 ## Dependency quirks
+
 - **Freezed**: requires generated `*.freezed.dart` files – always run the build_runner command after adding/modifying freezed classes.
 - **JSON serialization**: same build runner step produces `*.g.dart` files.
 - **Wakelock**: enabled in `_GameContentState.initState`, disabled on dispose – ensure the device does not sleep during a game.
@@ -49,6 +55,7 @@
 ---
 
 ## Lint / formatting conventions
+
 - `analysis_options.yaml` sets:
   - `page_width: 90`
   - `trailing_commas: automate`
@@ -60,6 +67,7 @@
 ---
 
 ## CI / Git workflow (implicit)
+
 - No CI files are present; typical workflow is:
   1. `flutter pub get`
   2. `dart run build_runner build`
@@ -69,4 +77,4 @@
 
 ---
 
-*This file is deliberately minimal – it contains only the facts an agent would otherwise miss without guidance.*
+_This file is deliberately minimal – it contains only the facts an agent would otherwise miss without guidance._
