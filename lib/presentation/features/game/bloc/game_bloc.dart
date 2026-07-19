@@ -184,18 +184,17 @@ final class GameBloc extends Bloc<GameEvent, GameState> {
 
   void _onReorderEnemyPlayers(ReorderEnemyPlayersEvent event, Emitter<GameState> emit) {
     final currentOrder = List<String>.from(state.enemyPlayerOrder);
+
     if (event.oldIndex < 0 ||
         event.oldIndex >= currentOrder.length ||
         event.newIndex < 0 ||
-        event.newIndex > currentOrder.length) {
+        event.newIndex >= currentOrder.length ||
+        event.oldIndex == event.newIndex) {
       return;
     }
 
     final item = currentOrder.removeAt(event.oldIndex);
-    final adjustedNewIndex = event.newIndex > event.oldIndex
-        ? event.newIndex - 1
-        : event.newIndex;
-    currentOrder.insert(adjustedNewIndex, item);
+    currentOrder.insert(event.newIndex, item);
 
     emit(state.copyWith(enemyPlayerOrder: currentOrder));
   }
