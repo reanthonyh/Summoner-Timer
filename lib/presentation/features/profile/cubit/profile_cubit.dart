@@ -23,7 +23,7 @@ final class ProfileCubit extends Cubit<ProfileState> {
     final account = _getAccountSession();
 
     if (account == null) {
-      emit(state.copyWith(status: .error, message: "Not Account Selected"));
+      emit(state.copyWith(status: .error, message: 'Not Account Selected'));
     }
 
     emit(state.copyWith(status: .success, account: account));

@@ -21,7 +21,7 @@ final class RecentAccountsCubit extends Cubit<RecentAccountsState> {
         emit(state.copyWith(status: .initial, recentAccounts: data));
       },
       (error) {
-        emit(state.copyWith(status: .error, message: "Not found recent accounts"));
+        emit(state.copyWith(status: .error, message: 'Not found recent accounts'));
       },
     );
   }

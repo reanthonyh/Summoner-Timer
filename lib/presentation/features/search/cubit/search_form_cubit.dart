@@ -48,7 +48,7 @@ final class SearchFormCubit extends Cubit<SearchFormState> {
       },
       (error) {
         print('SearchFormCubit - searchWithPUUID : $error');
-        emit(state.copyWith(status: .error, message: "Failure on search that account"));
+        emit(state.copyWith(status: .error, message: 'Failure on search that account'));
       },
     );
   }
