@@ -25,7 +25,7 @@ final class SpectatorRepositoryImpl implements SpectatorRepository {
   GameInformation? _cachedGameInfo;
   DateTime? _lastFetchTime;
 
-  static const _cacheValidDuration = Duration(minutes: 20);
+  static const _cacheValidDuration = Duration(minutes: 8);
 
   bool get _isCacheValid {
     if (_cachedGameInfo == null || _lastFetchTime == null) return false;
