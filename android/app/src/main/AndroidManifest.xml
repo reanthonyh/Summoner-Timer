@@ -3,6 +3,8 @@
     <application
         android:label="Summoner Timer"
         android:name="${applicationName}"
+        android:allowBackup="false"
+        android:hasFragileUserData="false"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

@@ -10,6 +10,14 @@ analyzer:
     unused_element: ignore
     library_private_types_in_public_api: ignore
     invalid_annotation_target: ignore
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
   # plugins:
   #   - custom_lint

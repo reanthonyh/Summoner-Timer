@@ -12,6 +12,7 @@ final class RootApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Summoner Timer',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       initialRoute: SearchPage.routeName,
