@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -23,7 +25,7 @@ final class RiotDioClient {
         requestHeader: true,
         requestBody: true,
         responseBody: true,
-        logPrint: (obj) => print('Riot API: $obj'),
+        logPrint: (obj) => log('> Riot API: $obj'),
       ),
     );
 

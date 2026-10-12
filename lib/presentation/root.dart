@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:summoner_timer/core/theme/theme.dart';
 import 'package:summoner_timer/l10n/l10n.dart';
 
