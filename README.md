@@ -6,15 +6,17 @@ A League of Legends summoner spell timer that tracks cooldowns, durations and en
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
 <!-- Add screenshot of the app in action below -->
+
 ## 📸 Screenshots & Demo
 
 See `assets/screens/` for screenshots showing:
+
 - **Live timer** with countdown and elapsed time display
 - **Spell timers** that animate cooldown progress bars on spell tiles (Ward, Flash, Smite)
 - **Enemy participants list** sorted by role (Tank > Frontline > Backliners)
 - **Ally participants list** showing summoner info
 
-![Summoner Timer in action](demo.gif  # add your GIF or image path below)
+![Summoner Timer in action](demo.gif # add your GIF or image path below)
 
 ## 🖼️ Images
 
@@ -38,17 +40,17 @@ flutter run                         # runs on your connected device/emulator
 
 This project follows clean architecture with three layers:
 
-- **Domain Layer** — Business entities (SummonerSpell, ParticipantRole), repository contracts and use cases that describe *what* the app does without any UI or data concerns.
+- **Domain Layer** — Business entities (SummonerSpell, ParticipantRole), repository contracts and use cases that describe _what_ the app does without any UI or data concerns.
 - **Data Layer** — Remote datasources for API calls to Riot Games, local database storage via Drift/SQLite, models with JSON serialization annotations (`@JsonSerializable` from `json_serializable` package).
 - **Presentation Layer** — Flutter widget tree rendered on screen using BLoC/Cubit state management. Each feature (game timer, enemy participants list) has its own bloc that listens to events and dispatches them down the stream of data flow: UI → event handler in presentation layer → repository call in domain/data boundary → response up through use cases into entity storage if needed.
 
 ## 📦 Tech Stack
 
-| Package | Purpose |
-|---------|--------|
-| `flutter_bloc` / `freezed` | State management with immutable value classes for summoner spells and participants. Freezed also generates JSON serialization annotations via the build runner step below, so no manual boilerplate is needed when adding new entities or models to the codebase — just create them first then run the generation command once to let freezed + json_serializable handle the rest automatically across all generated files at `/lib/**/*.freezed.dart`. |
-| `get_it` / `dio` | Dependency injection for swapable datasources (mocked during testing, real API connection in production) and REST client for polling summoner spell timers from Riot Games. All HTTP requests are intercepted by dio Interceptors to capture responses into the database before returning them through repositories up the dependency chain. |
-| Drift / SQLite | Local persistence of game timer data so that summoned spell cooldowns persist across app restarts without losing session information between gameplay sessions on different devices or platforms (Android, iOS). The drift_flutter package generates Dart code for raw SQL queries using `rawSql()` and transaction boundaries with `beginAndCommit()`. Schema migrations are defined in the Drift Dev tooling (`drift_dev make-migrations`) to safely evolve database structure across app versions. |
+| Package                    | Purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `flutter_bloc` / `freezed` | State management with immutable value classes for summoner spells and participants. Freezed also generates JSON serialization annotations via the build runner step below, so no manual boilerplate is needed when adding new entities or models to the codebase — just create them first then run the generation command once to let freezed + json_serializable handle the rest automatically across all generated files at `/lib/**/*.freezed.dart`.                                               |
+| `get_it` / `dio`           | Dependency injection for swapable datasources (mocked during testing, real API connection in production) and REST client for polling summoner spell timers from Riot Games. All HTTP requests are intercepted by dio Interceptors to capture responses into the database before returning them through repositories up the dependency chain.                                                                                                                                                          |
+| Drift / SQLite             | Local persistence of game timer data so that summoned spell cooldowns persist across app restarts without losing session information between gameplay sessions on different devices or platforms (Android, iOS). The drift_flutter package generates Dart code for raw SQL queries using `rawSql()` and transaction boundaries with `beginAndCommit()`. Schema migrations are defined in the Drift Dev tooling (`drift_dev make-migrations`) to safely evolve database structure across app versions. |
 
 ## 🛠️ Development Commands
 
@@ -78,4 +80,5 @@ This project uses **mocktail** when creating tests — since there are currently
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details. Feel free to use in your own projects if you comply with its terms of service regarding commercial redistribution and attribution requirements stated elsewhere within that license document included alongside this README at `/home/anthonyhf/Projects/summoner_timer_app/LICENSE`.
 
 ---
-*Built by Anthony H.F.* 
+
+_Built by Anthony H.F._
