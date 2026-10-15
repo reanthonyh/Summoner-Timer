@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_state.dart';
@@ -9,6 +9,7 @@ part of 'game_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $GameStateCopyWith<GameState> get copyWith => _$GameStateCopyWithImpl<GameState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other.activeTimers, activeTimers)&&const DeepCollectionEquality().equals(other.enemyPlayerOrder, enemyPlayerOrder));
+  final _this = this as GameState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameState&&(identical(other.gameInformation, _this.gameInformation) || other.gameInformation == _this.gameInformation)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.message, _this.message) || other.message == _this.message)&&const DeepCollectionEquality().equals(other.activeTimers, _this.activeTimers)&&const DeepCollectionEquality().equals(other.enemyPlayerOrder, _this.enemyPlayerOrder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,gameInformation,status,message,const DeepCollectionEquality().hash(activeTimers),const DeepCollectionEquality().hash(enemyPlayerOrder));
+int get hashCode {
+  final _this = this as GameState;
+  return Object.hash(runtimeType,_this.gameInformation,_this.status,_this.message,const DeepCollectionEquality().hash(_this.activeTimers),const DeepCollectionEquality().hash(_this.enemyPlayerOrder));
+}
 
 @override
 String toString() {
-  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message, activeTimers: $activeTimers, enemyPlayerOrder: $enemyPlayerOrder)';
+  final _this = this as GameState;
+  return 'GameState(gameInformation: ${_this.gameInformation}, status: ${_this.status}, message: ${_this.message}, activeTimers: ${_this.activeTimers}, enemyPlayerOrder: ${_this.enemyPlayerOrder})';
 }
 
 
@@ -63,7 +69,7 @@ class _$GameStateCopyWithImpl<$Res>
 /// Create a copy of GameState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? gameInformation = freezed,Object? status = null,Object? message = freezed,Object? activeTimers = null,Object? enemyPlayerOrder = null,}) {
-  return _then(_self.copyWith(
+  return _then(GameState(
 gameInformation: freezed == gameInformation ? _self.gameInformation : gameInformation // ignore: cast_nullable_to_non_nullable
 as GameInformation?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -222,7 +228,7 @@ return $default(_that.gameInformation,_that.status,_that.message,_that.activeTim
 
 
 class _GameState implements GameState {
-  const _GameState({this.gameInformation, required this.status, this.message, final  Map<String, SpellTimer> activeTimers = const {}, final  List<String> enemyPlayerOrder = const []}): _activeTimers = activeTimers,_enemyPlayerOrder = enemyPlayerOrder;
+  const _GameState({this.gameInformation, required this.status, this.message,  Map<String, SpellTimer> activeTimers = const {},  List<String> enemyPlayerOrder = const []}): _activeTimers = activeTimers,_enemyPlayerOrder = enemyPlayerOrder;
   
 
 @override final  GameInformation? gameInformation;
@@ -253,16 +259,18 @@ _$GameStateCopyWith<_GameState> get copyWith => __$GameStateCopyWithImpl<_GameSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other._activeTimers, _activeTimers)&&const DeepCollectionEquality().equals(other._enemyPlayerOrder, _enemyPlayerOrder));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameState&&(identical(other.gameInformation, gameInformation) || other.gameInformation == gameInformation)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message)&&const DeepCollectionEquality().equals(other.activeTimers, _activeTimers)&&const DeepCollectionEquality().equals(other.enemyPlayerOrder, _enemyPlayerOrder));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,gameInformation,status,message,const DeepCollectionEquality().hash(_activeTimers),const DeepCollectionEquality().hash(_enemyPlayerOrder));
+int get hashCode {
+    return Object.hash(runtimeType,gameInformation,status,message,const DeepCollectionEquality().hash(_activeTimers),const DeepCollectionEquality().hash(_enemyPlayerOrder));
+}
 
 @override
 String toString() {
-  return 'GameState(gameInformation: $gameInformation, status: $status, message: $message, activeTimers: $activeTimers, enemyPlayerOrder: $enemyPlayerOrder)';
+    return 'GameState(gameInformation: $gameInformation, status: $status, message: $message, activeTimers: $activeTimers, enemyPlayerOrder: $enemyPlayerOrder)';
 }
 
 

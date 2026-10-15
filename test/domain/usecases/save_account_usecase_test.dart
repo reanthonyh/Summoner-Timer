@@ -1,9 +1,8 @@
 import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:test/test.dart';
-import 'package:summoner_timer/domain/entities/entities.dart';
-import 'package:summoner_timer/domain/repositories/account_repository.dart';
 import 'package:summoner_timer/domain/usecases/accounts/save_account_usecase.dart';
+import 'package:test/test.dart';
+
 import '../../helpers/mocks.dart';
 import '../../helpers/test_data.dart';
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'summoner_spell.dart';
@@ -9,6 +9,7 @@ part of 'summoner_spell.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SummonerSpellCopyWith<SummonerSpell> get copyWith => _$SummonerSpellCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.modes, modes));
+  final _this = this as SummonerSpell;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpell&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.cooldownSeconds, _this.cooldownSeconds) || other.cooldownSeconds == _this.cooldownSeconds)&&(identical(other.spriteUrl, _this.spriteUrl) || other.spriteUrl == _this.spriteUrl)&&(identical(other.imageUrl, _this.imageUrl) || other.imageUrl == _this.imageUrl)&&const DeepCollectionEquality().equals(other.modes, _this.modes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl,const DeepCollectionEquality().hash(modes));
+int get hashCode {
+  final _this = this as SummonerSpell;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.cooldownSeconds,_this.spriteUrl,_this.imageUrl,const DeepCollectionEquality().hash(_this.modes));
+}
 
 @override
 String toString() {
-  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl, modes: $modes)';
+  final _this = this as SummonerSpell;
+  return 'SummonerSpell(id: ${_this.id}, name: ${_this.name}, cooldownSeconds: ${_this.cooldownSeconds}, spriteUrl: ${_this.spriteUrl}, imageUrl: ${_this.imageUrl}, modes: ${_this.modes})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SummonerSpellCopyWithImpl<$Res>
 /// Create a copy of SummonerSpell
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? cooldownSeconds = null,Object? spriteUrl = null,Object? imageUrl = null,Object? modes = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SummonerSpell(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,cooldownSeconds: null == cooldownSeconds ? _self.cooldownSeconds : cooldownSeconds // ignore: cast_nullable_to_non_nullable
@@ -211,7 +217,7 @@ return $default(_that.id,_that.name,_that.cooldownSeconds,_that.spriteUrl,_that.
 
 
 class _SummonerSpell implements SummonerSpell {
-  const _SummonerSpell({required this.id, required this.name, required this.cooldownSeconds, required this.spriteUrl, required this.imageUrl, final  List<String>? modes}): _modes = modes;
+  const _SummonerSpell({required this.id, required this.name, required this.cooldownSeconds, required this.spriteUrl, required this.imageUrl,  List<String>? modes}): _modes = modes;
   
 
 @override final  String id;
@@ -239,16 +245,18 @@ _$SummonerSpellCopyWith<_SummonerSpell> get copyWith => __$SummonerSpellCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other._modes, _modes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpell&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.cooldownSeconds, cooldownSeconds) || other.cooldownSeconds == cooldownSeconds)&&(identical(other.spriteUrl, spriteUrl) || other.spriteUrl == spriteUrl)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&const DeepCollectionEquality().equals(other.modes, _modes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl,const DeepCollectionEquality().hash(_modes));
+int get hashCode {
+    return Object.hash(runtimeType,id,name,cooldownSeconds,spriteUrl,imageUrl,const DeepCollectionEquality().hash(_modes));
+}
 
 @override
 String toString() {
-  return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl, modes: $modes)';
+    return 'SummonerSpell(id: $id, name: $name, cooldownSeconds: $cooldownSeconds, spriteUrl: $spriteUrl, imageUrl: $imageUrl, modes: $modes)';
 }
 
 

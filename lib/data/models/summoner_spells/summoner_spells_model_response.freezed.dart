@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'summoner_spells_model_response.dart';
@@ -9,6 +9,7 @@ part of 'summoner_spells_model_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $SummonerSpellsModelResponseCopyWith<SummonerSpellsModelResponse> get copyWith =
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellsModelResponse&&(identical(other.type, type) || other.type == type)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.data, data));
+  final _this = this as SummonerSpellsModelResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellsModelResponse&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.version, _this.version) || other.version == _this.version)&&const DeepCollectionEquality().equals(other.data, _this.data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,version,const DeepCollectionEquality().hash(data));
+int get hashCode {
+  final _this = this as SummonerSpellsModelResponse;
+  return Object.hash(runtimeType,_this.type,_this.version,const DeepCollectionEquality().hash(_this.data));
+}
 
 @override
 String toString() {
-  return 'SummonerSpellsModelResponse(type: $type, version: $version, data: $data)';
+  final _this = this as SummonerSpellsModelResponse;
+  return 'SummonerSpellsModelResponse(type: ${_this.type}, version: ${_this.version}, data: ${_this.data})';
 }
 
 
@@ -66,7 +72,7 @@ class _$SummonerSpellsModelResponseCopyWithImpl<$Res>
 /// Create a copy of SummonerSpellsModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? type = freezed,Object? version = freezed,Object? data = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SummonerSpellsModelResponse(
 type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String?,version: freezed == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
@@ -211,7 +217,7 @@ return $default(_that.type,_that.version,_that.data);case _:
 @JsonSerializable()
 
 class _SummonerSpellsModelResponse implements SummonerSpellsModelResponse {
-  const _SummonerSpellsModelResponse({this.type, this.version, final  Map<String, SummonerSpellModel>? data}): _data = data;
+  const _SummonerSpellsModelResponse({this.type, this.version,  Map<String, SummonerSpellModel>? data}): _data = data;
   factory _SummonerSpellsModelResponse.fromJson(Map<String, dynamic> json) => _$SummonerSpellsModelResponseFromJson(json);
 
 @override final  String? type;
@@ -239,16 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellsModelResponse&&(identical(other.type, type) || other.type == type)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other._data, _data));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellsModelResponse&&(identical(other.type, type) || other.type == type)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.data, _data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,version,const DeepCollectionEquality().hash(_data));
+int get hashCode {
+    return Object.hash(runtimeType,type,version,const DeepCollectionEquality().hash(_data));
+}
 
 @override
 String toString() {
-  return 'SummonerSpellsModelResponse(type: $type, version: $version, data: $data)';
+    return 'SummonerSpellsModelResponse(type: $type, version: $version, data: $data)';
 }
 
 

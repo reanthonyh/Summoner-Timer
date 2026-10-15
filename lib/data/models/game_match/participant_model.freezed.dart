@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'participant_model.dart';
@@ -9,6 +9,7 @@ part of 'participant_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $ParticipantModelCopyWith<ParticipantModel> get copyWith => _$ParticipantModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ParticipantModel&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.teamId, teamId) || other.teamId == teamId)&&(identical(other.spell1Id, spell1Id) || other.spell1Id == spell1Id)&&(identical(other.spell2Id, spell2Id) || other.spell2Id == spell2Id)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+  final _this = this as ParticipantModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ParticipantModel&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.teamId, _this.teamId) || other.teamId == _this.teamId)&&(identical(other.spell1Id, _this.spell1Id) || other.spell1Id == _this.spell1Id)&&(identical(other.spell2Id, _this.spell2Id) || other.spell2Id == _this.spell2Id)&&(identical(other.riotId, _this.riotId) || other.riotId == _this.riotId)&&(identical(other.championId, _this.championId) || other.championId == _this.championId)&&(identical(other.profileIconId, _this.profileIconId) || other.profileIconId == _this.profileIconId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,teamId,spell1Id,spell2Id,riotId,championId,profileIconId);
+int get hashCode {
+  final _this = this as ParticipantModel;
+  return Object.hash(runtimeType,_this.puuid,_this.teamId,_this.spell1Id,_this.spell2Id,_this.riotId,_this.championId,_this.profileIconId);
+}
 
 @override
 String toString() {
-  return 'ParticipantModel(puuid: $puuid, teamId: $teamId, spell1Id: $spell1Id, spell2Id: $spell2Id, riotId: $riotId, championId: $championId, profileIconId: $profileIconId)';
+  final _this = this as ParticipantModel;
+  return 'ParticipantModel(puuid: ${_this.puuid}, teamId: ${_this.teamId}, spell1Id: ${_this.spell1Id}, spell2Id: ${_this.spell2Id}, riotId: ${_this.riotId}, championId: ${_this.championId}, profileIconId: ${_this.profileIconId})';
 }
 
 
@@ -66,7 +72,7 @@ class _$ParticipantModelCopyWithImpl<$Res>
 /// Create a copy of ParticipantModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? teamId = freezed,Object? spell1Id = freezed,Object? spell2Id = freezed,Object? riotId = freezed,Object? championId = freezed,Object? profileIconId = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ParticipantModel(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,teamId: freezed == teamId ? _self.teamId : teamId // ignore: cast_nullable_to_non_nullable
 as int?,spell1Id: freezed == spell1Id ? _self.spell1Id : spell1Id // ignore: cast_nullable_to_non_nullable
@@ -239,16 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ParticipantModel&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.teamId, teamId) || other.teamId == teamId)&&(identical(other.spell1Id, spell1Id) || other.spell1Id == spell1Id)&&(identical(other.spell2Id, spell2Id) || other.spell2Id == spell2Id)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ParticipantModel&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.teamId, teamId) || other.teamId == teamId)&&(identical(other.spell1Id, spell1Id) || other.spell1Id == spell1Id)&&(identical(other.spell2Id, spell2Id) || other.spell2Id == spell2Id)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,teamId,spell1Id,spell2Id,riotId,championId,profileIconId);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,teamId,spell1Id,spell2Id,riotId,championId,profileIconId);
+}
 
 @override
 String toString() {
-  return 'ParticipantModel(puuid: $puuid, teamId: $teamId, spell1Id: $spell1Id, spell2Id: $spell2Id, riotId: $riotId, championId: $championId, profileIconId: $profileIconId)';
+    return 'ParticipantModel(puuid: $puuid, teamId: $teamId, spell1Id: $spell1Id, spell2Id: $spell2Id, riotId: $riotId, championId: $championId, profileIconId: $profileIconId)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'summoner_spell_image_model.dart';
@@ -9,6 +9,7 @@ part of 'summoner_spell_image_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $SummonerSpellImageModelCopyWith<SummonerSpellImageModel> get copyWith => _$Summ
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellImageModel&&(identical(other.full, full) || other.full == full)&&(identical(other.sprite, sprite) || other.sprite == sprite)&&(identical(other.group, group) || other.group == group)&&(identical(other.x, x) || other.x == x)&&(identical(other.y, y) || other.y == y)&&(identical(other.w, w) || other.w == w)&&(identical(other.h, h) || other.h == h));
+  final _this = this as SummonerSpellImageModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellImageModel&&(identical(other.full, _this.full) || other.full == _this.full)&&(identical(other.sprite, _this.sprite) || other.sprite == _this.sprite)&&(identical(other.group, _this.group) || other.group == _this.group)&&(identical(other.x, _this.x) || other.x == _this.x)&&(identical(other.y, _this.y) || other.y == _this.y)&&(identical(other.w, _this.w) || other.w == _this.w)&&(identical(other.h, _this.h) || other.h == _this.h));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,full,sprite,group,x,y,w,h);
+int get hashCode {
+  final _this = this as SummonerSpellImageModel;
+  return Object.hash(runtimeType,_this.full,_this.sprite,_this.group,_this.x,_this.y,_this.w,_this.h);
+}
 
 @override
 String toString() {
-  return 'SummonerSpellImageModel(full: $full, sprite: $sprite, group: $group, x: $x, y: $y, w: $w, h: $h)';
+  final _this = this as SummonerSpellImageModel;
+  return 'SummonerSpellImageModel(full: ${_this.full}, sprite: ${_this.sprite}, group: ${_this.group}, x: ${_this.x}, y: ${_this.y}, w: ${_this.w}, h: ${_this.h})';
 }
 
 
@@ -66,7 +72,7 @@ class _$SummonerSpellImageModelCopyWithImpl<$Res>
 /// Create a copy of SummonerSpellImageModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? full = freezed,Object? sprite = freezed,Object? group = freezed,Object? x = freezed,Object? y = freezed,Object? w = freezed,Object? h = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SummonerSpellImageModel(
 full: freezed == full ? _self.full : full // ignore: cast_nullable_to_non_nullable
 as String?,sprite: freezed == sprite ? _self.sprite : sprite // ignore: cast_nullable_to_non_nullable
 as String?,group: freezed == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
@@ -239,16 +245,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellImageModel&&(identical(other.full, full) || other.full == full)&&(identical(other.sprite, sprite) || other.sprite == sprite)&&(identical(other.group, group) || other.group == group)&&(identical(other.x, x) || other.x == x)&&(identical(other.y, y) || other.y == y)&&(identical(other.w, w) || other.w == w)&&(identical(other.h, h) || other.h == h));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellImageModel&&(identical(other.full, full) || other.full == full)&&(identical(other.sprite, sprite) || other.sprite == sprite)&&(identical(other.group, group) || other.group == group)&&(identical(other.x, x) || other.x == x)&&(identical(other.y, y) || other.y == y)&&(identical(other.w, w) || other.w == w)&&(identical(other.h, h) || other.h == h));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,full,sprite,group,x,y,w,h);
+int get hashCode {
+    return Object.hash(runtimeType,full,sprite,group,x,y,w,h);
+}
 
 @override
 String toString() {
-  return 'SummonerSpellImageModel(full: $full, sprite: $sprite, group: $group, x: $x, y: $y, w: $w, h: $h)';
+    return 'SummonerSpellImageModel(full: $full, sprite: $sprite, group: $group, x: $x, y: $y, w: $w, h: $h)';
 }
 
 

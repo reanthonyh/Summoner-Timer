@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_match_model_response.dart';
@@ -9,6 +9,7 @@ part of 'game_match_model_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $GameMatchModelResponseCopyWith<GameMatchModelResponse> get copyWith => _$GameMa
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameMatchModelResponse&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.mapId, mapId) || other.mapId == mapId)&&(identical(other.gameMode, gameMode) || other.gameMode == gameMode)&&(identical(other.gameType, gameType) || other.gameType == gameType)&&const DeepCollectionEquality().equals(other.participants, participants)&&(identical(other.platformId, platformId) || other.platformId == platformId));
+  final _this = this as GameMatchModelResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameMatchModelResponse&&(identical(other.gameId, _this.gameId) || other.gameId == _this.gameId)&&(identical(other.mapId, _this.mapId) || other.mapId == _this.mapId)&&(identical(other.gameMode, _this.gameMode) || other.gameMode == _this.gameMode)&&(identical(other.gameType, _this.gameType) || other.gameType == _this.gameType)&&const DeepCollectionEquality().equals(other.participants, _this.participants)&&(identical(other.platformId, _this.platformId) || other.platformId == _this.platformId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,gameId,mapId,gameMode,gameType,const DeepCollectionEquality().hash(participants),platformId);
+int get hashCode {
+  final _this = this as GameMatchModelResponse;
+  return Object.hash(runtimeType,_this.gameId,_this.mapId,_this.gameMode,_this.gameType,const DeepCollectionEquality().hash(_this.participants),_this.platformId);
+}
 
 @override
 String toString() {
-  return 'GameMatchModelResponse(gameId: $gameId, mapId: $mapId, gameMode: $gameMode, gameType: $gameType, participants: $participants, platformId: $platformId)';
+  final _this = this as GameMatchModelResponse;
+  return 'GameMatchModelResponse(gameId: ${_this.gameId}, mapId: ${_this.mapId}, gameMode: ${_this.gameMode}, gameType: ${_this.gameType}, participants: ${_this.participants}, platformId: ${_this.platformId})';
 }
 
 
@@ -66,7 +72,7 @@ class _$GameMatchModelResponseCopyWithImpl<$Res>
 /// Create a copy of GameMatchModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? gameId = freezed,Object? mapId = freezed,Object? gameMode = freezed,Object? gameType = freezed,Object? participants = freezed,Object? platformId = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(GameMatchModelResponse(
 gameId: freezed == gameId ? _self.gameId : gameId // ignore: cast_nullable_to_non_nullable
 as int?,mapId: freezed == mapId ? _self.mapId : mapId // ignore: cast_nullable_to_non_nullable
 as int?,gameMode: freezed == gameMode ? _self.gameMode : gameMode // ignore: cast_nullable_to_non_nullable
@@ -214,7 +220,7 @@ return $default(_that.gameId,_that.mapId,_that.gameMode,_that.gameType,_that.par
 @JsonSerializable()
 
 class _GameMatchModelResponse implements GameMatchModelResponse {
-  const _GameMatchModelResponse({this.gameId, this.mapId, this.gameMode, this.gameType, final  List<ParticipantModel>? participants, this.platformId}): _participants = participants;
+  const _GameMatchModelResponse({this.gameId, this.mapId, this.gameMode, this.gameType,  List<ParticipantModel>? participants, this.platformId}): _participants = participants;
   factory _GameMatchModelResponse.fromJson(Map<String, dynamic> json) => _$GameMatchModelResponseFromJson(json);
 
 @override final  int? gameId;
@@ -245,16 +251,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameMatchModelResponse&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.mapId, mapId) || other.mapId == mapId)&&(identical(other.gameMode, gameMode) || other.gameMode == gameMode)&&(identical(other.gameType, gameType) || other.gameType == gameType)&&const DeepCollectionEquality().equals(other._participants, _participants)&&(identical(other.platformId, platformId) || other.platformId == platformId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameMatchModelResponse&&(identical(other.gameId, gameId) || other.gameId == gameId)&&(identical(other.mapId, mapId) || other.mapId == mapId)&&(identical(other.gameMode, gameMode) || other.gameMode == gameMode)&&(identical(other.gameType, gameType) || other.gameType == gameType)&&const DeepCollectionEquality().equals(other.participants, _participants)&&(identical(other.platformId, platformId) || other.platformId == platformId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,gameId,mapId,gameMode,gameType,const DeepCollectionEquality().hash(_participants),platformId);
+int get hashCode {
+    return Object.hash(runtimeType,gameId,mapId,gameMode,gameType,const DeepCollectionEquality().hash(_participants),platformId);
+}
 
 @override
 String toString() {
-  return 'GameMatchModelResponse(gameId: $gameId, mapId: $mapId, gameMode: $gameMode, gameType: $gameType, participants: $participants, platformId: $platformId)';
+    return 'GameMatchModelResponse(gameId: $gameId, mapId: $mapId, gameMode: $gameMode, gameType: $gameType, participants: $participants, platformId: $platformId)';
 }
 
 

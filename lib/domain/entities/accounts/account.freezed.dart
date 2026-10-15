@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'account.dart';
@@ -9,6 +9,7 @@ part of 'account.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $AccountCopyWith<Account> get copyWith => _$AccountCopyWithImpl<Account>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.level, level) || other.level == level)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl));
+  final _this = this as Account;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Account&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.level, _this.level) || other.level == _this.level)&&(identical(other.gameName, _this.gameName) || other.gameName == _this.gameName)&&(identical(other.tagLine, _this.tagLine) || other.tagLine == _this.tagLine)&&(identical(other.region, _this.region) || other.region == _this.region)&&(identical(other.iconUrl, _this.iconUrl) || other.iconUrl == _this.iconUrl));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,level,gameName,tagLine,region,iconUrl);
+int get hashCode {
+  final _this = this as Account;
+  return Object.hash(runtimeType,_this.puuid,_this.level,_this.gameName,_this.tagLine,_this.region,_this.iconUrl);
+}
 
 @override
 String toString() {
-  return 'Account(puuid: $puuid, level: $level, gameName: $gameName, tagLine: $tagLine, region: $region, iconUrl: $iconUrl)';
+  final _this = this as Account;
+  return 'Account(puuid: ${_this.puuid}, level: ${_this.level}, gameName: ${_this.gameName}, tagLine: ${_this.tagLine}, region: ${_this.region}, iconUrl: ${_this.iconUrl})';
 }
 
 
@@ -63,7 +69,7 @@ class _$AccountCopyWithImpl<$Res>
 /// Create a copy of Account
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = null,Object? level = null,Object? gameName = null,Object? tagLine = null,Object? region = null,Object? iconUrl = null,}) {
-  return _then(_self.copyWith(
+  return _then(Account(
 puuid: null == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as int,gameName: null == gameName ? _self.gameName : gameName // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ _$AccountCopyWith<_Account> get copyWith => __$AccountCopyWithImpl<_Account>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.level, level) || other.level == level)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Account&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.level, level) || other.level == level)&&(identical(other.gameName, gameName) || other.gameName == gameName)&&(identical(other.tagLine, tagLine) || other.tagLine == tagLine)&&(identical(other.region, region) || other.region == region)&&(identical(other.iconUrl, iconUrl) || other.iconUrl == iconUrl));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,level,gameName,tagLine,region,iconUrl);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,level,gameName,tagLine,region,iconUrl);
+}
 
 @override
 String toString() {
-  return 'Account(puuid: $puuid, level: $level, gameName: $gameName, tagLine: $tagLine, region: $region, iconUrl: $iconUrl)';
+    return 'Account(puuid: $puuid, level: $level, gameName: $gameName, tagLine: $tagLine, region: $region, iconUrl: $iconUrl)';
 }
 
 

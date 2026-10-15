@@ -1,10 +1,9 @@
-import 'package:mocktail/mocktail.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:test/test.dart';
 import 'package:summoner_timer/core/exceptions/exceptions.dart';
 import 'package:summoner_timer/domain/entities/entities.dart';
-import 'package:summoner_timer/domain/repositories/spectator_repository.dart';
 import 'package:summoner_timer/domain/usecases/game_match/get_current_game_usecase.dart';
+import 'package:test/test.dart';
+
 import '../../helpers/mocks.dart';
 import '../../helpers/test_data.dart';
 
@@ -19,8 +18,16 @@ void main() {
     });
 
     test('returns game information on success', () async {
-      final spellOne = createTestSummonerSpell(id: '4', name: 'Flash', cooldownSeconds: 300);
-      final spellTwo = createTestSummonerSpell(id: '14', name: 'Ignite', cooldownSeconds: 180);
+      final spellOne = createTestSummonerSpell(
+        id: '4',
+        name: 'Flash',
+        cooldownSeconds: 300,
+      );
+      final spellTwo = createTestSummonerSpell(
+        id: '14',
+        name: 'Ignite',
+        cooldownSeconds: 180,
+      );
 
       final participant = createTestGameParticipant(
         puuid: 'player-puuid',

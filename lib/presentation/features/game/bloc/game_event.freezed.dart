@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_event.dart';
@@ -9,6 +9,7 @@ part of 'game_event.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -20,7 +21,7 @@ mixin _$GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is GameEvent);
 }
 
 
@@ -29,7 +30,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'GameEvent()';
+    return 'GameEvent()';
 }
 
 
@@ -221,7 +222,7 @@ class LoadGameEvent implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadGameEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is LoadGameEvent);
 }
 
 
@@ -230,7 +231,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'GameEvent.loadGame()';
+    return 'GameEvent.loadGame()';
 }
 
 
@@ -253,7 +254,7 @@ class RetryLoadGameEvent implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RetryLoadGameEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is RetryLoadGameEvent);
 }
 
 
@@ -262,7 +263,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'GameEvent.retryLoadGame()';
+    return 'GameEvent.retryLoadGame()';
 }
 
 
@@ -285,7 +286,7 @@ class ResumeTimersEvent implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResumeTimersEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ResumeTimersEvent);
 }
 
 
@@ -294,7 +295,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'GameEvent.resumeTimers()';
+    return 'GameEvent.resumeTimers()';
 }
 
 
@@ -323,16 +324,18 @@ $StartSpellTimerEventCopyWith<StartSpellTimerEvent> get copyWith => _$StartSpell
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StartSpellTimerEvent&&(identical(other.participantId, participantId) || other.participantId == participantId)&&(identical(other.spellSlot, spellSlot) || other.spellSlot == spellSlot));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is StartSpellTimerEvent&&(identical(other.participantId, participantId) || other.participantId == participantId)&&(identical(other.spellSlot, spellSlot) || other.spellSlot == spellSlot));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,participantId,spellSlot);
+int get hashCode {
+    return Object.hash(runtimeType,participantId,spellSlot);
+}
 
 @override
 String toString() {
-  return 'GameEvent.startSpellTimer(participantId: $participantId, spellSlot: $spellSlot)';
+    return 'GameEvent.startSpellTimer(participantId: $participantId, spellSlot: $spellSlot)';
 }
 
 
@@ -391,16 +394,18 @@ $PrepareSpellTimerEventCopyWith<PrepareSpellTimerEvent> get copyWith => _$Prepar
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PrepareSpellTimerEvent&&(identical(other.participantId, participantId) || other.participantId == participantId)&&(identical(other.spellSlot, spellSlot) || other.spellSlot == spellSlot));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is PrepareSpellTimerEvent&&(identical(other.participantId, participantId) || other.participantId == participantId)&&(identical(other.spellSlot, spellSlot) || other.spellSlot == spellSlot));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,participantId,spellSlot);
+int get hashCode {
+    return Object.hash(runtimeType,participantId,spellSlot);
+}
 
 @override
 String toString() {
-  return 'GameEvent.prepareSpellTimer(participantId: $participantId, spellSlot: $spellSlot)';
+    return 'GameEvent.prepareSpellTimer(participantId: $participantId, spellSlot: $spellSlot)';
 }
 
 
@@ -453,7 +458,7 @@ class TickTimersEvent implements GameEvent {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TickTimersEvent);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is TickTimersEvent);
 }
 
 
@@ -462,7 +467,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'GameEvent.tickTimers()';
+    return 'GameEvent.tickTimers()';
 }
 
 
@@ -491,16 +496,18 @@ $ReorderEnemyPlayersEventCopyWith<ReorderEnemyPlayersEvent> get copyWith => _$Re
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReorderEnemyPlayersEvent&&(identical(other.oldIndex, oldIndex) || other.oldIndex == oldIndex)&&(identical(other.newIndex, newIndex) || other.newIndex == newIndex));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ReorderEnemyPlayersEvent&&(identical(other.oldIndex, oldIndex) || other.oldIndex == oldIndex)&&(identical(other.newIndex, newIndex) || other.newIndex == newIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,oldIndex,newIndex);
+int get hashCode {
+    return Object.hash(runtimeType,oldIndex,newIndex);
+}
 
 @override
 String toString() {
-  return 'GameEvent.reorderEnemyPlayers(oldIndex: $oldIndex, newIndex: $newIndex)';
+    return 'GameEvent.reorderEnemyPlayers(oldIndex: $oldIndex, newIndex: $newIndex)';
 }
 
 

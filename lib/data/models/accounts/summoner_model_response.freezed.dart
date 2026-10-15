@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'summoner_model_response.dart';
@@ -9,6 +9,7 @@ part of 'summoner_model_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $SummonerModelResponseCopyWith<SummonerModelResponse> get copyWith => _$Summoner
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId)&&(identical(other.revisionDate, revisionDate) || other.revisionDate == revisionDate)&&(identical(other.summonerLevel, summonerLevel) || other.summonerLevel == summonerLevel));
+  final _this = this as SummonerModelResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerModelResponse&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.profileIconId, _this.profileIconId) || other.profileIconId == _this.profileIconId)&&(identical(other.revisionDate, _this.revisionDate) || other.revisionDate == _this.revisionDate)&&(identical(other.summonerLevel, _this.summonerLevel) || other.summonerLevel == _this.summonerLevel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,profileIconId,revisionDate,summonerLevel);
+int get hashCode {
+  final _this = this as SummonerModelResponse;
+  return Object.hash(runtimeType,_this.puuid,_this.profileIconId,_this.revisionDate,_this.summonerLevel);
+}
 
 @override
 String toString() {
-  return 'SummonerModelResponse(puuid: $puuid, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel)';
+  final _this = this as SummonerModelResponse;
+  return 'SummonerModelResponse(puuid: ${_this.puuid}, profileIconId: ${_this.profileIconId}, revisionDate: ${_this.revisionDate}, summonerLevel: ${_this.summonerLevel})';
 }
 
 
@@ -66,7 +72,7 @@ class _$SummonerModelResponseCopyWithImpl<$Res>
 /// Create a copy of SummonerModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? profileIconId = freezed,Object? revisionDate = freezed,Object? summonerLevel = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SummonerModelResponse(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,profileIconId: freezed == profileIconId ? _self.profileIconId : profileIconId // ignore: cast_nullable_to_non_nullable
 as int?,revisionDate: freezed == revisionDate ? _self.revisionDate : revisionDate // ignore: cast_nullable_to_non_nullable
@@ -233,16 +239,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId)&&(identical(other.revisionDate, revisionDate) || other.revisionDate == revisionDate)&&(identical(other.summonerLevel, summonerLevel) || other.summonerLevel == summonerLevel));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.profileIconId, profileIconId) || other.profileIconId == profileIconId)&&(identical(other.revisionDate, revisionDate) || other.revisionDate == revisionDate)&&(identical(other.summonerLevel, summonerLevel) || other.summonerLevel == summonerLevel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,profileIconId,revisionDate,summonerLevel);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,profileIconId,revisionDate,summonerLevel);
+}
 
 @override
 String toString() {
-  return 'SummonerModelResponse(puuid: $puuid, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel)';
+    return 'SummonerModelResponse(puuid: $puuid, profileIconId: $profileIconId, revisionDate: $revisionDate, summonerLevel: $summonerLevel)';
 }
 
 

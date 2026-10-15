@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'region_model_response.dart';
@@ -9,6 +9,7 @@ part of 'region_model_response.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $RegionModelResponseCopyWith<RegionModelResponse> get copyWith => _$RegionModelR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegionModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.game, game) || other.game == game)&&(identical(other.region, region) || other.region == region));
+  final _this = this as RegionModelResponse;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RegionModelResponse&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.game, _this.game) || other.game == _this.game)&&(identical(other.region, _this.region) || other.region == _this.region));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,game,region);
+int get hashCode {
+  final _this = this as RegionModelResponse;
+  return Object.hash(runtimeType,_this.puuid,_this.game,_this.region);
+}
 
 @override
 String toString() {
-  return 'RegionModelResponse(puuid: $puuid, game: $game, region: $region)';
+  final _this = this as RegionModelResponse;
+  return 'RegionModelResponse(puuid: ${_this.puuid}, game: ${_this.game}, region: ${_this.region})';
 }
 
 
@@ -66,7 +72,7 @@ class _$RegionModelResponseCopyWithImpl<$Res>
 /// Create a copy of RegionModelResponse
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? game = freezed,Object? region = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(RegionModelResponse(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,game: freezed == game ? _self.game : game // ignore: cast_nullable_to_non_nullable
 as String?,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegionModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.game, game) || other.game == game)&&(identical(other.region, region) || other.region == region));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RegionModelResponse&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.game, game) || other.game == game)&&(identical(other.region, region) || other.region == region));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,game,region);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,game,region);
+}
 
 @override
 String toString() {
-  return 'RegionModelResponse(puuid: $puuid, game: $game, region: $region)';
+    return 'RegionModelResponse(puuid: $puuid, game: $game, region: $region)';
 }
 
 

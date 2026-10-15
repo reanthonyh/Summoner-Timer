@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_participant.dart';
@@ -9,6 +9,7 @@ part of 'game_participant.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $GameParticipantCopyWith<GameParticipant> get copyWith => _$GameParticipantCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.team, team) || other.team == team));
+  final _this = this as GameParticipant;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameParticipant&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.isBot, _this.isBot) || other.isBot == _this.isBot)&&(identical(other.spellOne, _this.spellOne) || other.spellOne == _this.spellOne)&&(identical(other.spellTwo, _this.spellTwo) || other.spellTwo == _this.spellTwo)&&(identical(other.riotId, _this.riotId) || other.riotId == _this.riotId)&&(identical(other.championId, _this.championId) || other.championId == _this.championId)&&(identical(other.team, _this.team) || other.team == _this.team));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo,riotId,championId,team);
+int get hashCode {
+  final _this = this as GameParticipant;
+  return Object.hash(runtimeType,_this.puuid,_this.isBot,_this.spellOne,_this.spellTwo,_this.riotId,_this.championId,_this.team);
+}
 
 @override
 String toString() {
-  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo, riotId: $riotId, championId: $championId, team: $team)';
+  final _this = this as GameParticipant;
+  return 'GameParticipant(puuid: ${_this.puuid}, isBot: ${_this.isBot}, spellOne: ${_this.spellOne}, spellTwo: ${_this.spellTwo}, riotId: ${_this.riotId}, championId: ${_this.championId}, team: ${_this.team})';
 }
 
 
@@ -63,7 +69,7 @@ class _$GameParticipantCopyWithImpl<$Res>
 /// Create a copy of GameParticipant
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = freezed,Object? isBot = null,Object? spellOne = null,Object? spellTwo = null,Object? riotId = null,Object? championId = null,Object? team = null,}) {
-  return _then(_self.copyWith(
+  return _then(GameParticipant(
 puuid: freezed == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String?,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,spellOne: null == spellOne ? _self.spellOne : spellOne // ignore: cast_nullable_to_non_nullable
@@ -251,16 +257,18 @@ _$GameParticipantCopyWith<_GameParticipant> get copyWith => __$GameParticipantCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.team, team) || other.team == team));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameParticipant&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.spellOne, spellOne) || other.spellOne == spellOne)&&(identical(other.spellTwo, spellTwo) || other.spellTwo == spellTwo)&&(identical(other.riotId, riotId) || other.riotId == riotId)&&(identical(other.championId, championId) || other.championId == championId)&&(identical(other.team, team) || other.team == team));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo,riotId,championId,team);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,isBot,spellOne,spellTwo,riotId,championId,team);
+}
 
 @override
 String toString() {
-  return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo, riotId: $riotId, championId: $championId, team: $team)';
+    return 'GameParticipant(puuid: $puuid, isBot: $isBot, spellOne: $spellOne, spellTwo: $spellTwo, riotId: $riotId, championId: $championId, team: $team)';
 }
 
 

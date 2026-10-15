@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'game_match_model_request.dart';
@@ -9,6 +9,7 @@ part of 'game_match_model_request.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $GameMatchModelRequestCopyWith<GameMatchModelRequest> get copyWith => _$GameMatc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameMatchModelRequest&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.platform, platform) || other.platform == platform));
+  final _this = this as GameMatchModelRequest;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GameMatchModelRequest&&(identical(other.puuid, _this.puuid) || other.puuid == _this.puuid)&&(identical(other.platform, _this.platform) || other.platform == _this.platform));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,platform);
+int get hashCode {
+  final _this = this as GameMatchModelRequest;
+  return Object.hash(runtimeType,_this.puuid,_this.platform);
+}
 
 @override
 String toString() {
-  return 'GameMatchModelRequest(puuid: $puuid, platform: $platform)';
+  final _this = this as GameMatchModelRequest;
+  return 'GameMatchModelRequest(puuid: ${_this.puuid}, platform: ${_this.platform})';
 }
 
 
@@ -66,7 +72,7 @@ class _$GameMatchModelRequestCopyWithImpl<$Res>
 /// Create a copy of GameMatchModelRequest
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? puuid = null,Object? platform = null,}) {
-  return _then(_self.copyWith(
+  return _then(GameMatchModelRequest(
 puuid: null == puuid ? _self.puuid : puuid // ignore: cast_nullable_to_non_nullable
 as String,platform: null == platform ? _self.platform : platform // ignore: cast_nullable_to_non_nullable
 as RiotPlatform,
@@ -229,16 +235,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameMatchModelRequest&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.platform, platform) || other.platform == platform));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GameMatchModelRequest&&(identical(other.puuid, puuid) || other.puuid == puuid)&&(identical(other.platform, platform) || other.platform == platform));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,puuid,platform);
+int get hashCode {
+    return Object.hash(runtimeType,puuid,platform);
+}
 
 @override
 String toString() {
-  return 'GameMatchModelRequest(puuid: $puuid, platform: $platform)';
+    return 'GameMatchModelRequest(puuid: $puuid, platform: $platform)';
 }
 
 

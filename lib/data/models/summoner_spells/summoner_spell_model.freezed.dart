@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'summoner_spell_model.dart';
@@ -9,14 +9,14 @@ part of 'summoner_spell_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$SummonerSpellModel {
 
- String? get id; String? get name; String? get description; List<int>? get cooldown; String? get key; SummonerSpellImageModel? get image;// ONLY ALLOW CLASSIC, URF, ARAM
- List<String>? get modes;
+ String? get id; String? get name; String? get description; List<int>? get cooldown; String? get key; SummonerSpellImageModel? get image; List<String>? get modes;
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,21 @@ $SummonerSpellModelCopyWith<SummonerSpellModel> get copyWith => _$SummonerSpellM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.cooldown, cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image)&&const DeepCollectionEquality().equals(other.modes, modes));
+  final _this = this as SummonerSpellModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SummonerSpellModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.description, _this.description) || other.description == _this.description)&&const DeepCollectionEquality().equals(other.cooldown, _this.cooldown)&&(identical(other.key, _this.key) || other.key == _this.key)&&(identical(other.image, _this.image) || other.image == _this.image)&&const DeepCollectionEquality().equals(other.modes, _this.modes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(cooldown),key,image,const DeepCollectionEquality().hash(modes));
+int get hashCode {
+  final _this = this as SummonerSpellModel;
+  return Object.hash(runtimeType,_this.id,_this.name,_this.description,const DeepCollectionEquality().hash(_this.cooldown),_this.key,_this.image,const DeepCollectionEquality().hash(_this.modes));
+}
 
 @override
 String toString() {
-  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image, modes: $modes)';
+  final _this = this as SummonerSpellModel;
+  return 'SummonerSpellModel(id: ${_this.id}, name: ${_this.name}, description: ${_this.description}, cooldown: ${_this.cooldown}, key: ${_this.key}, image: ${_this.image}, modes: ${_this.modes})';
 }
 
 
@@ -67,7 +72,7 @@ class _$SummonerSpellModelCopyWithImpl<$Res>
 /// Create a copy of SummonerSpellModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? description = freezed,Object? cooldown = freezed,Object? key = freezed,Object? image = freezed,Object? modes = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SummonerSpellModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -228,7 +233,7 @@ return $default(_that.id,_that.name,_that.description,_that.cooldown,_that.key,_
 @JsonSerializable()
 
 class _SummonerSpellModel implements SummonerSpellModel {
-  const _SummonerSpellModel({this.id, this.name, this.description, final  List<int>? cooldown, this.key, this.image, final  List<String>? modes}): _cooldown = cooldown,_modes = modes;
+  const _SummonerSpellModel({this.id, this.name, this.description,  List<int>? cooldown, this.key, this.image,  List<String>? modes}): _cooldown = cooldown,_modes = modes;
   factory _SummonerSpellModel.fromJson(Map<String, dynamic> json) => _$SummonerSpellModelFromJson(json);
 
 @override final  String? id;
@@ -245,9 +250,7 @@ class _SummonerSpellModel implements SummonerSpellModel {
 
 @override final  String? key;
 @override final  SummonerSpellImageModel? image;
-// ONLY ALLOW CLASSIC, URF, ARAM
  final  List<String>? _modes;
-// ONLY ALLOW CLASSIC, URF, ARAM
 @override List<String>? get modes {
   final value = _modes;
   if (value == null) return null;
@@ -270,16 +273,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._cooldown, _cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image)&&const DeepCollectionEquality().equals(other._modes, _modes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SummonerSpellModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.cooldown, _cooldown)&&(identical(other.key, key) || other.key == key)&&(identical(other.image, image) || other.image == image)&&const DeepCollectionEquality().equals(other.modes, _modes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(_cooldown),key,image,const DeepCollectionEquality().hash(_modes));
+int get hashCode {
+    return Object.hash(runtimeType,id,name,description,const DeepCollectionEquality().hash(_cooldown),key,image,const DeepCollectionEquality().hash(_modes));
+}
 
 @override
 String toString() {
-  return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image, modes: $modes)';
+    return 'SummonerSpellModel(id: $id, name: $name, description: $description, cooldown: $cooldown, key: $key, image: $image, modes: $modes)';
 }
 
 

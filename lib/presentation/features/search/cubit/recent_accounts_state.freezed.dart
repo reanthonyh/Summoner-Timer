@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'recent_accounts_state.dart';
@@ -9,6 +9,7 @@ part of 'recent_accounts_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $RecentAccountsStateCopyWith<RecentAccountsState> get copyWith => _$RecentAccoun
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecentAccountsState&&const DeepCollectionEquality().equals(other.recentAccounts, recentAccounts)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+  final _this = this as RecentAccountsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RecentAccountsState&&const DeepCollectionEquality().equals(other.recentAccounts, _this.recentAccounts)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.message, _this.message) || other.message == _this.message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(recentAccounts),status,message);
+int get hashCode {
+  final _this = this as RecentAccountsState;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.recentAccounts),_this.status,_this.message);
+}
 
 @override
 String toString() {
-  return 'RecentAccountsState(recentAccounts: $recentAccounts, status: $status, message: $message)';
+  final _this = this as RecentAccountsState;
+  return 'RecentAccountsState(recentAccounts: ${_this.recentAccounts}, status: ${_this.status}, message: ${_this.message})';
 }
 
 
@@ -63,7 +69,7 @@ class _$RecentAccountsStateCopyWithImpl<$Res>
 /// Create a copy of RecentAccountsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? recentAccounts = null,Object? status = null,Object? message = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(RecentAccountsState(
 recentAccounts: null == recentAccounts ? _self.recentAccounts : recentAccounts // ignore: cast_nullable_to_non_nullable
 as List<Account>,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as UiStatus,message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
@@ -208,7 +214,7 @@ return $default(_that.recentAccounts,_that.status,_that.message);case _:
 
 
 class _RecentAccountsState implements RecentAccountsState {
-  const _RecentAccountsState({final  List<Account> recentAccounts = const [], required this.status, this.message}): _recentAccounts = recentAccounts;
+  const _RecentAccountsState({ List<Account> recentAccounts = const [], required this.status, this.message}): _recentAccounts = recentAccounts;
   
 
  final  List<Account> _recentAccounts;
@@ -231,16 +237,18 @@ _$RecentAccountsStateCopyWith<_RecentAccountsState> get copyWith => __$RecentAcc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecentAccountsState&&const DeepCollectionEquality().equals(other._recentAccounts, _recentAccounts)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecentAccountsState&&const DeepCollectionEquality().equals(other.recentAccounts, _recentAccounts)&&(identical(other.status, status) || other.status == status)&&(identical(other.message, message) || other.message == message));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_recentAccounts),status,message);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_recentAccounts),status,message);
+}
 
 @override
 String toString() {
-  return 'RecentAccountsState(recentAccounts: $recentAccounts, status: $status, message: $message)';
+    return 'RecentAccountsState(recentAccounts: $recentAccounts, status: $status, message: $message)';
 }
 
 
